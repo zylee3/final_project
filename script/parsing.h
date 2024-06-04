@@ -20,4 +20,4 @@ typedef struct _sItem
 {
 	char name[32];
 	char image[64];
-}
+}Item;
