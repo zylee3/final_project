@@ -1,0 +1,327 @@
+name = "Final Project"
+author = "zylee"
+
+[scene.guild]
+name = "Guild Castle"
+background = ""
+
+[scene.first]
+name = "First Encounter in the savanna"
+background = ""
+
+[scene.second]
+name = "Second Encounter in the forest"
+background = ""
+
+[scene.boss]
+name = "Boss in the gorgous room"
+background = ""
+
+[character.Player]
+name = "Player"
+avatar = ""
+tachie = ""
+favor_cats = 0
+favor_dogs = 0
+
+[character.samoyed]
+name = "Salome"
+avatar = ""
+tachie = ""
+favor_cats = 0
+favor_dogs = 0
+
+[character.black_cat]
+name = "Blanche"
+avatar = ""
+tachie = ""
+favor_cats = 0
+favor_dogs = 0
+
+[character.tabby_cat]
+name = "Tommy"
+avatar = ""
+tachie = ""
+favor_cats = 0
+favor_dogs = 0
+
+[character.golden_retriever]
+name = "Gorden"
+avatar = ""
+tachie = ""
+favor_cats = 0
+favor_dogs = 0
+
+[character.malayan_night_heron_one]
+name = "Marceline"
+avatar = ""
+tachie = ""
+favor_cats = 0
+favor_dogs = 0
+
+[character.malayan_night_heron_two]
+name = "Max"
+avatar = ""
+tachie = ""
+favor_cats = 0
+favor_dogs = 0
+
+[character.squirrel_one]
+name = "Samuel"
+avatar = ""
+tachie = ""
+favor_cats = 0
+favor_dogs = 0
+
+[character.squirrel_two]
+name = "Sarah"
+avatar = ""
+tachie = ""
+favor_cats = 0
+favor_dogs = 0
+
+[character.squirrel_three]
+name = "Scarla"
+avatar = ""
+tachie = ""
+favor_cats = 0
+favor_dogs = 0
+
+[character.squirrel_four]
+name = "Sandra"
+avatar = ""
+tachie = ""
+favor_cats = 0
+favor_dogs = 0
+
+[character.dyson_vacuum_cleaner]
+name = "Dyson"
+avatar = ""
+tachie = ""
+favor_cats = 0
+favor_dogs = 0
+
+[item.frisbee]
+name = "Frisbee"
+tachie = ""
+
+[item.catnip]
+name = "Catnip"
+tachie = ""
+
+[item.golden_ring]
+name = "Golden ring"
+tachie = ""
+
+[event.change]
+scene = "guild"
+dialogue = "beginning"
+
+[dialogue.beginning]
+text = "A nation of cats and dogs seek to dominate the world. An adventurer's guild was formed to spread their territory. However, there is a great terror within the southern lands. A machine of war during the ancient era. The guild has sent a party of four to conquer this foul beast, and reclaim the lands that they once inhabited."
+
+event = "change"
+
+[event.change]
+scene = "first"
+dialogue = "first_encounter_conversation_one"
+
+[dialogue.first_encounter_conversation_one]
+character = "golden_retriever"
+text = "There’s something big in front, smells bad too."
+
+character = "tabby_cat"
+text = "Smells like something to eat."
+
+character = "malayan_night_heron_one"
+text = "Who the hell do you think you’re eating!? I’ll have you served up for breakfast!"
+
+next = "dialogue.first_encounter_story_one"
+
+[dialogue.first_encounter_story_one]
+text = "Blanche leaps forwards and slashes it with his nails. As the nails were about to hit the Marceline, it parried it with its beak. Salome rushes forwards to deliver a strong bite, but the Marceline spreads its enormous wings and bolts into the sky. As it encircles the party, it lets out a shriek, loud enough for the party to cover their ears. The party hoddles together, and from the horizon, a faint shadow could be seen looming closer towards the fight."
+
+next = "first_encounter_conversation_two"
+
+[dialogue.first_encounter_conversation_two]
+character = "malayan_night_heron_two"
+text = "Baby! What’s wrong!"
+
+character = "malayan_night_heron_one"
+text = "These insolent twats want to try eating me!"
+
+character = "malayan_night_heron_two"
+text = "What the hell? You think you're gonna pull up at my crib and tryna eat my woman!?"
+
+character = "black_cat"
+text = "Great, now we have to commit double homicide on a family of two."
+
+character = "malayan_night_heron_two"
+text = "We have kids to feed as well, alright?"
+
+character = "tabby_cat"
+text = "Where are they? Are they interested in New Orleans Style Seasoning Mixes?"
+
+character = "samoyed"
+text = "I want to eat the wings…"
+
+next = "first_encounter_story_two"
+
+[dialogue.first_encounter_story_two]
+text = "As the herons become enraged at the party’s words, they dove down in a synchronized strike at the Salome. One attack landed, but the other was thwarted by the wok of Gorden. As Marceline tries to recuperate from a direct attack, Tommy throws an entire vial of powdered spice, getting the fine particulates in the eyes and throat of Marceline."
+
+text = "She coughs vigorously, and lets out screams of agony, crying and calling for her husband. In response, Max dives in and scratches Tommy's head. But before Max could pick up Marceline, Blanche jumps at Max from behind, and stabs him in the back. He cries, but shakes Blanche off by reflex."
+
+next = "first_encounter_conversation_three"
+
+[dialogue.first_encounter_conversation_three]
+character = "malayan_night_heron_one"
+text = "Honey!"
+
+character = "malayan_night_heron_two"
+text = "Fly! As fast as you can!"
+
+next = "first_encounter_story_three"
+
+[dialogue.first_encounter_story_three]
+text = "Marceline attempts to spread her wings and fly, but the spices in her eyes would not allow her to see clearly. The last thing she saw was her bloodied husband. Finished off by a slit through the throat by Blanche, before her vision succumbed to darkness, under the jaws of Salome."
+
+text = "After the fight had ended, Gorden summoned a fire before them, and placed its wok to cook. Tommy placed in his spices, while Gorden swirled the numerous spices around. A delectable, mouth watering aroma filled the campsite. As the simple stock had been prepared, they threw in their latest bounty into the wok."
+
+text = "The simmering smell of fresh fowl raised their appetite greatly. They devoured the fowls as soon as it was prepared. And at night, Tommy dreamed of finding the eggs, so that he may relive the taste once more."
+
+event = "change"
+
+[event.change]
+scene = "second"
+dialogue = "second_encounter_story_one"
+
+[dialogue.second_encounter_story_one]
+text = "The next day, they encountered a forest full of lush trees ripe with fruit. As the cats climbed up the tree to pluck some for their lunch of the day, they were struck down violently. A loud thud was heard as they hit the floor, and their gaze was met by the inhabitants of the tree as they looked up."
+
+next = "second_encounter_conversation_one"
+
+[dialogue.second_encounter_conversation_one]
+character = "squirrel_one"
+text = "Hey! Don’t steal from our trees goddamnit!"
+
+character = "squirrel_two"
+text = "Yeah, this tree has been in our possession for the past 8 generations!"
+
+character = "squirrel_three"
+text = "Tell em mom!"
+
+character = "black_cat"
+text = "And get your skins ready for repossession you bastards!"
+
+next = "second_encounter_story_two"
+
+[dialogue.second_encounter_story_two]
+text = "As Blanche finished uttering those words, a family of onetwo squirrels descended from the tree. The party readies its defenses, as the first squirrel charges them head on. As Gorden parried the attack, the rest noticed that the squirrel was flanking them. One by one their claws and jaws land hits on Salome and Blanche, shielding Tommy from harm."
+
+text = "Tommy pulls out two vials and pours it onto the duo, instantly healing their wounds. As the three continue to parry the squirrels that are slowly closing upon them, Tommy cooks up a concoction in a large flask."
+
+next = "second_encounter_conversation_two"
+
+[dialogue.second_encounter_conversation_two]
+character = "tabby_cat"
+text = "Cover your nose, mouth and eyes!"
+
+next = "second_encounter_story_three"
+
+[dialogue.second_encounter_story_three]
+text = "He says to the other members, and throws the flask at the squirrels. They let out a violent hiss, as their bodies convulse due to intense pain. They feel their tracts burn as their orifices were violated in ways that were previously unimaginable to them."
+
+next = "second_encounter_conversation_three"
+
+[dialogue.second_encounter_conversation_three]
+character = "squirrel_one"
+text = "AAAAAAAAARGH! IT HURTS!!!!!!!!!!!!!!"
+
+character = "squirrel_two"
+text = "MOM, PLEASE! HELP ME!"
+
+character = "squirrel_three"
+text = "HELP, PLEASE! I'M SCARED! PLEASE DON'T KILL ME!!!!!"
+
+character = "squirrel_four"
+text = "KIDS? KIDS IT'S OKAY, MAMA’S HERE."
+
+next = "second_encounter_story_four"
+
+[dialogue.second_encounter_story_four]
+text = "Before the party feels any more remorse, and the need for mercy. They swiftly finished them off in one fell swoop."
+
+text = "That evening was long and grueling. The river was stained red by the blood of their fallen foe. Sound of fat and muscle being torn away from their skin, revealing the fragile meat of the squirrels. After it had been washed in the river, the skins were left to dry by a fire."
+
+text = "The party savored the fruits they had plundered from the tree, now owned by no one but themselves. By midnight, the preparations had been complete, and Blanche used his nails to sew them up into little fur coats. Protection, for their upcoming journey into the depths of uncharted lands."
+
+event = "change"
+
+[event.change]
+scene = "boss"
+dialogue = "boss_story_one"
+
+[dialogue.boss_story_one]
+text = "Before the great structures that once housed a noble race, the party steeled themselves. For it was inside, lies a great darkness that no animal dared venture into. But not these ones."
+
+text = "Their torch flickered within the echoing halls, and warily they searched through every monstrous room. Until finally, they lay their eyes upon it. And it, upon them."
+
+text = "It let out a huge roar, shaking the whole house. The party was afraid of it even more, now that it is right in front of them, in the flesh."
+
+next = "boss_conversation_one"
+
+[dialogue.boss_conversation_one]
+character = "samoyed"
+text = "It’s the Dyson…"
+
+character = "golden_retriever"
+text = "It’s so scary…"
+
+character = "Blanche_cat"
+text = "Find your resolve, we shall defeat it here and now!"
+
+character = "tabby_cat"
+text = "Inedible, even dead…"
+
+next = "boss_story_two"
+
+[dialogue.boss_story_two]
+text = "The party was too afraid to move, and instead the Dyson charged towards it with its eerie sounds, heat dissipated in every direction. The party bolted towards different directions, afraid of even making contact with the Dyson. All but Gorden, as he was too heavy to outrun the Dyson."
+
+text = " He took out his wok, and readied himself for imminent impact. As a loud clash rang throughout the entire house, the rest sprung into action. With Blanche attacking its “head” (handle), and Salome chewing on its “Base” (Vacuum place)."
+
+text = "Tommy observed the fight carefully, and it was obvious that the three of them were doing no damage to the monster. Desperate, he sought his weakness in a more intricate fashion. It was in this desperation where he discovered a long, Blanche line connecting the monster to the wall."
+
+text = "Tommy rushed up to the wall, and tried his best to know its purpose. He poured spice on it, poured his most powerful concoction, nothing. He tried pulling it out, but his strength was no match. Looking at his teammates being defeated one by one, Tommy chewed on the string mercilessly."
+
+text = "And sure enough, after the string was completely separated, the monster stopped, and fell onto the ground with a tremendous force."
+
+text = "They four rejoiced, for they have slain a legendary beast. They quickly rushed to search the room where the beast resides. Within, they found a frisbee, catnip, and a golden ring."
+
+item = "frisbee"
+
+item = "catnip"
+
+item = "golden_ring"
+
+[[dialogue.boss_story_two.frisbee]]
+#Upon choosing Frisbee
+
+item = "frisbee"
+
+text = "The party returned to the kingdom with a frisbee in hand. As it was a legendary item that could not be found within the kingdom, the Salome was awarded the title of duke, and was given the entirety of the Adventurer’s guild as a result."
+
+[[dialogue.boss_story_two.catnip]]
+#Upon choosing Catnip
+
+item = "catnip"
+
+text = "The party returned to the kingdom with a catnip in hand. As it was a legendary item that could not be found within the kingdom, the Blanche was awarded the title of duke, and was given the entirety of the Adventurer’s guild as a result."
+
+[[dialogue.boss_story_two.golden_ring]]
+#Upon choosing Golden ring
+
+item = "golden_ring"
+
+text = "The party returned with a golden ring in hand. A legendary item that could only be owned by the state. The Golden ring was given to the Empire, while the members were promoted in rank."
