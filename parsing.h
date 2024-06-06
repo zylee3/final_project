@@ -42,4 +42,4 @@ typedef struct _sDialogueConversation
 	char text[1024];
 	char next[64];
 	char event[64];
-} DialogueStory;
+} DialogueConversation;

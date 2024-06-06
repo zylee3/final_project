@@ -116,324 +116,65 @@ tachie = ""
 name = "apples"
 tachie = ""
 
-[dialogue.home_story]
+[dialogue.story.home]
 text = "There were two close friends, Alice and Bob. One day, they decide to bake a cake."
 
-[dialogue.home_conversation]
+[dialogue.conversation.home]
+[[dialogue.conversation.home.one]]
 character = "Alice"
 text = "I want to eat strawberry cake, but it is too expensive."
 
+[[dialogue.conversation.home.two]]
 character = "Bob"
 text = "How about baking the cake on our own?"
 
+[[dialogue.conversation.home.three]]
 character = "Alice"
 text = "That's a great idea."
 
-[dialogue.supermarket_story_one]
+[dialogue.story.supermarket_one]
 text = "They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberrys for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything."
 
-[dialogue.supermarket_conversation_one]
+[dialogue.conversation.supermarket_one]
+[[dialogue.conversation.supermarket_one.one]]
 character = "Alice"
 text = "OMG! The strawberrys are so expensive."
 
+[[dialogue.conversation.supermarket_one.two]]
 character = "Bob"
 text = "Can we afford them?"
 
-[dialogue.supermarket_story_two]
+[dialogue.story.supermarket_two]
 text = "After they find out that they don't have the budget for the cake, they decide to make apple pie instead of strawberry cake."
 
-[dialogue.supermarket_conversation_two]
+[dialogue.conversation.supermarket_two]
+[[dialogue.conversation.supermarket_two.one]]
 character = "Bob"
 text = "Here are apples! Why is much cheaper then before?"
 
+[[dialogue.conversation.supermarket_two.two]]
 character = "Alice"
 text = "These are from Chile. We used to buy apples from Japan."
 
+[[dialogue.conversation.supermarket_two.three]]
 character = "Bob"
 text = "I see. Should we buy them?"
 
+[[dialogue.conversation.supermarket_two.four]]
 character = "Alice"
 text = "I'd like Japanese apples."
 
+[[dialogue.conversation.supermarket_two.five]]
 character = "Bob"
 text = "OK."
 
 7. When changing to different scene, add "event.change_xxx". For instance, if changing to supermarket, "event_change_supermarket".
 
-Baking.toml:
-name = "A Piece Of Cake"
-author = "zylee"
-
-[scene.home]
-name = "Home"
-background = ""
-
-[scene.supermarket]
-name = "Supermarket"
-background = ""
-
-[character.alice]
-name = "Alice"
-avatar = ""
-tachie = ""
-
-[character.bob]
-name = "Bob"
-avatar = ""
-tachie = ""
-
-[item.strawberrys]
-name = "strawberrys"
-tachie = ""
-
-[item.apples]
-name = "apples"
-tachie = ""
-
-[dialogue.home_story]
-text = "There were two close friends, Alice and Bob. One day, they decide to bake a cake."
-
-[dialogue.home_conversation]
-character = "Alice"
-text = "I want to eat strawberry cake, but it is too expensive."
-
-character = "Bob"
-text = "How about baking the cake on our own?"
-
-character = "Alice"
-text = "That's a great idea."
-
-event = "change"
-
-[event.change_supermarket]
-scene = "supermarket"
-dialogue = "supermarket_story_one"
-
-[dialogue.supermarket_story_one]
-text = "They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberrys for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything."
-
-[dialogue.supermarket_conversation_one]
-character = "Alice"
-text = "OMG! The strawberrys are so expensive."
-
-character = "Bob"
-text = "Can we afford them?"
-
-[dialogue.supermarket_story_two]
-text = "After they find out that they don't have the budget for the cake, they decide to make apple pie instead of strawberry cake."
-
-[dialogue.supermarket_conversation_two]
-character = "Bob"
-text = "Here are apples! Why is much cheaper then before?"
-
-character = "Alice"
-text = "These are from Chile. We used to buy apples from Japan."
-
-character = "Bob"
-text = "I see. Should we buy them?"
-
-character = "Alice"
-text = "No. I'd like apples from Japan."
-
-character = "Bob"
-text = "OK."
 
 8. When there is more than one character/text in the same dialogue, number them with sub-array to avoid existing key.
 
-Baking.toml:
-name = "A Piece Of Cake"
-author = "zylee"
-
-[scene.home]
-name = "Home"
-background = ""
-
-[scene.supermarket]
-name = "Supermarket"
-background = ""
-
-[character.alice]
-name = "Alice"
-avatar = ""
-tachie = ""
-
-[character.bob]
-name = "Bob"
-avatar = ""
-tachie = ""
-
-[item.strawberrys]
-name = "strawberrys"
-tachie = ""
-
-[item.apples]
-name = "apples"
-tachie = ""
-
-[dialogue.home_story]
-text = "There were two close friends, Alice and Bob. One day, they decide to bake a cake."
-
-[dialogue.home_conversation]
-[[dialogue.home_conversation.one]]
-character = "Alice"
-text = "I want to eat strawberry cake, but it is too expensive."
-
-[[dialogue.home_conversation.two]]
-character = "Bob"
-text = "How about baking the cake on our own?"
-
-[[dialogue.home_conversation.three]]
-character = "Alice"
-text = "That's a great idea."
-
-event = "change_supermarket"
-
-[event.change_supermarket]
-scene = "supermarket"
-dialogue = "supermarket_story_one"
-
-[dialogue.supermarket_story_one]
-text = "They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberrys for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything."
-
-[dialogue.supermarket_conversation_one]
-[[dialogue.supermarket_conversation_one.one]]
-character = "Alice"
-text = "OMG! The strawberrys are so expensive."
-
-[[dialogue.supermarket_conversation_one.two]]
-character = "Bob"
-text = "Can we afford them?"
-
-[dialogue.supermarket_story_two]
-text = "After they find out that they don't have the budget for the cake, they decide to make apple pie instead of strawberry cake."
-
-[[dialogue.supermarket_conversation_two.one]]
-character = "Bob"
-text = "Here are apples! Why is much cheaper then before?"
-
-[[dialogue.supermarket_conversation_two.two]]
-character = "Alice"
-text = "These are from Chile. We used to buy apples from Japan."
-
-[[dialogue.supermarket_conversation_two.three]]
-character = "Bob"
-text = "I see. Should we buy them?"
-
-[[dialogue.supermarket_conversation_two.four]]
-character = "Alice"
-text = "No. I'd like apples from Japan."
-
-[[dialogue.supermarket_conversation_two.five]]
-character = "Bob"
-text = "OK."
 
 9. When moving on to the next dialogue or dialogue sub-array, add "next".
-
-Baking.toml:
-name = "A Piece Of Cake"
-author = "zylee"
-
-[scene.home]
-name = "Home"
-background = ""
-
-[scene.supermarket]
-name = "Supermarket"
-background = ""
-
-[character.alice]
-name = "Alice"
-avatar = ""
-tachie = ""
-
-[character.bob]
-name = "Bob"
-avatar = ""
-tachie = ""
-
-[item.strawberrys]
-name = "strawberrys"
-tachie = ""
-
-[item.apples]
-name = "apples"
-tachie = ""
-
-[dialogue.home_story]
-text = "There were two close friends, Alice and Bob. One day, they decide to bake a cake."
-
-next = "dialogue.home_conversation"
-
-[dialogue.home_conversation]
-[[dialogue.home_conversation.one]]
-character = "Alice"
-text = "I want to eat strawberry cake, but it is too expensive."
-
-next = "dialogue.home_conversation.two"
-
-[[dialogue.home_conversation.two]]
-character = "Bob"
-text = "How about baking the cake on our own?"
-
-next = "dialogue.home_conversation.three"
-
-character = "Alice"
-text = "That's a great idea."
-
-event = "change_supermarket"
-
-[event.change_supermarket]
-scene = "supermarket"
-dialogue = "supermarket_story_one"
-
-[dialogue.supermarket_story_one]
-text = "They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberrys for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything."
-
-[dialogue.supermarket_conversation_one]
-[[dialogue.supermarket_conversation_one.one]]
-character = "Alice"
-text = "OMG! The strawberrys are so expensive."
-
-next = "dialogue.supermarket_conversation_one.two"
-
-[[dialogue.supermarket_conversation_one.two]]
-character = "Bob"
-text = "Can we afford them?"
-
-next = "dialogue.supermarket_story_two"
-
-[dialogue.supermarket_story_two]
-text = "After they find out that they don't have the budget for the cake, they decide to make apple pie instead of strawberry cake."
-
-next = "dialogue.supermarket_conversation_two.one"
-
-[[dialogue.supermarket_conversation_two.one]]
-character = "Bob"
-text = "Here are apples! Why is much cheaper then before?"
-
-next = "dialogue.supermarket_conversation_two.two"
-
-[[dialogue.supermarket_conversation_two.two]]
-character = "Alice"
-text = "These are from Chile. We used to buy apples from Japan."
-
-next = "dialogue.supermarket_conversation_two.three"
-
-[[dialogue.supermarket_conversation_two.three]]
-character = "Bob"
-text = "I see. Should we buy them?"
-
-next = "dialogue.supermarket_conversation_two.four"
-
-[[dialogue.supermarket_conversation_two.four]]
-character = "Alice"
-text = "No. I'd like apples from Japan."
-
-next = "dialogue.supermarket_conversation_two.five"
-
-[[dialogue.supermarket_conversation_two.five]]
-character = "Bob"
-text = "OK."
 
 
 Explaination of parsing.h:
@@ -454,3 +195,16 @@ Favor:
  name: the character name of the favorability owner
  favor_cats: the favorability toward cats
  favor_dogs: the favorability toward dogs
+
+DialogueStory:
+ name: the name of the story
+ text: the story context
+ next: next dialogue
+ event: change background
+
+DialogueConversation:
+ name: the name of the story
+ character: the speaking character
+ text: the story context
+ next: next dialogue
+ event: change background
