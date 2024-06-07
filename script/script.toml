@@ -114,36 +114,36 @@ name = "Golden ring"
 image = ""
 
 [event.change_guild]
-scene = "guild"
-dialogue = "beginning"
+scene = "scene.guild"
+dialogue = "dialogue.story.beginning"
 
 [dialogue.story.beginning]
 text = "A nation of cats and dogs seek to dominate the world. An adventurer's guild was formed to spread their territory. However, there is a great terror within the southern lands. A machine of war during the ancient era. The guild has sent a party of four to conquer this foul beast, and reclaim the lands that they once inhabited."
 
 next = ""
-event = "change_first"
+event = "event.change_first"
 
 [event.change_first]
-scene = "first"
-dialogue = "conversation.first_one"
+scene = "scene.first"
+dialogue = "dialogue.conversation.first_one"
 
 [dialogue.conversation.first_one]
 [[dialogue.conversation.first_one.one]]
-character = "golden_retriever"
+character = "character.golden_retriever"
 text = "There’s something big in front, smells bad too."
 
 next = "dialogue.conversation.first_one.two"
 event = ""
 
 [[dialogue.conversation.first_one.two]]
-character = "tabby_cat"
+character = "character.tabby_cat"
 text = "Smells like something to eat."
 
 next = "dialogue.conversation.first_one.three"
 event = ""
 
 [[dialogue.conversation.first_one.three]]
-character = "malayan_night_heron_one"
+character = "character.malayan_night_heron_one"
 text = "Who the hell do you think you’re eating!? I’ll have you served up for breakfast!"
 
 next = "dialogue.story.first_one"
@@ -152,54 +152,54 @@ event = ""
 [dialogue.story.first_one]
 text = "Blanche leaps forwards and slashes it with his nails. As the nails were about to hit the Marceline, it parried it with its beak. Salome rushes forwards to deliver a strong bite, but the Marceline spreads its enormous wings and bolts into the sky. As it encircles the party, it lets out a shriek, loud enough for the party to cover their ears. The party hoddles together, and from the horizon, a faint shadow could be seen looming closer towards the fight."
 
-next = "first_encounter_conversation_two"
+next = "dialogue.conversation.first_two"
 event = ""
 
 [dialogue.conversation.first_two]
 [[dialogue.conversation.first_two.one]]
-character = "malayan_night_heron_two"
+character = "character.malayan_night_heron_two"
 text = "Baby! What’s wrong!"
 
 next = "dialogue.conversation.first_two.two"
 event = ""
 
 [[dialogue.conversation.first_two.two]]
-character = "malayan_night_heron_one"
+character = "character.malayan_night_heron_one"
 text = "These insolent twats want to try eating me!"
 
 next = "dialogue.conversation.first_two.three"
 event = ""
 
 [[dialogue.conversation.first_two.three]]
-character = "malayan_night_heron_two"
+character = "character.malayan_night_heron_two"
 text = "What the hell? You think you're gonna pull up at my crib and tryna eat my woman!?"
 
 next = "dialogue.conversation.first_two.four"
 event = ""
 
 [[dialogue.conversation.first_two.four]]
-character = "black_cat"
+character = "character.black_cat"
 text = "Great, now we have to commit double homicide on a family of two."
 
 next = "dialogue.conversation.first_two.five"
 event = ""
 
 [[dialogue.conversation.first_two.five]]
-character = "malayan_night_heron_two"
+character = "character.malayan_night_heron_two"
 text = "We have kids to feed as well, alright?"
 
 next = "dialogue.conversation.first_two.six"
 event = ""
 
 [[dialogue.conversation.first_two.six]]
-character = "tabby_cat"
+character = "character.tabby_cat"
 text = "Where are they? Are they interested in New Orleans Style Seasoning Mixes?"
 
 next = "dialogue.conversation.first_two.seven"
 event = ""
 
 [[dialogue.conversation.first_two.seven]]
-character = "samoyed"
+character = "character.samoyed"
 text = "I want to eat the wings…"
 
 next = "dialogue.story.first_two.one"
@@ -220,14 +220,14 @@ event = ""
 
 [dialogue.conversation.first_three]
 [[dialogue.conversation.first_three.one]]
-character = "malayan_night_heron_one"
+character = "character.malayan_night_heron_one"
 text = "Honey!"
 
 next = "dialogue.conversation.first_three.two"
 event = ""
 
 [[dialogue.conversation.first_three.two]]
-character = "malayan_night_heron_two"
+character = "character.malayan_night_heron_two"
 text = "Fly! As fast as you can!"
 
 next = "dialogue.story.first_three"
@@ -250,45 +250,45 @@ event = ""
 text = "The simmering smell of fresh fowl raised their appetite greatly. They devoured the fowls as soon as it was prepared. And at night, Tommy dreamed of finding the eggs, so that he may relive the taste once more."
 
 next = ""
-event = "change_second"
+event = "event.change_second"
 
 [event.change_second]
-scene = "second"
+scene = "scene.second"
 dialogue = "story.second_one"
 
 [dialogue.story.second_one]
 text = "The next day, they encountered a forest full of lush trees ripe with fruit. As the cats climbed up the tree to pluck some for their lunch of the day, they were struck down violently. A loud thud was heard as they hit the floor, and their gaze was met by the inhabitants of the tree as they looked up."
 
-next = "conversation.second_one"
+next = "dialogue.conversation.second_one"
 event = ""
 
 [dialogue.conversation.second_one]
 [[dialogue.conversation.second_one.one]]
-character = "squirrel_one"
+character = "character.squirrel_one"
 text = "Hey! Don’t steal from our trees goddamnit!"
 
 next = "dialogue.conversation.second_one.two"
 event = ""
 
 [[dialogue.conversation.second_one.two]]
-character = "squirrel_two"
+character = "character.squirrel_two"
 text = "Yeah, this tree has been in our possession for the past 8 generations!"
 
 next = "dialogue.conversation.second_one.three"
 event = ""
 
 [[dialogue.conversation.second_one.three]]
-character = "squirrel_three"
+character = "character.squirrel_three"
 text = "Tell em mom!"
 
 next = "dialogue.conversation.second_one.four"
 event = ""
 
 [[dialogue.conversation.second_one.four]]
-character = "black_cat"
+character = "character.black_cat"
 text = "And get your skins ready for repossession you bastards!"
 
-next = "second_encounter_story_two"
+next = "dialogue.story.second_two"
 event = ""
 
 [dialogue.story.second_two]
@@ -301,49 +301,49 @@ event = ""
 [[dialogue.story.second_two.two]]
 text = "Tommy pulls out two vials and pours it onto the duo, instantly healing their wounds. As the three continue to parry the squirrels that are slowly closing upon them, Tommy cooks up a concoction in a large flask."
 
-next = "conversation.second_two"
+next = "dialogue.conversation.second_two"
 event = ""
 
 [dialogue.conversation.second_two]
-character = "tabby_cat"
+character = "character.tabby_cat"
 text = "Cover your nose, mouth and eyes!"
 
-next = "story.second_three"
+next = "dialogue.story.second_three"
 event = ""
 
 [dialogue.story.second_three]
 text = "He says to the other members, and throws the flask at the squirrels. They let out a violent hiss, as their bodies convulse due to intense pain. They feel their tracts burn as their orifices were violated in ways that were previously unimaginable to them."
 
-next = "conversation.second_three"
+next = "dialogue.conversation.second_three"
 event = ""
 
 [dialogue.conversation.second_three]
 [[dialogue.conversation.second_three.one]]
-character = "squirrel_one"
+character = "character.squirrel_one"
 text = "AAAAAAAAARGH! IT HURTS!!!!!!!!!!!!!!"
 
-next = "dialogue.second_encounter_conversation_three.two"
+next = "dialogue.conversation.second_three.two"
 event = ""
 
 [[dialogue.conversation.second_three.two]]
-character = "squirrel_two"
+character = "character.squirrel_two"
 text = "MOM, PLEASE! HELP ME!"
 
 next = "dialogue.conversation.second_three.three"
 event = ""
 
 [[dialogue.conversation.second_three.three]]
-character = "squirrel_three"
+character = "character.squirrel_three"
 text = "HELP, PLEASE! I'M SCARED! PLEASE DON'T KILL ME!!!!!"
 
 next = "dialogue.conversation.second_three.four"
 event = ""
 
 [[dialogue.conversation.second_three.four]]
-character = "squirrel_four"
+character = "character.squirrel_four"
 text = "KIDS? KIDS IT'S OKAY, MAMA’S HERE."
 
-next = "story.second_four"
+next = "dialogue.story.second_four"
 event = ""
 
 [dialogue.story.second_four]
@@ -363,10 +363,10 @@ event = ""
 text = "The party savored the fruits they had plundered from the tree, now owned by no one but themselves. By midnight, the preparations had been complete, and Blanche used his nails to sew them up into little fur coats. Protection, for their upcoming journey into the depths of uncharted lands."
 
 next = ""
-event = "change_boss"
+event = "event.change_boss"
 
 [event.change_boss]
-scene = "boss"
+scene = "scene.boss"
 dialogue = "boss_story_one"
 
 [dialogue.story.boss_one]
@@ -385,36 +385,36 @@ event = ""
 [[dialogue.story.boss_one.three]]
 text = "It let out a huge roar, shaking the whole house. The party was afraid of it even more, now that it is right in front of them, in the flesh."
 
-next = "conversation.boss_one"
+next = "dialogue.conversation.boss_one"
 event = ""
 
 [dialogue.conversation.boss_one]
 [[dialogue.conversation.boss_one.one]]
-character = "samoyed"
+character = "character.samoyed"
 text = "It’s the Dyson…"
 
-next = "dialogue.boss_conversation_one.two"
+next = "dialogue.conversation.boss_one.two"
 event = ""
 
 [[dialogue.conversation.boss_one.two]]
-character = "golden_retriever"
+character = "character.golden_retriever"
 text = "It’s so scary…"
 
 next = "dialogue.conversation.boss_one.three"
 event = ""
 
 [[dialogue.conversation.boss_one.three]]
-character = "Black_cat"
+character = "character.black_cat"
 text = "Find your resolve, we shall defeat it here and now!"
 
 next = "dialogue.conversation.boss_one.four"
 event = ""
 
 [[dialogue.conversation.boss_one.four]]
-character = "tabby_cat"
+character = "character.tabby_cat"
 text = "Inedible, even dead…"
 
-next = "story.boss_two"
+next = "dialogue.story.boss_two"
 event = ""
 
 [dialogue.story.boss_two]
@@ -454,20 +454,20 @@ text = "They four rejoiced, for they have slain a legendary beast. They quickly 
 [[dialogue.option.boss_two.frisbee]]
 #Upon choosing Frisbee
 
-item = "frisbee"
+item = "item.frisbee"
 
 text = "The party returned to the kingdom with a frisbee in hand. As it was a legendary item that could not be found within the kingdom, the Salome was awarded the title of duke, and was given the entirety of the Adventurer’s guild as a result."
 
 [[dialogue.option.boss_two.catnip]]
 #Upon choosing Catnip
 
-item = "catnip"
+item = "item.catnip"
 
 text = "The party returned to the kingdom with a catnip in hand. As it was a legendary item that could not be found within the kingdom, the Blanche was awarded the title of duke, and was given the entirety of the Adventurer’s guild as a result."
 
 [[dialogue.option.boss_two.golden_ring]]
 #Upon choosing Golden ring
 
-item = "golden_ring"
+item = "item.golden_ring"
 
 text = "The party returned with a golden ring in hand. A legendary item that could only be owned by the state. The Golden ring was given to the Empire, while the members were promoted in rank."
