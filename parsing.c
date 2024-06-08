@@ -6,8 +6,6 @@
 #include <toml.h>
 #include "parsing.h"
 
-#define GET_FULL_NAME_LEN 64
-
 const uint32_t MAX_MEM = 0x80000000;
 
 enum Target
@@ -835,6 +833,31 @@ parsing_handle script_init()
 	return (parsing_handle)pProgram;
 }
 
+int32_t script_uninit(parsing_handle h)
+{
+	Program* pProgram = (Program*)h;
+	if (pProgram == NULL) { return -1; }
+
+	program_uninit(pProgram);
+	free(pProgram);
+
+	return 0;
+}
+
+StructInfo script_get_struct_info_by_id(enum StructId id)
+{
+	return get_struct_info_by_id(id);
+}
+
+int32_t script_get_full_name(void* pCurr, char* fullName)
+{
+	if (fullName == NULL) { return 1; }
+
+	get_full_name(pCurr, fullName);
+
+	return (fullName[0] != '\0') ? 0 : 2;
+}
+
 int32_t script_parsing(parsing_handle h, const char* tomlFile)
 {
 	Program* pProgram = (Program*)h;
@@ -857,12 +880,20 @@ Found script_find_record(parsing_handle h, const char* tomlKey)
 	return find_record(pProgram, tomlKey, TARGET_CONTENT_ONLY);
 }
 
-void script_print_found(parsing_handle h, Found* pFound)
+void script_print_found(Found* pFound)
+{
+	return print_found(pFound);
+}
+
+Structures script_get_all(parsing_handle h)
 {
 	Program* pProgram = (Program*)h;
-	if (pProgram == NULL) { return; }
+	if (pProgram == NULL)
+	{
+		return (Structures)	{ .pvStart = NULL, .pvEnd = NULL };
+	}
 
-	return print_found(pFound);
+	return (Structures)	{ .pvStart = pProgram->parsing.memory.pvMem, .pvEnd = pProgram->parsing.pvCurrMem };
 }
 
 void script_print_all(parsing_handle h)
@@ -871,15 +902,4 @@ void script_print_all(parsing_handle h)
 	if (pProgram == NULL) { return; }
 
 	return print_all(pProgram, TARGET_CONTENT_ONLY);
-}
-
-int32_t script_uninit(parsing_handle h)
-{
-	Program* pProgram = (Program*)h;
-	if (pProgram == NULL) { return -1; }
-
-	program_uninit(pProgram);
-	free(pProgram);
-
-	return 0;
 }

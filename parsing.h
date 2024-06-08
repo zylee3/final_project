@@ -3,7 +3,8 @@
 
 #include <stdint.h>
 
-#define MAX_FOUND 16
+#define GET_FULL_NAME_LEN 64
+#define MAX_FOUND         16
 
 enum StructId
 {
@@ -120,18 +121,33 @@ typedef struct _sStructInfo
 	const char*   structName;
 } StructInfo;
 
+// include any of the structrues IdParentChild, Container, FinalProject, Scene, Character, Item, Event, Dialogue
+// you can traverse it by cast void* to IdParentChild and check its _id
+typedef struct _sStructures
+{
+	void* pvStart;
+	void* pvEnd;
+} Structures;
+
 typedef void* parsing_handle;
 
 parsing_handle script_init();
 
+int32_t script_uninit(parsing_handle);
+
+StructInfo script_get_struct_info_by_id(enum StructId id);
+
+int32_t script_get_full_name(void* pCurr, char* fullName);
+
 int32_t script_parsing(parsing_handle, const char* tomlFile);
 
+// below functions should be used after script_parsing
 Found script_find_record(parsing_handle, const char* tomlKey);
 
-void script_print_found(parsing_handle, Found*);
+void script_print_found(Found*);
+
+Structures script_get_all(parsing_handle);
 
 void script_print_all(parsing_handle);
-
-int32_t script_uninit(parsing_handle);
 
 #endif
