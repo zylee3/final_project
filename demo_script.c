@@ -4,6 +4,9 @@
 #include <assert.h>
 #include "toml.h"
 
+#define GET_FULL_NAME_LEN 64
+#define MAX_FOUND         16
+
 const uint32_t MAX_MEM = 0x80000000;
 
 typedef struct _sTomlFile
@@ -19,12 +22,22 @@ typedef struct _sMemory
 
 } Memory;
 
+typedef struct _sManageMemory
+{
+	Memory memory;
+    void*  pvCurrMem;
+    void*  pvCurrLast;
+} ManageMemory;
+
 enum StructId
 {
 	NONE            = 0,
 	ID_PARENT_CHILD = 1,
+	NO_FOR_PRINT    = ID_PARENT_CHILD,
 	TABLE           = 2,
+	CONTAINER_START = TABLE,
 	ARRAY           = 3,
+	CONTAINER_END = ARRAY,
 	FINAL_PROJECT   = 4,
 	SCENE           = 5,
 	CHARACTER       = 6,
@@ -125,12 +138,17 @@ typedef struct _sDialogue
 	char*          item;
 } Dialogue;
 
+typedef struct _sFound
+{
+	uint32_t count;
+	void*    pvMatchs[MAX_FOUND];
+} Found;
+
 typedef struct _sProgram
 {
-	TomlFile tomlFile;
-    Memory   memory;
-    void*    pvCurrMem;
-    void*    pvCurrLast;
+	TomlFile     tomlFile;
+    ManageMemory parsing;
+    ManageMemory summary;
 } Program;
 
 Memory alloc_memory(Program* pProgram, uint32_t size)
@@ -148,8 +166,8 @@ Memory alloc_memory(Program* pProgram, uint32_t size)
         break;
     }
 
-	pProgram->pvCurrMem = memory.pvMem;
-	pProgram->pvCurrLast = memory.pvLast;
+	pProgram->parsing.pvCurrMem = memory.pvMem;
+	pProgram->parsing.pvCurrLast = memory.pvLast;
 
     return memory;
 }
@@ -158,7 +176,6 @@ Program program_init()
 {
     Program program =
     {
-		.pvCurrMem = NULL, .pvCurrLast = NULL
     };
 
     return program;
@@ -227,18 +244,18 @@ void* get_struct_memory(Program* pProgram, size_t size)
 {
 	//printf("get_struct_memory size:%ld\n", size);
 
-	void* pvCurrMem = (uint8_t*)pProgram->pvCurrMem + size;
+	void* pvCurrMem = (uint8_t*)pProgram->parsing.pvCurrMem + size;
 
-	if (pvCurrMem > pProgram->pvCurrLast)
+	if (pvCurrMem > pProgram->parsing.pvCurrLast)
 	{
 		printf("out of memory for get_struct_memory\n");
 		return NULL;
 	}
 
-	void* pvMem = (Container*)pProgram->pvCurrMem;
+	void* pvMem = (Container*)pProgram->parsing.pvCurrMem;
 	memset(pvMem, 0, size);
 
-	pProgram->pvCurrMem = pvCurrMem;
+	pProgram->parsing.pvCurrMem = pvCurrMem;
 
 	return pvMem;
 }
@@ -246,15 +263,15 @@ void* get_struct_memory(Program* pProgram, size_t size)
 // not alignment memory
 void* get_string_memory(Program* pProgram, size_t size)
 {
-	void* pvCurrLast = (uint8_t*)pProgram->pvCurrLast - size;
+	void* pvCurrLast = (uint8_t*)pProgram->parsing.pvCurrLast - size;
 
-	if (pProgram->pvCurrMem > pvCurrLast)
+	if (pProgram->parsing.pvCurrMem > pvCurrLast)
 	{
 		printf("out of memory for get_string_memory\n");
 		return NULL;
 	}
 
-	return pProgram->pvCurrLast = pvCurrLast;
+	return pProgram->parsing.pvCurrLast = pvCurrLast;
 }
 
 Container* get_container_memory(Program* pProgram, Container* pParent, const char* containerName)
@@ -262,8 +279,8 @@ Container* get_container_memory(Program* pProgram, Container* pParent, const cha
 	size_t len = (containerName != NULL) ? strlen(containerName) + 1 : 1;
 	//printf("get_container_memory containerName:%s len:%ld\n", containerName, len);
 
-	void* pvCurrMem = (uint8_t*)pProgram->pvCurrMem + sizeof(Container);
-	void* pvCurrLast = (uint8_t*)pProgram->pvCurrLast - len;
+	void* pvCurrMem = (uint8_t*)pProgram->parsing.pvCurrMem + sizeof(Container);
+	void* pvCurrLast = (uint8_t*)pProgram->parsing.pvCurrLast - len;
 
 	if (pvCurrMem > pvCurrLast)
 	{
@@ -271,7 +288,7 @@ Container* get_container_memory(Program* pProgram, Container* pParent, const cha
 		return NULL;
 	}
 
-	Container* pContainer = (Container*)pProgram->pvCurrMem;
+	Container* pContainer = (Container*)pProgram->parsing.pvCurrMem;
 	if (containerName != NULL)
 	{
 		strcpy(pvCurrLast, containerName);
@@ -281,8 +298,8 @@ Container* get_container_memory(Program* pProgram, Container* pParent, const cha
 		*(char*)pvCurrLast = '\0';
 	}
 
-	pProgram->pvCurrMem = pvCurrMem;
-	pProgram->pvCurrLast = pvCurrLast;
+	pProgram->parsing.pvCurrMem = pvCurrMem;
+	pProgram->parsing.pvCurrLast = pvCurrLast;
 
 	pContainer->name = pvCurrLast;
 	pContainer->_parent = pParent;
@@ -322,10 +339,11 @@ void get_full_name(Container* pCurr, char* fullName)
 {
 	*fullName = '\0';
 
-	if (pCurr == NULL)
-	{
-		return;
-	}
+	if (pCurr == NULL) { return; }
+
+	if (pCurr->_id > CONTAINER_END) { pCurr = pCurr->_parent; }
+
+	if (pCurr == NULL) { return; }
 
 	Container* allContainers[16] = { NULL };
 	int32_t containers = 0;
@@ -541,7 +559,7 @@ void print_record_indent(void* pvMem, int32_t indent)
 	}
 
 	enum StructId id = ((IdParentChild*)pvMem)->_id;
-	char fullName[64] = { '\0' };
+	char fullName[GET_FULL_NAME_LEN] = { '\0' };
 
 	switch (id)
 	{
@@ -661,8 +679,6 @@ void print_record_indent(void* pvMem, int32_t indent)
 		printf("invalid IdParentChild->id %d", id);
 		break;
 	}
-
-	if (indent == 0) { printf("\n"); }
 }
 
 void print_record(void* pvMem)
@@ -816,8 +832,8 @@ int32_t parse_toml(Program* pProgram)
 		return 11;
 	}
 
-	pProgram->memory = alloc_memory(pProgram, MAX_MEM);
-	if (pProgram->memory.pvMem == NULL)
+	pProgram->parsing.memory = alloc_memory(pProgram, MAX_MEM);
+	if (pProgram->parsing.memory.pvMem == NULL)
 	{
 		printf("out of memory for alloc_memory");
 		return 12;
@@ -845,11 +861,64 @@ int32_t parse_toml(Program* pProgram)
 
 void printf_all_records(Program* pProgram)
 {
-	for (void* pvCurrRec = pProgram->memory.pvMem; pvCurrRec < pProgram->pvCurrMem; )
+	for (void* pvCurrRec = pProgram->parsing.memory.pvMem; pvCurrRec < pProgram->parsing.pvCurrMem; )
 	{
 		print_record(pvCurrRec);
 		StructInfo si = get_struct_info_by_id(((IdParentChild*)pvCurrRec)->_id);
 		pvCurrRec += si.size;
+	}
+}
+
+Found find_record(Program* pProgram, const char* tomlKey)
+{
+	Found found = { .count = 0 };
+
+	for (void* pvCurrRec = pProgram->parsing.memory.pvMem; pvCurrRec < pProgram->parsing.pvCurrMem; )
+	{
+		do
+		{
+			//print_record(pvCurrRec);
+			IdParentChild* pIdParentChild = (IdParentChild*)pvCurrRec;
+
+			if (pIdParentChild->_id <= NO_FOR_PRINT)
+			{
+				//printf("skipped 1\n");
+				break;
+			}
+
+			char fullName[GET_FULL_NAME_LEN];
+
+			if ((pIdParentChild->_id >= CONTAINER_START) && (pIdParentChild->_id <= CONTAINER_END))
+			{
+				//get_full_name((Container*)pIdParentChild, fullName);
+				//printf("skipped 2 fullName:%s\n", fullName);
+				break;
+			}
+
+			get_full_name(pIdParentChild->_parent, fullName);
+			if (strstr(fullName, tomlKey) != fullName)
+			{
+				//printf("skipped 3 fullName:%s\n", fullName);
+				break;
+			}
+
+			found.pvMatchs[found.count++] = pvCurrRec;
+			assert(found.count <= sizeof(found.pvMatchs) / sizeof(found.pvMatchs[0]));
+		}
+		while (0);
+
+		StructInfo si = get_struct_info_by_id(((IdParentChild*)pvCurrRec)->_id);
+		pvCurrRec += si.size;
+	}
+
+	return found;
+}
+
+void print_found(Found* pFound)
+{
+	for (int32_t i = 0; i < pFound->count; ++i)
+	{
+		print_record(pFound->pvMatchs[i]);
 	}
 }
 
@@ -860,14 +929,32 @@ int32_t program_execute(Program* pProgram)
 	int32_t ret = parse_toml(pProgram);
 	if (ret != 0) { return ret; }
 
-	printf_all_records(pProgram);
+	//printf_all_records(pProgram);
+	//printf("\nall records printed\n");
+
+	Found found;
+
+	printf("***find scene.guild:\n");
+	found = find_record(pProgram, "scene.guild");
+	print_found(&found);
+	printf("***scene.guild printed\n\n");
+
+	printf("***find dialogue.conversation.home:\n");
+	found = find_record(pProgram, "dialogue.conversation.home");
+	print_found(&found);
+	printf("***dialogue.conversation.home printed\n\n");
+
+	printf("***find dialogue.conversation.home.one:\n");
+	found = find_record(pProgram, "dialogue.conversation.home.one");
+	print_found(&found);
+	printf("***dialogue.conversation.home.one\n\n");
 
 	return ret;
 }
 
 void program_uninit(Program* pProgram)
 {
-    if (pProgram->memory.pvMem != NULL) { free(pProgram->memory.pvMem); }
+    if (pProgram->parsing.memory.pvMem != NULL) { free(pProgram->parsing.memory.pvMem); }
     if (pProgram->tomlFile.pFile != NULL) { fclose(pProgram->tomlFile.pFile); }
 }
 
