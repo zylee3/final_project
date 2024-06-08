@@ -113,6 +113,13 @@ typedef struct _sFound
 	void*   pvMatchs[MAX_FOUND];
 } Found;
 
+typedef struct _sStructInfo
+{
+	enum StructId id;
+	size_t        size; // the structre size of structure id
+	const char*   structName;
+} StructInfo;
+
 typedef void* parsing_handle;
 
 parsing_handle script_init();

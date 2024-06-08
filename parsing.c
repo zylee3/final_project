@@ -37,13 +37,6 @@ typedef struct _sManageMemory
     void*  pvCurrLast;
 } ManageMemory;
 
-typedef struct _sStructInfo
-{
-	enum StructId id;
-	size_t        size; // the structre size of structure id
-	const char*   structName;
-} StructInfo;
-
 typedef struct _sProgram
 {
 	TomlFile     tomlFile;
