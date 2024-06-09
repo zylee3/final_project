@@ -1,7 +1,7 @@
 # final_project
 1-2 final project
     . You need to git clone this project with --recursive option.
-      git clone https://github.com/zylee3/final_prject.git --recusive
+      git clone https://github.com/zylee3/final_project.git --recursive
     . You need to build the final_project/tomlc99 with "make".
       cd final_project/tomlc99
       make
