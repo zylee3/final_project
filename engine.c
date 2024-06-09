@@ -1,58 +1,4 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_mixer.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-
-#define SCREEN_WIDTH 1920
-#define SCREEN_HEIGHT 1080
-#define SCREEN_BPP 32
-
-#define NAME_RECTx 455
-#define NAME_RECTy 730
-//name position
-
-#define loadTextbox() \
-    SDL_Rect textboxRect = {0, 0, 1200, 400};\
-    textboxRect.x = (SCREEN_WIDTH - textboxRect.w) / 2;\
-    textboxRect.y = (SCREEN_HEIGHT - textboxRect.h);\
-    loadItem("item/textbox.png",textboxRect);\
-    textboxexist = 1
-
-#define loadDialog(text) \
-    _LOADTEXT(text, 2)
-
-#define loadName(name) \
-    _LOADTEXT(name, 1)
-
-int total_cc_on_screen = 0;//number of character on screen
-int textboxexist = 0;//check if textbox exist
-SDL_Window* window = NULL;
-SDL_Surface* gScreenSurface = NULL;
-
-bool init();
-
-int loadCharacter(char *path);//load character to screen
-
-int loadItem(char *path, SDL_Rect rect);//load item to screen
-
-int loadBackground(char *path);//load background to screen
-
-SDL_Surface* _LOADSURFACE(char* path);//load image to surface (NOT TO USE
-
-int _LOADMEDIA(char *path, SDL_Rect rect, int type);//BlitSurface to screen (NOT TO USE
-//type 1: character
-//type 2: item(object excpet character and background)
-//type 3: background
-
-int _LOADTEXT(char *text, int type);//load text to screen (NOT TO USE
-//type 1: name
-//type 2: dialog
-
-SDL_Surface* _FLIPSURFACE(SDL_Surface* surface);//flip the image(NOT TO USE
+#include "engine.h"
 
 bool init(){
     // Initialize SDL
@@ -106,9 +52,19 @@ SDL_Surface* _FLIPSURFACE(SDL_Surface* surface){
     return flipped;
 }
 
-int loadCharacter(char *path){
+int loadCharacter(char *name){
+    char* path = calloc(strlen(name) + 20, sizeof(char));
+    strcpy(path, "cc/");
+    strcat(path, name);
+    for(int i = 0; i < strlen(path); i++){
+        if(path[i] == ' '){
+            path[i] = '_';
+        }
+    }
+    strcat(path, ".png");
     total_cc_on_screen ++;//increase the number of character on screen
     SDL_Rect ccrect;//object to hold the position of the image
+    
     switch(total_cc_on_screen){
         case 1:
             ccrect.x = 0;
@@ -135,33 +91,58 @@ int loadCharacter(char *path){
             ccrect.h = 400;
             break;
         default:
+            printf("Cannot load more character!\n");
+            free(path);
             return 1;
     }
     if(_LOADMEDIA(path, ccrect, 1) == 1){
         printf("Failed to load image from %s!\n", path);
+        free(path);
         return 1;
     }
     if(textboxexist == 1){
         loadTextbox();
-    
     }
+    free(path);
 }
 
-int loadItem(char *path, SDL_Rect rect){
+int loadItem(char *name, SDL_Rect rect){
+    char *path = calloc(strlen(name) + 20, sizeof(char));
+    strcpy(path, "item/");
+    strcat(path, name);
+    for(int i = 0; i < strlen(path); i++){
+        if(path[i] == ' '){
+            path[i] = '_';
+        }
+    }
+    strcat(path, ".png");
     if(_LOADMEDIA(path, rect, 2) == 1){
         printf("Failed to load image from %s!\n", path);
+        free(path);
         return 1;
     }
+    free(path);
 }
 
-int loadBackground(char *path){
+int loadBackground(char *name){
+    char *path = calloc(strlen(name) + 20, sizeof(char));
+    strcpy(path, "bg/");
+    strcat(path, name);
+    for(int i = 0; i < strlen(path); i++){
+        if(path[i] == ' '){
+            path[i] = '_';
+        }
+    }
+    strcat(path, ".png");
     total_cc_on_screen = 0;
     textboxexist = 0;
     SDL_Rect bgrect = {0, 0, 1920, 1080};
     if(_LOADMEDIA(path, bgrect, 3) == 1){
         printf("Failed to load image from %s!\n", path);
+        free(path);
         return 1;
     }
+    free(path);
 }
 
 int _LOADMEDIA(char *path, SDL_Rect rect, int type){
@@ -224,13 +205,13 @@ int main(int argc, char* args[]){
 
     int start = 0;
     //start screen
-    loadBackground("bg/bgstart.png");
+    loadBackground("bgstart");
     SDL_Rect buttonRect = {0, 650, 350, 150};
     buttonRect.x = buttonRect.x = (SCREEN_WIDTH - buttonRect.w) / 2;
-    loadItem("item/startbutton.png", buttonRect); 
+    loadItem("startbutton", buttonRect); 
     SDL_Rect titleRect = {0, 75, 650, 450};
     titleRect.x = (SCREEN_WIDTH - titleRect.w) / 2;
-    loadItem("item/title.png", titleRect);
+    loadItem("title", titleRect);
 
     
     while(1){
@@ -244,7 +225,7 @@ int main(int argc, char* args[]){
                     return 0;
                 }
                 else if(e.key.keysym.sym == SDLK_c){//sample character
-                    loadCharacter("cc/blackcat.png");
+                    loadCharacter("blackcat");
                 }
                 else if(e.key.keysym.sym == SDLK_t){//sample textbox showing
                     loadName("Black Cat");
@@ -263,7 +244,7 @@ int main(int argc, char* args[]){
                 }
                 if(x >= 790 && x <= 1140 && y >= 640 && y <= 790 && start == 0){
                     start = 1;
-                    loadBackground("bg/basement.png");
+                    loadBackground("basement");
                     loadTextbox();
                     break;
                 }
