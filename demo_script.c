@@ -31,7 +31,7 @@ int32_t main()
 		script_print_found(&found);
 		printf("***dialogue.conversation.second_one.two printed\n\n");
 
-		for (void* pvCurr = script_get_next(h, NULL); pvCurr != NULL; pvCurr = script_get_next(h, pvCurr))
+		for (parsing_record pvCurr = script_get_next(h, NULL); pvCurr != NULL; pvCurr = script_get_next(h, pvCurr))
 		{
 			// all structures should be start from IdParentChild
 			IdParentChild* pIdParentChild = (IdParentChild*)pvCurr;
