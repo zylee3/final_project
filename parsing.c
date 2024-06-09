@@ -15,6 +15,13 @@ enum Target
 	TARGET_CONTENT_ONLY = 2,
 };
 
+typedef struct _sStructInfo
+{
+	enum StructId id;
+	size_t        size; // the structre size of structure id
+	const char*   structName;
+} StructInfo;
+
 typedef struct _sTomlFile
 {
 	FILE* pFile;
@@ -844,11 +851,6 @@ int32_t script_uninit(parsing_handle h)
 	return 0;
 }
 
-StructInfo script_get_struct_info_by_id(enum StructId id)
-{
-	return get_struct_info_by_id(id);
-}
-
 int32_t script_get_full_name(void* pCurr, char* fullName)
 {
 	if (fullName == NULL) { return 1; }
@@ -885,15 +887,26 @@ void script_print_found(Found* pFound)
 	return print_found(pFound);
 }
 
-Structures script_get_all(parsing_handle h)
+parsing_record script_get_next(parsing_handle h, parsing_record pvCurrRec)
 {
 	Program* pProgram = (Program*)h;
-	if (pProgram == NULL)
+	if (pProgram == NULL) { return NULL; }
+
+	if (pvCurrRec == NULL) { pvCurrRec = pProgram->parsing.memory.pvMem; }
+
+	for (; pvCurrRec < pProgram->parsing.pvCurrMem;)
 	{
-		return (Structures)	{ .pvStart = NULL, .pvEnd = NULL };
+		IdParentChild* pIdParentChild = (IdParentChild*)pvCurrRec;
+		StructInfo si = get_struct_info_by_id(pIdParentChild->_id);
+		pvCurrRec += si.size;
+		if (pvCurrRec >= pProgram->parsing.pvCurrMem) { return NULL; }
+
+		pIdParentChild = (IdParentChild*)pvCurrRec;
+		bool wanted = !(pIdParentChild->_id <= CONTAINER_END);
+		if (wanted) { return pvCurrRec; }
 	}
 
-	return (Structures)	{ .pvStart = pProgram->parsing.memory.pvMem, .pvEnd = pProgram->parsing.pvCurrMem };
+	return NULL;
 }
 
 void script_print_all(parsing_handle h)

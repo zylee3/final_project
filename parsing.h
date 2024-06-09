@@ -114,28 +114,12 @@ typedef struct _sFound
 	void*   pvMatchs[MAX_FOUND];
 } Found;
 
-typedef struct _sStructInfo
-{
-	enum StructId id;
-	size_t        size; // the structre size of structure id
-	const char*   structName;
-} StructInfo;
-
-// include any of the structrues IdParentChild, Container, FinalProject, Scene, Character, Item, Event, Dialogue
-// you can traverse it by cast void* to IdParentChild and check its _id
-typedef struct _sStructures
-{
-	void* pvStart;
-	void* pvEnd;
-} Structures;
-
 typedef void* parsing_handle;
+typedef void* parsing_record;
 
 parsing_handle script_init();
 
 int32_t script_uninit(parsing_handle);
-
-StructInfo script_get_struct_info_by_id(enum StructId id);
 
 int32_t script_get_full_name(void* pCurr, char* fullName);
 
@@ -146,7 +130,9 @@ Found script_find_record(parsing_handle, const char* tomlKey);
 
 void script_print_found(Found*);
 
-Structures script_get_all(parsing_handle);
+// start form script_get_next(, NULL) to get the starting result of parsing.
+// return NULL for end or error
+parsing_record script_get_next(parsing_handle, parsing_record);
 
 void script_print_all(parsing_handle);
 
