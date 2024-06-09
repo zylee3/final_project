@@ -35,11 +35,16 @@ SDL_Surface* gScreenSurface = NULL;
 
 bool init();
 
-int loadCharacter(char *name);//load character to screen. name: name of the image
+//Every function below is used to load image to screen
+//Name of toml file must be the same as the name of the image, " " need to be replaced by "_"
+//Example: "character 1" -> "character_1"
+//Every image must use .png format
 
-int loadItem(char *name, SDL_Rect rect);//load item to screen. name: name of the image, rect: position of the image
+int loadCharacter(char *name);//load character to screen. name: name of the image. Character must in folder "cc"
 
-int loadBackground(char *name);//load background to screen. name: name of the image
+int loadItem(char *name, SDL_Rect rect);//load item to screen. name: name of the image, rect: position of the image. Item must in folder "item"
+
+int loadBackground(char *name);//load background to screen. name: name of the image. Background must in folder "bg"
 
 SDL_Surface* _LOADSURFACE(char* path);//load image to surface (NOT TO USE
 
