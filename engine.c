@@ -35,18 +35,18 @@ SDL_Surface* gScreenSurface = NULL;
 
 bool init();
 
-SDL_Surface* loadSurface(char* path);
-
-int _LOADMEDIA(char *path, SDL_Rect rect, int type);//load image to screen (NOT TO USE
-//type 1: character
-//type 2: item(object excpet character and background)
-//type 3: background
-
 int loadCharacter(char *path);//load character to screen
 
 int loadItem(char *path, SDL_Rect rect);//load item to screen
 
 int loadBackground(char *path);//load background to screen
+
+SDL_Surface* _LOADSURFACE(char* path);//load image to surface (NOT TO USE
+
+int _LOADMEDIA(char *path, SDL_Rect rect, int type);//BlitSurface to screen (NOT TO USE
+//type 1: character
+//type 2: item(object excpet character and background)
+//type 3: background
 
 int _LOADTEXT(char *text, int type);//load text to screen (NOT TO USE
 //type 1: name
@@ -165,7 +165,7 @@ int loadBackground(char *path){
 }
 
 int _LOADMEDIA(char *path, SDL_Rect rect, int type){
-    SDL_Surface* loadedSurface = loadSurface(path);
+    SDL_Surface* loadedSurface = _LOADSURFACE(path);
     if(loadedSurface == NULL){
         printf("Failed to load image from %s!\n", path);
         return 1;
@@ -190,6 +190,8 @@ int _LOADTEXT(char *text , int type){
         SDL_Rect destRect = {NAME_RECTx, NAME_RECTy, 300, 50};
         SDL_BlitSurface(textSurface, NULL, gScreenSurface, &destRect);
         SDL_UpdateWindowSurface(window);
+        TTF_CloseFont(font);
+        SDL_FreeSurface(textSurface);
     }
     else if(type == 2){//dialog
         SDL_Surface* textSurface = TTF_RenderText_Blended_Wrapped(font, text, textColor, 1100);
@@ -202,7 +204,7 @@ int _LOADTEXT(char *text , int type){
 
 }
 
-SDL_Surface* loadSurface(char* path){
+SDL_Surface* _LOADSURFACE(char* path){
 
     // Create texture from surface
     SDL_Surface* loadedSurface = IMG_Load(path);
@@ -238,13 +240,13 @@ int main(int argc, char* args[]){
                 return 0;
             }
             else if(e.type == SDL_KEYDOWN){
-                if(e.key.keysym.sym == SDLK_ESCAPE){
+                if(e.key.keysym.sym == SDLK_ESCAPE){//exit
                     return 0;
                 }
-                else if(e.key.keysym.sym == SDLK_c){
+                else if(e.key.keysym.sym == SDLK_c){//sample character
                     loadCharacter("cc/blackcat.png");
                 }
-                else if(e.key.keysym.sym == SDLK_t){
+                else if(e.key.keysym.sym == SDLK_t){//sample textbox showing
                     loadName("Black Cat");
                     loadDialog("Hi, I'm Black Cat, is this guild's knight captain. Nice to meet you! freshman! I'm here to help you with your first mission. Let's go to the basement to get your first mission!");
                     
@@ -252,10 +254,13 @@ int main(int argc, char* args[]){
                 }
                 
             }
-            else if(e.type == SDL_MOUSEBUTTONDOWN){
+            else if(e.type == SDL_MOUSEBUTTONDOWN){//sample button click
                 int x, y;
                 printf("Click on %d %d\n", x, y);
                 SDL_GetMouseState(&x, &y);
+                while(SDL_PollEvent(&e)){
+                    //clean the event queue, prevent the event from being triggered multiple times
+                }
                 if(x >= 790 && x <= 1140 && y >= 640 && y <= 790 && start == 0){
                     start = 1;
                     loadBackground("bg/basement.png");
