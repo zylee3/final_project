@@ -15,20 +15,23 @@ int32_t main()
 		script_print_all(h);
 		printf("***all printed\n\n");
 
-		Found found;
+		Find find;
 		printf("***find scene.guild:\n");
-		found = script_find_record(h, "scene.guild");
-		script_print_found(&found);
+		find = script_find_record(h, "scene.guild");
+		script_print_find(&find);
+		script_release_find(&find);
 		printf("***scene.guild printed\n\n");
 
 		printf("***find dialogue.conversation.second_one:\n");
-		found = script_find_record(h, "dialogue.conversation.second_one");
-		script_print_found(&found);
+		find = script_find_record(h, "dialogue.conversation.second_one");
+		script_print_find(&find);
+		script_release_find(&find);
 		printf("***dialogue.conversation.second_one printed\n\n");
 
 		printf("***find dialogue.conversation.second_one.two:\n");
-		found = script_find_record(h, "dialogue.conversation.second_one.two");
-		script_print_found(&found);
+		find = script_find_record(h, "dialogue.conversation.second_one.two");
+		script_print_find(&find);
+		script_release_find(&find);
 		printf("***dialogue.conversation.second_one.two printed\n\n");
 
 		for (parsing_record pvCurr = script_get_next(h, NULL); pvCurr != NULL; pvCurr = script_get_next(h, pvCurr))
