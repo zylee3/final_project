@@ -8,7 +8,7 @@ bool init(){
     }
 
     // Create window
-    window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Furry adventure!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if(window == NULL){
         printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
         return false;
@@ -29,6 +29,114 @@ bool init(){
         return false;
     }
     return true;
+}
+
+int _LOADITEMBOX(int type){
+    SDL_Rect itemboxrect = {0, 400, 300, 300};
+    if(type == 1){
+        for(int i = 0; i < 2; i++){
+            itemboxrect.x = 410 + i * 800;
+            _LOADOBJECT("itembox", itemboxrect);
+        }
+    }
+    else if(type == 2){
+        for(int i = 0; i < 3; i++){
+            itemboxrect.x = 410 + i * 400;
+            _LOADOBJECT("itembox", itemboxrect);
+        }
+    }
+}
+
+int chooseFromTwo(char *name1, char *name2){
+    _LOADITEMBOX(1);
+    SDL_Rect itemrect = {420, 410, 280, 280};
+    if(_LOADOBJECT(name1, itemrect) == 1){
+        printf("Failed to load image from %s!\n", name1);
+    }
+    itemrect.x = 1220;
+    if(_LOADOBJECT(name2, itemrect) == 1){
+        printf("Failed to load image from %s!\n", name2);
+    }
+    while(1){
+        SDL_Event e;
+        while(SDL_PollEvent(&e) != 0){
+            if(e.type == SDL_QUIT){
+                return 0;
+            }
+            else if(e.type == SDL_KEYDOWN){
+                if(e.key.keysym.sym == SDLK_ESCAPE){//exit
+                    return 0;
+                }
+            }
+            else if(e.type == SDL_MOUSEBUTTONDOWN){
+                if(e.button.button == SDL_BUTTON_LEFT){
+                    int x, y;
+                    SDL_GetMouseState(&x, &y);
+                    while(SDL_PollEvent(&e)){
+                        //clean the event queue, prevent the event from being triggered multiple times
+                    }
+                    if(x >= 410 && x <= 690 && y >= 410 && y <= 690){
+                        //printf("Choose %s\n", name1);
+                        return 1;
+                    }
+                    else if(x >= 1220 && x <= 1500 && y >= 410 && y <= 690){
+                        //printf("Choose %s\n", name2);
+                        return 2;
+                    }
+                }
+            }
+        }
+    }
+}
+
+int chooseFromThree(char *name1, char *name2, char *name3){
+    _LOADITEMBOX(2);
+    SDL_Rect itemrect = {420, 410, 280, 280};
+    if(_LOADOBJECT(name1, itemrect) == 1){
+        printf("Failed to load image from %s!\n", name1);
+    }
+    itemrect.x = 820;
+    if(_LOADOBJECT(name2, itemrect) == 1){
+        printf("Failed to load image from %s!\n", name2);
+    }
+    itemrect.x = 1220;
+    if(_LOADOBJECT(name3, itemrect) == 1){
+        printf("Failed to load image from %s!\n", name3);
+    }
+    while(1){
+        SDL_Event e;
+        while(SDL_PollEvent(&e) != 0){
+            if(e.type == SDL_QUIT){
+                return 0;
+            }
+            else if(e.type == SDL_KEYDOWN){
+                if(e.key.keysym.sym == SDLK_ESCAPE){//exit
+                    return 0;
+                }
+            }
+            else if(e.type == SDL_MOUSEBUTTONDOWN){
+                if(e.button.button == SDL_BUTTON_LEFT){
+                    int x, y;
+                    SDL_GetMouseState(&x, &y);
+                    while(SDL_PollEvent(&e)){
+                        //clean the event queue, prevent the event from being triggered multiple times
+                    }
+                    if(x >= 410 && x <= 690 && y >= 410 && y <= 690){
+                        //printf("Choose %s\n", name1);
+                        return 1;
+                    }
+                    else if(x >= 820 && x <= 1100 && y >= 410 && y <= 690){
+                        //printf("Choose %s\n", name2);
+                        return 2;
+                    }
+                    else if(x >= 1220 && x <= 1500 && y >= 410 && y <= 690){
+                        //printf("Choose %s\n", name3);
+                        return 3;
+                    }
+                }
+            }
+        }
+    }
 }
 
 SDL_Surface* _FLIPSURFACE(SDL_Surface* surface){
@@ -106,7 +214,7 @@ int loadCharacter(char *name){
     free(path);
 }
 
-int loadItem(char *name, SDL_Rect rect){
+int _LOADOBJECT(char *name, SDL_Rect rect){
     char *path = calloc(strlen(name) + 20, sizeof(char));
     strcpy(path, "item/");
     strcat(path, name);
@@ -208,10 +316,10 @@ int main(int argc, char* args[]){
     loadBackground("bgstart");
     SDL_Rect buttonRect = {0, 650, 350, 150};
     buttonRect.x = buttonRect.x = (SCREEN_WIDTH - buttonRect.w) / 2;
-    loadItem("startbutton", buttonRect); 
+    _LOADOBJECT("startbutton", buttonRect); 
     SDL_Rect titleRect = {0, 75, 650, 450};
     titleRect.x = (SCREEN_WIDTH - titleRect.w) / 2;
-    loadItem("title", titleRect);
+    _LOADOBJECT("title", titleRect);
 
     
     while(1){
@@ -230,14 +338,20 @@ int main(int argc, char* args[]){
                 else if(e.key.keysym.sym == SDLK_t){//sample textbox showing
                     loadName("Black Cat");
                     loadDialog("Hi, I'm Black Cat, is this guild's knight captain. Nice to meet you! freshman! I'm here to help you with your first mission. Let's go to the basement to get your first mission!");
-                    
-                    
+                }
+                else if(e.key.keysym.sym == SDLK_i){
+                    chooseFromTwo("catnip", "frisbee");
+                }
+                else if(e.key.keysym.sym == SDLK_b){
+                    loadBackground("basement");
+                }
+                else if(e.key.keysym.sym == SDLK_x){
+                    chooseFromThree("catnip", "frisbee", "goldring");
                 }
                 
             }
             else if(e.type == SDL_MOUSEBUTTONDOWN){//sample button click
                 int x, y;
-                printf("Click on %d %d\n", x, y);
                 SDL_GetMouseState(&x, &y);
                 while(SDL_PollEvent(&e)){
                     //clean the event queue, prevent the event from being triggered multiple times
