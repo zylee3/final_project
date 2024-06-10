@@ -22,7 +22,7 @@ extern SDL_Window* window;
     SDL_Rect textboxRect = {0, 0, 1200, 400};\
     textboxRect.x = (SCREEN_WIDTH - textboxRect.w) / 2;\
     textboxRect.y = (SCREEN_HEIGHT - textboxRect.h);\
-    loadItem("textbox",textboxRect);\
+    _LOADOBJECT("textbox",textboxRect);\
     textboxexist = 1
 
 #define loadDialog(text) \
@@ -38,13 +38,19 @@ bool init();
 //Example: "character 1" -> "character_1"
 //Every image must use .png format
 
+int _LOADITEMBOX(int type);//type 1: 2 box, type 2: 3 box(NOT TO USE
+
+int chooseFromTwo(char *name1, char *name2);//load 2 items to screen, return the number of the item that player choose
+
+int chooseFromThree(char *name1, char *name2, char *name3);//load 3 items to screen, return the number of the item that player choose
+
+SDL_Surface* _FLIPSURFACE(SDL_Surface* surface);//flip the image(NOT TO USE
+
 int loadCharacter(char *name);//load character to screen. name: name of the image. Character must in folder "cc"
 
-int loadItem(char *name, SDL_Rect rect);//load item to screen. name: name of the image, rect: position of the image. Item must in folder "item"
+int _LOADOBJECT(char *name, SDL_Rect rect);//load item to screen. name: name of the image, rect: position of the image. Item must in folder "item"
 
 int loadBackground(char *name);//load background to screen. name: name of the image. Background must in folder "bg"
-
-SDL_Surface* _LOADSURFACE(char* path);//load image to surface (NOT TO USE
 
 int _LOADMEDIA(char *path, SDL_Rect rect, int type);//BlitSurface to screen (NOT TO USE
 //type 1: character
@@ -55,4 +61,4 @@ int _LOADTEXT(char *text, int type);//load text to screen (NOT TO USE
 //type 1: name
 //type 2: dialog
 
-SDL_Surface* _FLIPSURFACE(SDL_Surface* surface);//flip the image(NOT TO USE
+SDL_Surface* _LOADSURFACE(char* path);//load image to surface (NOT TO USE
