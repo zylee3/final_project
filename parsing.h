@@ -4,7 +4,9 @@
 #include <stdint.h>
 
 #define GET_FULL_NAME_LEN 64
-#define MAX_FOUND         16
+
+typedef void* parsing_handle;
+typedef void* parsing_record;
 
 enum StructId
 {
@@ -108,27 +110,27 @@ typedef struct _sDialogue
 	char*          item;
 } Dialogue;
 
-typedef struct _sFound
+typedef struct _sFind
 {
-	int32_t count; // negative for error
-	void*   pvMatchs[MAX_FOUND];
-} Found;
-
-typedef void* parsing_handle;
-typedef void* parsing_record;
+	int32_t         capacity;
+	int32_t         count; // negative for error
+	parsing_record* ppvMatches;
+} Find;
 
 parsing_handle script_init();
 
 int32_t script_uninit(parsing_handle);
 
-int32_t script_get_full_name(void* pCurr, char* fullName);
+int32_t script_get_full_name(parsing_record pCurr, char* fullName);
 
 int32_t script_parsing(parsing_handle, const char* tomlFile);
 
 // below functions should be used after script_parsing
-Found script_find_record(parsing_handle, const char* tomlKey);
+Find script_find_record(parsing_handle, const char* tomlKey);
 
-void script_print_found(Found*);
+void script_print_find(Find*);
+
+int32_t script_release_find(Find*);
 
 // start form script_get_next(, NULL) to get the starting result of parsing.
 // return NULL for end or error

@@ -6,7 +6,9 @@
 #include <toml.h>
 #include "parsing.h"
 
-const uint32_t MAX_MEM = 0x80000000;
+const uint32_t MAX_PARSING_MEM    = 0x10000000;
+const uint32_t MAX_SUMMARY_MEM    = 0x08000000;
+const uint32_t INIT_FIND_CAPACITY = 16;
 
 enum Target
 {
@@ -45,7 +47,8 @@ typedef struct _sManageMemory
 typedef struct _sProgram
 {
 	TomlFile     tomlFile;
-    ManageMemory parsing;
+	ManageMemory parsing;
+	ManageMemory summary;
 } Program;
 
 void alloc_memory(ManageMemory* pManageMemory, uint32_t size)
@@ -57,7 +60,7 @@ void alloc_memory(ManageMemory* pManageMemory, uint32_t size)
         pManageMemory->memory.pvMem = malloc(size);
         if (pManageMemory->memory.pvMem == NULL) { continue; }
         pManageMemory->memory.size = size;
-        pManageMemory->memory.pvLast = pManageMemory->memory.pvMem + size;
+        pManageMemory->memory.pvLast = (uint8_t*)pManageMemory->memory.pvMem + size;
         break;
     }
 
@@ -126,46 +129,47 @@ StructInfo get_struct_info(const char* structName)
 }
 
 // alignment memory
-void* get_struct_memory(Program* pProgram, size_t size)
+parsing_record get_struct_memory(ManageMemory* pManageMemory, size_t size)
 {
 	//printf("get_struct_memory size:%ld\n", size);
 
-	void* pvCurrMem = (uint8_t*)pProgram->parsing.pvCurrMem + size;
+	parsing_record pvCurrMem = (uint8_t*)pManageMemory->pvCurrMem + size;
 
-	if (pvCurrMem > pProgram->parsing.pvCurrLast)
+	if (pvCurrMem > pManageMemory->pvCurrLast)
 	{
 		printf("out of memory for get_struct_memory\n");
 		return NULL;
 	}
 
-	void* pvMem = (Container*)pProgram->parsing.pvCurrMem;
+	parsing_record pvMem = (Container*)pManageMemory->pvCurrMem;
 	memset(pvMem, 0, size);
 
-	pProgram->parsing.pvCurrMem = pvCurrMem;
+	pManageMemory->pvCurrMem = pvCurrMem;
 
 	return pvMem;
 }
 
 // not alignment memory
-void* get_string_memory(Program* pProgram, size_t size)
+void* get_string_memory(ManageMemory* pManageMemory, size_t size)
 {
-	void* pvCurrLast = (uint8_t*)pProgram->parsing.pvCurrLast - size;
+	void* pvCurrLast = (uint8_t*)pManageMemory->pvCurrLast - size;
 
-	if (pProgram->parsing.pvCurrMem > pvCurrLast)
+	if (pManageMemory->pvCurrMem > pvCurrLast)
 	{
 		printf("out of memory for get_string_memory\n");
 		return NULL;
 	}
 
-	return pProgram->parsing.pvCurrLast = pvCurrLast;
+	return pManageMemory->pvCurrLast = pvCurrLast;
 }
-Container* get_container_memory(Program* pProgram, Container* pParent, const char* containerName)
+
+Container* get_container_memory(ManageMemory* pManageMemory, Container* pParent, const char* containerName)
 {
 	size_t len = (containerName != NULL) ? strlen(containerName) + 1 : 1;
 	//printf("get_container_memory containerName:%s len:%ld\n", containerName, len);
 
-	void* pvCurrMem = (uint8_t*)pProgram->parsing.pvCurrMem + sizeof(Container);
-	void* pvCurrLast = (uint8_t*)pProgram->parsing.pvCurrLast - len;
+	parsing_record pvCurrMem = (uint8_t*)pManageMemory->pvCurrMem + sizeof(Container);
+	void* pvCurrLast = (uint8_t*)pManageMemory->pvCurrLast - len;
 
 	if (pvCurrMem > pvCurrLast)
 	{
@@ -173,7 +177,7 @@ Container* get_container_memory(Program* pProgram, Container* pParent, const cha
 		return NULL;
 	}
 
-	Container* pContainer = (Container*)pProgram->parsing.pvCurrMem;
+	Container* pContainer = (Container*)pManageMemory->pvCurrMem;
 	if (containerName != NULL)
 	{
 		strcpy(pvCurrLast, containerName);
@@ -183,12 +187,12 @@ Container* get_container_memory(Program* pProgram, Container* pParent, const cha
 		*(char*)pvCurrLast = '\0';
 	}
 
-	pProgram->parsing.pvCurrMem = pvCurrMem;
-	pProgram->parsing.pvCurrLast = pvCurrLast;
+	pManageMemory->pvCurrMem = pvCurrMem;
+	pManageMemory->pvCurrLast = pvCurrLast;
 
 	pContainer->name = pvCurrLast;
 	pContainer->_parent = pParent;
-	pContainer->_child = get_struct_memory(pProgram, sizeof(IdParentChild));
+	pContainer->_child = get_struct_memory(pManageMemory, sizeof(IdParentChild));
 	if (pContainer->_child == NULL)
 	{
 		printf("out of child memory for get_container_memory\n");
@@ -202,7 +206,7 @@ Container* get_container_memory(Program* pProgram, Container* pParent, const cha
 	return pContainer;
 }
 
-const char* get_struct_name(void* pCurr)
+const char* get_struct_name(parsing_record pCurr)
 {
 	if (pCurr == NULL) { return NULL; }
 
@@ -270,13 +274,13 @@ void get_full_name(Container* pCurr, char* fullName)
 	return;
 }
 
-int32_t fill_struct_string_field(Program* pProgram, void* pvMem, const char* structName,
+int32_t fill_struct_string_field(ManageMemory* pManageMemory, parsing_record pvMem, const char* structName,
 	const char* key, const char* string)
 {
 	//printf("fill_struct_string_field structName:%s key:%s string:%s\n", structName, key, string);
 
 	size_t len = (string != NULL) ? strlen(string) + 1: 1;
-	char* pcMemStr = get_string_memory(pProgram, len);
+	char* pcMemStr = get_string_memory(pManageMemory, len);
 	strcpy(pcMemStr, string);
 
 	if ((structName == NULL) || (*structName == '\0') || (strcmp(structName, "Final Project") == 0))
@@ -400,7 +404,7 @@ int32_t fill_struct_string_field(Program* pProgram, void* pvMem, const char* str
 	return 0;
 }
 
-int32_t fill_struct_int_field(Program* pProgram, void* pvMem, const char* structName, const char* key, uint32_t i)
+int32_t fill_struct_int_field(ManageMemory* pManageMemory, parsing_record pvMem, const char* structName, const char* key, uint32_t i)
 {
 	if (strcmp(structName, "character") == 0)
 	{
@@ -427,7 +431,7 @@ int32_t fill_struct_int_field(Program* pProgram, void* pvMem, const char* struct
 	return 0;
 }
 
-void print_record_indent(void* pvMem, int32_t indent)
+void print_record_indent(parsing_record pvMem, int32_t indent)
 {
 	if (pvMem == NULL) { return; }
 
@@ -566,7 +570,7 @@ void print_record_indent(void* pvMem, int32_t indent)
 	}
 }
 
-void print_record(void* pvMem)
+void print_record(parsing_record pvMem)
 {
 	print_record_indent(pvMem, 0);
 }
@@ -576,18 +580,13 @@ Container* read_table(Program* pProgram, toml_table_t* pTomlTable, Container* pP
 Container* read_array(Program* pProgram, toml_array_t* pTomlArray, Container* pParent, const char* key)
 {
 	//printf("read_array 1 key:'%s' Parent:'%s'\n", key, (pParent != NULL) ? pParent->name: "<null>");
-	Container* pArray = get_container_memory(pProgram, pParent, key);
+	Container* pArray = get_container_memory(&pProgram->parsing, pParent, key);
 	if (pArray == NULL) { return pArray; }
 
 	pArray->_id = ARRAY;
 
 	toml_array_t* arr = NULL;
 	toml_table_t* pTomlChildTable = NULL;
-	toml_datum_t d;
-
-    const char* structName = NULL;
-    StructInfo si = { .id = NONE, .size = 0 };
-    void* pvMem = NULL;
 
 	int n = toml_array_nelem(pTomlArray);
 
@@ -612,7 +611,7 @@ Container* read_array(Program* pProgram, toml_array_t* pTomlArray, Container* pP
 Container* read_table(Program* pProgram, toml_table_t* pTomlTable, Container* pParent, const char* tableName)
 {
 	//printf("read_table 1 tableName:'%s' Parent:'%s'\n", tableName, (pParent != NULL) ? pParent->name: "<null>");
-	Container* pTable = get_container_memory(pProgram, pParent, tableName);
+	Container* pTable = get_container_memory(&pProgram->parsing, pParent, tableName);
 	if (pTable == NULL) { return pTable; }
 
 	pTable->_id = TABLE;
@@ -624,7 +623,7 @@ Container* read_table(Program* pProgram, toml_table_t* pTomlTable, Container* pP
 
     const char* structName = NULL;
     StructInfo si = { .id = NONE, .size = 0 };
-    void* pvMem = NULL;
+    parsing_record pvMem = NULL;
 
 	for (int32_t i = 0; NULL != (key = toml_key_in(pTomlTable, i)); ++i)
 	{
@@ -655,7 +654,7 @@ Container* read_table(Program* pProgram, toml_table_t* pTomlTable, Container* pP
 			}
 			if (pvMem == NULL)
 			{
-				pvMem = get_struct_memory(pProgram, si.size);
+				pvMem = get_struct_memory(&pProgram->parsing, si.size);
 				if (pvMem == NULL) { return NULL; }
 				((IdParentChild*)pvMem)->_id = si.id;
 				((IdParentChild*)pvMem)->_parent = pTable;
@@ -664,7 +663,7 @@ Container* read_table(Program* pProgram, toml_table_t* pTomlTable, Container* pP
 
 			}
 			//printf("read_table 12 i:%d id:%d size:%ld\n", i, si.id, si.size);
-			fill_struct_string_field(pProgram, pvMem, structName, key, d.u.s);
+			fill_struct_string_field(&pProgram->parsing, pvMem, structName, key, d.u.s);
 			//printf("read_table 13 i:%d\n", i);
 			continue;
 		}
@@ -685,14 +684,14 @@ Container* read_table(Program* pProgram, toml_table_t* pTomlTable, Container* pP
 			}
 			if (pvMem == NULL)
 			{
-				pvMem = get_struct_memory(pProgram, si.size);
+				pvMem = get_struct_memory(&pProgram->parsing, si.size);
 				if (pvMem == NULL) { return NULL; }
 				((IdParentChild*)pvMem)->_id = si.id;
 				((IdParentChild*)pvMem)->_parent = pTable;
 				IdParentChild* pFound = find_available_child_next(pTable);
 				pFound->_next = (IdParentChild*)pvMem;
 			}
-			fill_struct_int_field(pProgram, pvMem, structName, key, d.u.i);
+			fill_struct_int_field(&pProgram->parsing, pvMem, structName, key, d.u.i);
 			continue;
 		}
 
@@ -702,7 +701,10 @@ Container* read_table(Program* pProgram, toml_table_t* pTomlTable, Container* pP
 
 	//printf("read_table 31\n");
 	//print_record(pTable);
+	//printf("read_table 32\n");
 	//print_record(pvMem);
+	//printf("read_table 33\n");
+
 	return pTable;
 }
 
@@ -715,10 +717,10 @@ int32_t parse_toml(Program* pProgram, const char* scriptFile)
 		return 11;
 	}
 
-	alloc_memory(&pProgram->parsing, MAX_MEM);
+	alloc_memory(&pProgram->parsing, MAX_PARSING_MEM);
 	if (pProgram->parsing.memory.pvMem == NULL)
 	{
-		printf("out of memory for alloc_memory");
+		printf("out of memory for alloc_memory for pProgram->parsing");
 		return 12;
 	}
 
@@ -746,7 +748,8 @@ void print_all(Program* pProgram, enum Target target)
 {
 	if (target == TARGET_NONE) { return; }
 
-	for (void* pvCurrRec = pProgram->parsing.memory.pvMem; pvCurrRec < pProgram->parsing.pvCurrMem; )
+	for (parsing_record pvCurrRec = pProgram->parsing.memory.pvMem;
+		pvCurrRec < pProgram->parsing.pvCurrMem; )
 	{
 		IdParentChild* pIdParentChild = (IdParentChild*)pvCurrRec;
 
@@ -758,13 +761,13 @@ void print_all(Program* pProgram, enum Target target)
 	}
 }
 
-Found find_record(Program* pProgram, const char* tomlKey, enum Target target)
+Find find_record(Program* pProgram, const char* tomlKey, enum Target target)
 {
-	Found found = { .count = 0 };
+	Find find = { .capacity = 0, .count = 0, .ppvMatches = NULL };
 
-	if (target == TARGET_NONE) { return found; }
+	if (target == TARGET_NONE) { return find; }
 
-	for (void* pvCurrRec = pProgram->parsing.memory.pvMem; pvCurrRec < pProgram->parsing.pvCurrMem; )
+	for (parsing_record pvCurrRec = pProgram->parsing.memory.pvMem; pvCurrRec < pProgram->parsing.pvCurrMem; )
 	{
 		do
 		{
@@ -797,8 +800,21 @@ Found find_record(Program* pProgram, const char* tomlKey, enum Target target)
 				break;
 			}
 
-			found.pvMatchs[found.count++] = pvCurrRec;
-			assert(found.count <= sizeof(found.pvMatchs) / sizeof(found.pvMatchs[0]));
+			if (find.count == find.capacity)
+			{
+				int32_t capacity = find.capacity == 0 ? INIT_FIND_CAPACITY : find.capacity * 2;
+				parsing_record* ppvMatches = malloc(capacity * sizeof(parsing_record));
+				if (ppvMatches == NULL)
+				{
+					printf("allocate Find failed\n");
+					break;
+				}
+				find.capacity = capacity;
+				memcpy(ppvMatches, find.ppvMatches, find.count * sizeof(parsing_record));
+				if (find.ppvMatches != NULL) { free(find.ppvMatches); }
+				find.ppvMatches = ppvMatches;
+			}
+			find.ppvMatches[find.count++] = pvCurrRec;
 		}
 		while (0);
 
@@ -806,14 +822,14 @@ Found find_record(Program* pProgram, const char* tomlKey, enum Target target)
 		pvCurrRec += si.size;
 	}
 
-	return found;
+	return find;
 }
 
-void print_found(Found* pFound)
+void print_find(Find* pFind)
 {
-	for (int32_t i = 0; i < pFound->count; ++i)
+	for (int32_t i = 0; i < pFind->count; ++i)
 	{
-		print_record(pFound->pvMatchs[i]);
+		print_record(pFind->ppvMatches[i]);
 	}
 }
 
@@ -851,13 +867,13 @@ int32_t script_uninit(parsing_handle h)
 	return 0;
 }
 
-int32_t script_get_full_name(void* pCurr, char* fullName)
+int32_t script_get_full_name(parsing_record pCurr, char* fullName)
 {
-	if (fullName == NULL) { return 1; }
+	if (fullName == NULL) { return -1; }
 
 	get_full_name(pCurr, fullName);
 
-	return (fullName[0] != '\0') ? 0 : 2;
+	return (fullName[0] != '\0') ? 0 : -2;
 }
 
 int32_t script_parsing(parsing_handle h, const char* tomlFile)
@@ -871,20 +887,35 @@ int32_t script_parsing(parsing_handle h, const char* tomlFile)
 	return 0;
 }
 
-Found script_find_record(parsing_handle h, const char* tomlKey)
+Find script_find_record(parsing_handle h, const char* tomlKey)
 {
-	// -1, error case
-	Found found = { .count = -1 };
-
 	Program* pProgram = (Program*)h;
-	if (pProgram == NULL) { return found; }
+	if (pProgram == NULL)
+	{
+		// -1, error case
+		return (Find){ .capacity = 0, .count = -1, .ppvMatches = NULL };
+	}
 
 	return find_record(pProgram, tomlKey, TARGET_CONTENT_ONLY);
 }
 
-void script_print_found(Found* pFound)
+void script_print_find(Find* pFind)
 {
-	return print_found(pFound);
+	return print_find(pFind);
+}
+
+int32_t script_release_find(Find* pFind)
+{
+	if (pFind == NULL) { return -1; }
+
+	if (pFind->ppvMatches == NULL) { return 0; }
+
+	free(pFind->ppvMatches);
+	pFind->capacity = 0;
+	pFind->count = 0;
+	pFind->ppvMatches = NULL;
+
+	return 0;
 }
 
 parsing_record script_get_next(parsing_handle h, parsing_record pvCurrRec)
@@ -892,14 +923,20 @@ parsing_record script_get_next(parsing_handle h, parsing_record pvCurrRec)
 	Program* pProgram = (Program*)h;
 	if (pProgram == NULL) { return NULL; }
 
-	if (pvCurrRec == NULL) { pvCurrRec = pProgram->parsing.memory.pvMem; }
-
 	for (; pvCurrRec < pProgram->parsing.pvCurrMem;)
 	{
-		IdParentChild* pIdParentChild = (IdParentChild*)pvCurrRec;
-		StructInfo si = get_struct_info_by_id(pIdParentChild->_id);
-		pvCurrRec += si.size;
-		if (pvCurrRec >= pProgram->parsing.pvCurrMem) { return NULL; }
+		IdParentChild* pIdParentChild;
+
+		if (pvCurrRec != NULL)
+		{
+			pIdParentChild = (IdParentChild*)pvCurrRec;
+			StructInfo si = get_struct_info_by_id(pIdParentChild->_id);
+			pvCurrRec = (uint8_t*)pvCurrRec + si.size;
+		}
+		else
+		{
+			pvCurrRec = pProgram->parsing.memory.pvMem;
+		}
 
 		pIdParentChild = (IdParentChild*)pvCurrRec;
 		bool wanted = !(pIdParentChild->_id <= CONTAINER_END);
