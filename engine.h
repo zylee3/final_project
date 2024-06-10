@@ -15,6 +15,9 @@
 #define NAME_RECTy 730
 //name position
 
+extern int textboxexist;
+extern SDL_Window* window;
+
 #define loadTextbox() \
     SDL_Rect textboxRect = {0, 0, 1200, 400};\
     textboxRect.x = (SCREEN_WIDTH - textboxRect.w) / 2;\
@@ -27,11 +30,6 @@
 
 #define loadName(name) \
     _LOADTEXT(name, 1)
-
-int total_cc_on_screen = 0;//number of character on screen
-int textboxexist = 0;//check if textbox exist
-SDL_Window* window = NULL;
-SDL_Surface* gScreenSurface = NULL;
 
 bool init();
 
