@@ -48,6 +48,7 @@ int _LOADITEMBOX(int type){
 }
 
 int chooseFromTwo(char *name1, char *name2){
+    loadTextbox();//load textbox
     _LOADITEMBOX(1);
     SDL_Rect itemrect = {420, 410, 280, 280};
     if(_LOADOBJECT(name1, itemrect) == 1){
@@ -57,6 +58,14 @@ int chooseFromTwo(char *name1, char *name2){
     if(_LOADOBJECT(name2, itemrect) == 1){
         printf("Failed to load image from %s!\n", name2);
     }
+    //load choosing dialog
+    char* text = calloc(strlen(name1) + strlen(name2) + 100, sizeof(char));
+    strcpy(text, "Choose one of the item above! 1. ");
+    strcat(text, name1);
+    strcat(text, " 2. ");
+    strcat(text, name2);
+    loadDialog(text);
+    free(text);
     while(1){
         SDL_Event e;
         while(SDL_PollEvent(&e) != 0){
@@ -90,6 +99,7 @@ int chooseFromTwo(char *name1, char *name2){
 }
 
 int chooseFromThree(char *name1, char *name2, char *name3){
+    loadTextbox();//load textbox
     _LOADITEMBOX(2);
     SDL_Rect itemrect = {420, 410, 280, 280};
     if(_LOADOBJECT(name1, itemrect) == 1){
@@ -103,6 +113,16 @@ int chooseFromThree(char *name1, char *name2, char *name3){
     if(_LOADOBJECT(name3, itemrect) == 1){
         printf("Failed to load image from %s!\n", name3);
     }
+    //load choosing dialog
+    char* text = calloc(strlen(name1) + strlen(name2) + strlen(name3) + 100, sizeof(char));
+    strcpy(text, "Choose one of the item above! 1. ");
+    strcat(text, name1);
+    strcat(text, " 2. ");
+    strcat(text, name2);
+    strcat(text, " 3. ");
+    strcat(text, name3);
+    loadDialog(text);
+    free(text);
     while(1){
         SDL_Event e;
         while(SDL_PollEvent(&e) != 0){
