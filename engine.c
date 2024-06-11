@@ -323,7 +323,7 @@ SDL_Surface* _LOADSURFACE(char* path){
     return loadedSurface;
 }
 
-int main(int argc, char* args[]){
+/*int main(int argc, char* args[]){
     if(!init()){
         printf("Failed to initialize!\n");
         return 1;
@@ -402,4 +402,4 @@ int main(int argc, char* args[]){
     SDL_Quit();
     return 0;
 
-}
+}*/
