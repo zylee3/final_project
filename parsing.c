@@ -137,7 +137,7 @@ parsing_record get_struct_memory(ManageMemory* pManageMemory, size_t size)
 
 	if (pvCurrMem > pManageMemory->pvCurrLast)
 	{
-		printf("out of memory for get_struct_memory\n");
+		printf("out of memory in get_struct_memory\n");
 		return NULL;
 	}
 
@@ -156,7 +156,7 @@ void* get_string_memory(ManageMemory* pManageMemory, size_t size)
 
 	if (pManageMemory->pvCurrMem > pvCurrLast)
 	{
-		printf("out of memory for get_string_memory\n");
+		printf("out of memory in get_string_memory\n");
 		return NULL;
 	}
 
@@ -173,7 +173,7 @@ Container* get_container_memory(ManageMemory* pManageMemory, Container* pParent,
 
 	if (pvCurrMem > pvCurrLast)
 	{
-		printf("out of memory for get_container_memory\n");
+		printf("out of memory in get_container_memory\n");
 		return NULL;
 	}
 
@@ -195,7 +195,7 @@ Container* get_container_memory(ManageMemory* pManageMemory, Container* pParent,
 	pContainer->_child = get_struct_memory(pManageMemory, sizeof(IdParentChild));
 	if (pContainer->_child == NULL)
 	{
-		printf("out of child memory for get_container_memory\n");
+		printf("get_struct_memory failed in get_container_memory\n");
 		return NULL;
 	}
 
@@ -281,6 +281,12 @@ int32_t fill_struct_string_field(ManageMemory* pManageMemory, parsing_record pvM
 
 	size_t len = (string != NULL) ? strlen(string) + 1: 1;
 	char* pcMemStr = get_string_memory(pManageMemory, len);
+	if (pcMemStr == NULL)
+	{
+		printf("get_string_memory failed in fill_struct_string_field(,, %s, %s)",
+			key, string);
+		return 51;
+	}
 	strcpy(pcMemStr, string);
 
 	if ((structName == NULL) || (*structName == '\0') || (strcmp(structName, "Final Project") == 0))
@@ -296,7 +302,7 @@ int32_t fill_struct_string_field(ManageMemory* pManageMemory, parsing_record pvM
 		else
 		{
 			printf("structure '%s' not yet supported field '%s' in fill_struct_string_field\n", structName, key);
-			return 51;
+			return 52;
 		}
 	}
 	else if (strcmp(structName, "item") == 0)
@@ -312,7 +318,7 @@ int32_t fill_struct_string_field(ManageMemory* pManageMemory, parsing_record pvM
 		else
 		{
 			printf("structure '%s' not yet supported field '%s' in fill_struct_string_field\n", structName, key);
-			return 52;
+			return 53;
 		}
 	}
 	else if (strcmp(structName, "scene") == 0)
@@ -328,7 +334,7 @@ int32_t fill_struct_string_field(ManageMemory* pManageMemory, parsing_record pvM
 		else
 		{
 			printf("structure '%s' not yet supported field '%s' in fill_struct_string_field\n", structName, key);
-			return 53;
+			return 54;
 		}
 	}
 	else if (strcmp(structName, "character") == 0)
@@ -348,7 +354,7 @@ int32_t fill_struct_string_field(ManageMemory* pManageMemory, parsing_record pvM
 		else
 		{
 			printf("structure '%s' not yet supported field '%s' in fill_struct_string_field\n", structName, key);
-			return 54;
+			return 55;
 		}
 	}
 	else if (strcmp(structName, "event") == 0)
@@ -364,7 +370,7 @@ int32_t fill_struct_string_field(ManageMemory* pManageMemory, parsing_record pvM
 		else
 		{
 			printf("structure '%s' not yet supported field '%s' in fill_struct_string_field\n", structName, key);
-			return 55;
+			return 56;
 		}
 	}
 	else if (strcmp(structName, "dialogue") == 0)
@@ -392,13 +398,13 @@ int32_t fill_struct_string_field(ManageMemory* pManageMemory, parsing_record pvM
 		else
 		{
 			printf("structure '%s' not yet supported field '%s' in fill_struct_string_field\n", structName, key);
-			return 56;
+			return 57;
 		}
 	}
 	else
 	{
 		printf("structure '%s' not yet supported in fill_struct_string_field\n", structName);
-		return 57;
+		return 58;
 	}
 
 	return 0;
@@ -581,7 +587,11 @@ Container* read_array(Program* pProgram, toml_array_t* pTomlArray, Container* pP
 {
 	//printf("read_array 1 key:'%s' Parent:'%s'\n", key, (pParent != NULL) ? pParent->name: "<null>");
 	Container* pArray = get_container_memory(&pProgram->parsing, pParent, key);
-	if (pArray == NULL) { return pArray; }
+	if (pArray == NULL)
+	{
+		printf("get_container_memory failed in read_array\n");
+		return pArray;
+	}
 
 	pArray->_id = ARRAY;
 
@@ -612,7 +622,11 @@ Container* read_table(Program* pProgram, toml_table_t* pTomlTable, Container* pP
 {
 	//printf("read_table 1 tableName:'%s' Parent:'%s'\n", tableName, (pParent != NULL) ? pParent->name: "<null>");
 	Container* pTable = get_container_memory(&pProgram->parsing, pParent, tableName);
-	if (pTable == NULL) { return pTable; }
+	if (pTable == NULL)
+	{
+		printf("get_container_memory failed in read_table\n");
+		return pTable;
+	}
 
 	pTable->_id = TABLE;
 
@@ -645,7 +659,11 @@ Container* read_table(Program* pProgram, toml_table_t* pTomlTable, Container* pP
 			if (structName == NULL)
 			{
 				structName = get_struct_name(pTable);
-				if (structName == NULL) { return NULL; }
+				if (structName == NULL)
+				{
+					printf("get_struct_name failed for toml_string_in in read_table\n");
+					return NULL;
+				}
 			}
 			if (si.size == 0)
 			{
@@ -655,7 +673,11 @@ Container* read_table(Program* pProgram, toml_table_t* pTomlTable, Container* pP
 			if (pvMem == NULL)
 			{
 				pvMem = get_struct_memory(&pProgram->parsing, si.size);
-				if (pvMem == NULL) { return NULL; }
+				if (pvMem == NULL)
+				{
+					printf("get_struct_memory failed for toml_string_in in read_table\n");
+					return NULL;
+				}
 				((IdParentChild*)pvMem)->_id = si.id;
 				((IdParentChild*)pvMem)->_parent = pTable;
 				IdParentChild* pFound = find_available_child_next(pTable);
@@ -675,7 +697,11 @@ Container* read_table(Program* pProgram, toml_table_t* pTomlTable, Container* pP
 			if (structName == NULL)
 			{
 				structName = get_struct_name(pTable);
-				if (structName == NULL) { return NULL; }
+				if (structName == NULL)
+				{
+					printf("get_struct_name failed for toml_int_in in read_table\n");
+					return NULL;
+				}
 			}
 			if (si.size == 0)
 			{
@@ -685,7 +711,11 @@ Container* read_table(Program* pProgram, toml_table_t* pTomlTable, Container* pP
 			if (pvMem == NULL)
 			{
 				pvMem = get_struct_memory(&pProgram->parsing, si.size);
-				if (pvMem == NULL) { return NULL; }
+				if (pvMem == NULL)
+				{
+					printf("get_struct_memory failed for toml_int_in in read_table\n");
+					return NULL;
+				}
 				((IdParentChild*)pvMem)->_id = si.id;
 				((IdParentChild*)pvMem)->_parent = pTable;
 				IdParentChild* pFound = find_available_child_next(pTable);
@@ -713,14 +743,14 @@ int32_t parse_toml(Program* pProgram, const char* scriptFile)
 	pProgram->tomlFile.pFile = fopen(scriptFile, "r");
 	if (pProgram->tomlFile.pFile == NULL)
 	{
-		printf("fopen %s failed\n", scriptFile);
+		printf("fopen %s failed in parse_toml\n", scriptFile);
 		return 11;
 	}
 
 	alloc_memory(&pProgram->parsing, MAX_PARSING_MEM);
 	if (pProgram->parsing.memory.pvMem == NULL)
 	{
-		printf("out of memory for alloc_memory for pProgram->parsing");
+		printf("alloc_memory failed for pProgram->parsing in parse_toml");
 		return 12;
 	}
 
@@ -729,7 +759,7 @@ int32_t parse_toml(Program* pProgram, const char* scriptFile)
 		sizeof(buf) / sizeof(buf[0]));
 	if (toml_table == NULL)
 	{
-		printf("cannot parse - %s\n", buf);
+		printf("toml_parse_file failed in parse_toml\n");
 		return 13;
     }
 
@@ -737,7 +767,11 @@ int32_t parse_toml(Program* pProgram, const char* scriptFile)
 
     // init key is ""
 	Container* pContainer = read_table(pProgram, toml_table, NULL, "");
-	if (pContainer == NULL) { ret = 14; }
+	if (pContainer == NULL)
+	{
+		printf("read_table failed in parse_toml\n");
+		ret = 14;
+	}
 
 	toml_free(toml_table);
 
@@ -806,7 +840,7 @@ Find find_record(Program* pProgram, const char* tomlKey, enum Target target)
 				parsing_record* ppvMatches = malloc(capacity * sizeof(parsing_record));
 				if (ppvMatches == NULL)
 				{
-					printf("allocate Find failed\n");
+					printf("malloc Find.ppvMatches failed in find_record\n");
 					break;
 				}
 				find.capacity = capacity;
@@ -873,7 +907,7 @@ FullNameRecord* get_fullname_record_memory(ManageMemory* pManageMemory,
 
 	if (pvCurrMem > pvCurrLast)
 	{
-		printf("out of memory for get_fullname_record_memory\n");
+		printf("out of memory in get_fullname_record_memory\n");
 		return NULL;
 	}
 
@@ -918,7 +952,7 @@ int32_t summarize(Program* pProgram, enum Target target)
 	alloc_memory(&pProgram->summary, MAX_SUMMARY_MEM);
 	if (pProgram->summary.memory.pvMem == NULL)
 	{
-		printf("out of memory for alloc_memory for pProgram->summary");
+		printf("alloc_memory failed for pProgram->summary in summary");
 		return 11;
 	}
 
@@ -988,9 +1022,21 @@ Program program_init()
 
 void program_uninit(Program* pProgram)
 {
-	if (pProgram->summary.memory.pvMem != NULL) { free(pProgram->summary.memory.pvMem); }
-	if (pProgram->parsing.memory.pvMem != NULL) { free(pProgram->parsing.memory.pvMem); }
-	if (pProgram->tomlFile.pFile != NULL) { fclose(pProgram->tomlFile.pFile); }
+	if (pProgram->summary.memory.pvMem != NULL)
+	{
+		free(pProgram->summary.memory.pvMem);
+		pProgram->summary.memory.pvMem = NULL;
+	}
+	if (pProgram->parsing.memory.pvMem != NULL)
+	{
+		free(pProgram->parsing.memory.pvMem);
+		pProgram->parsing.memory.pvMem = NULL;
+	}
+	if (pProgram->tomlFile.pFile != NULL)
+	{
+		fclose(pProgram->tomlFile.pFile);
+		pProgram->tomlFile.pFile = NULL;
+	}
 }
 
 parsing_handle script_init()
