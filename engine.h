@@ -35,7 +35,7 @@ extern SDL_Surface* gScreenSurface;
     _LOADTEXT(name, 1)
 
 #define close() \
-    SDL_FreeSurface(bgSurface);\
+    SDL_FreeSurface(gScreenSurface);\
     SDL_DestroyWindow(window);\
     IMG_Quit();\
     TTF_Quit();\
