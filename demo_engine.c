@@ -1,5 +1,10 @@
 #include "engine.h"
 
+int total_cc_on_screen = 0;//number of character on screen
+int textboxexist = 0;//check if textbox exist
+SDL_Window* window = NULL;
+SDL_Surface* gScreenSurface = NULL;
+
 int main(int argc, char* args[]){
     if(!init()){
         printf("Failed to initialize!\n");
@@ -13,10 +18,10 @@ int main(int argc, char* args[]){
     loadBackground("bgstart");
     SDL_Rect buttonRect = {0, 650, 350, 150};
     buttonRect.x = buttonRect.x = (SCREEN_WIDTH - buttonRect.w) / 2;
-    loadItem("startbutton", buttonRect); 
+    _LOADOBJECT("startbutton", buttonRect); 
     SDL_Rect titleRect = {0, 75, 650, 450};
     titleRect.x = (SCREEN_WIDTH - titleRect.w) / 2;
-    loadItem("title", titleRect);
+    _LOADOBJECT("title", titleRect);
 
     
     while(1){
@@ -42,7 +47,7 @@ int main(int argc, char* args[]){
             }
             else if(e.type == SDL_MOUSEBUTTONDOWN){//sample button click
                 int x, y;
-                printf("Click on %d %d\n", x, y);
+                //printf("Click on %d %d\n", x, y);
                 SDL_GetMouseState(&x, &y);
                 while(SDL_PollEvent(&e)){
                     //clean the event queue, prevent the event from being triggered multiple times
