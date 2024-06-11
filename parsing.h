@@ -149,8 +149,6 @@ parsing_record script_get_next(parsing_handle, parsing_record);
 
 void script_print_all(parsing_handle);
 
-int32_t script_summarize(parsing_handle);
-
 // start form script_get_summary_next(, NULL) to get the starting result of summary.
 // return NULL for end or error
 // fullName == NULL for nay fullName

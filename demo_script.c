@@ -16,7 +16,6 @@ int32_t main(int argc, char* args[])
 	if (h == NULL) { return 2; }
 
 	int32_t ret = script_parsing(h, args[1]);
-	ret = script_summarize(h);
 	if (ret == 0)
 	{
 
@@ -105,7 +104,6 @@ int32_t main(int argc, char* args[])
 		{
 			script_print_record(pFullNameRecord->record);
         }
-
 	}
 
 	script_uninit(h);

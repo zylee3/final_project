@@ -738,6 +738,121 @@ Container* read_table(Program* pProgram, toml_table_t* pTomlTable, Container* pP
 	return pTable;
 }
 
+parsing_record get_next(Program* pProgram, parsing_record pvCurrRec, enum Target target)
+{
+	for (; pvCurrRec < pProgram->parsing.pvCurrMem;)
+	{
+		IdParentChild* pIdParentChild;
+
+		if (pvCurrRec != NULL)
+		{
+			pIdParentChild = (IdParentChild*)pvCurrRec;
+			StructInfo si = get_struct_info_by_id(pIdParentChild->_id);
+			pvCurrRec = (uint8_t*)pvCurrRec + si.size;
+		}
+		else
+		{
+			pvCurrRec = pProgram->parsing.memory.pvMem;
+		}
+
+		pIdParentChild = (IdParentChild*)pvCurrRec;
+		bool wanted = true;
+		if (target == TARGET_CONTENT_ONLY)
+		{
+			wanted = !(pIdParentChild->_id <= CONTAINER_END);
+		}
+		if (wanted) { return pvCurrRec; }
+	}
+
+	return NULL;
+}
+
+FullNameRecord* get_fullname_record_memory(ManageMemory* pManageMemory,
+	const char* fullName, int32_t order, parsing_record record)
+{
+	size_t len = (fullName != NULL) ? strlen(fullName) + 1 : 1;
+	//printf("get_fullname_record_memory fullName:%s len:%ld\n", fullName, len);
+
+	parsing_record pvCurrMem = (uint8_t*)pManageMemory->pvCurrMem + sizeof(FullNameRecord);
+	void* pvCurrLast = (uint8_t*)pManageMemory->pvCurrLast - len;
+
+	if (pvCurrMem > pvCurrLast)
+	{
+		printf("out of memory in get_fullname_record_memory\n");
+		return NULL;
+	}
+
+	FullNameRecord* pFullNameRecord = (FullNameRecord*)pManageMemory->pvCurrMem;
+	if (fullName != NULL)
+	{
+		strcpy(pvCurrLast, fullName);
+	}
+	else
+	{
+		*(char*)pvCurrLast = '\0';
+	}
+
+	pManageMemory->pvCurrMem = pvCurrMem;
+	pManageMemory->pvCurrLast = pvCurrLast;
+
+	pFullNameRecord->fullName = pvCurrLast;
+	pFullNameRecord->order = order;
+	pFullNameRecord->record = record;
+
+	return pFullNameRecord;
+}
+
+int cmp(const void* pvLhs, const void* pvRhs)
+{
+	const FullNameRecord* pLhs = (FullNameRecord*)pvLhs;
+	const FullNameRecord* pRhs = (FullNameRecord*)pvRhs;
+
+	int c = strcmp(pLhs->fullName, pRhs->fullName);
+	if (c == 0)
+	{
+		return pLhs->order < pRhs->order;
+	}
+
+	return c;
+}
+
+int32_t summarize(Program* pProgram, enum Target target)
+{
+	if (pProgram->summary.memory.pvMem != NULL) { return 0; }
+
+	alloc_memory(&pProgram->summary, MAX_SUMMARY_MEM);
+	if (pProgram->summary.memory.pvMem == NULL)
+	{
+		printf("alloc_memory failed for pProgram->summary in summary");
+		return 101;
+	}
+
+	parsing_record pvStartRec = get_next(pProgram, NULL, target);
+	int32_t count = 0;
+
+	for (parsing_record pvCurrRec = pvStartRec; pvCurrRec != NULL;
+		pvCurrRec = get_next(pProgram, pvCurrRec, target), ++count)
+	{
+		// all structures should be start from IdParentChild
+		IdParentChild* pIdParentChild = (IdParentChild*)pvCurrRec;
+
+		char fullName[GET_FULL_NAME_LEN] = { '\0' };
+
+		script_get_full_name(pIdParentChild, fullName);
+		if (fullName[sizeof(fullName) / sizeof(fullName[0]) - 1] != '\0')
+		{
+			printf("fullName is not big enough in script_summarize\n");
+			return 102;
+		}
+
+		get_fullname_record_memory(&pProgram->summary, fullName, count, pvCurrRec);
+	}
+
+	qsort(pProgram->summary.memory.pvMem, count, sizeof(FullNameRecord), cmp);
+
+	return 0;
+}
+
 int32_t parse_toml(Program* pProgram, const char* scriptFile)
 {
 	pProgram->tomlFile.pFile = fopen(scriptFile, "r");
@@ -774,6 +889,11 @@ int32_t parse_toml(Program* pProgram, const char* scriptFile)
 	}
 
 	toml_free(toml_table);
+
+	if (ret == 0)
+	{
+		ret = summarize(pProgram, TARGET_CONTENT_ONLY);
+	}
 
 	return ret;
 }
@@ -865,121 +985,6 @@ void print_find(Find* pFind)
 	{
 		print_record(pFind->ppvMatches[i]);
 	}
-}
-
-parsing_record get_next(Program* pProgram, parsing_record pvCurrRec, enum Target target)
-{
-	for (; pvCurrRec < pProgram->parsing.pvCurrMem;)
-	{
-		IdParentChild* pIdParentChild;
-
-		if (pvCurrRec != NULL)
-		{
-			pIdParentChild = (IdParentChild*)pvCurrRec;
-			StructInfo si = get_struct_info_by_id(pIdParentChild->_id);
-			pvCurrRec = (uint8_t*)pvCurrRec + si.size;
-		}
-		else
-		{
-			pvCurrRec = pProgram->parsing.memory.pvMem;
-		}
-
-		pIdParentChild = (IdParentChild*)pvCurrRec;
-		bool wanted = true;
-		if (target == TARGET_CONTENT_ONLY)
-		{
-			wanted = !(pIdParentChild->_id <= CONTAINER_END);
-		}
-		if (wanted) { return pvCurrRec; }
-	}
-
-	return NULL;
-}
-
-FullNameRecord* get_fullname_record_memory(ManageMemory* pManageMemory,
-	const char* fullName, int32_t order, parsing_record record)
-{
-	size_t len = (fullName != NULL) ? strlen(fullName) + 1 : 1;
-	//printf("get_fullname_record_memory fullName:%s len:%ld\n", fullName, len);
-
-	parsing_record pvCurrMem = (uint8_t*)pManageMemory->pvCurrMem + sizeof(FullNameRecord);
-	void* pvCurrLast = (uint8_t*)pManageMemory->pvCurrLast - len;
-
-	if (pvCurrMem > pvCurrLast)
-	{
-		printf("out of memory in get_fullname_record_memory\n");
-		return NULL;
-	}
-
-	FullNameRecord* pFullNameRecord = (FullNameRecord*)pManageMemory->pvCurrMem;
-	if (fullName != NULL)
-	{
-		strcpy(pvCurrLast, fullName);
-	}
-	else
-	{
-		*(char*)pvCurrLast = '\0';
-	}
-
-	pManageMemory->pvCurrMem = pvCurrMem;
-	pManageMemory->pvCurrLast = pvCurrLast;
-
-	pFullNameRecord->fullName = pvCurrLast;
-	pFullNameRecord->order = order;
-	pFullNameRecord->record = record;
-
-	return pFullNameRecord;
-}
-
-int cmp(const void* pvLhs, const void* pvRhs)
-{
-	const FullNameRecord* pLhs = (FullNameRecord*)pvLhs;
-	const FullNameRecord* pRhs = (FullNameRecord*)pvRhs;
-
-	int c = strcmp(pLhs->fullName, pRhs->fullName);
-	if (c == 0)
-	{
-		return pLhs->order < pRhs->order;
-	}
-
-	return c;
-}
-
-int32_t summarize(Program* pProgram, enum Target target)
-{
-	if (pProgram->summary.memory.pvMem != NULL) { return 0; }
-
-	alloc_memory(&pProgram->summary, MAX_SUMMARY_MEM);
-	if (pProgram->summary.memory.pvMem == NULL)
-	{
-		printf("alloc_memory failed for pProgram->summary in summary");
-		return 11;
-	}
-
-	parsing_record pvStartRec = get_next(pProgram, NULL, target);
-	int32_t count = 0;
-
-	for (parsing_record pvCurrRec = pvStartRec; pvCurrRec != NULL;
-		pvCurrRec = get_next(pProgram, pvCurrRec, target), ++count)
-	{
-		// all structures should be start from IdParentChild
-		IdParentChild* pIdParentChild = (IdParentChild*)pvCurrRec;
-
-		char fullName[GET_FULL_NAME_LEN] = { '\0' };
-
-		script_get_full_name(pIdParentChild, fullName);
-		if (fullName[sizeof(fullName) / sizeof(fullName[0]) - 1] != '\0')
-		{
-			printf("fullName is not big enough in script_summarize\n");
-			return 12;
-		}
-
-		get_fullname_record_memory(&pProgram->summary, fullName, count, pvCurrRec);
-	}
-
-	qsort(pProgram->summary.memory.pvMem, count, sizeof(FullNameRecord), cmp);
-
-	return 0;
 }
 
 FullNameRecord* get_summary_next(Program* pProgram,
@@ -1128,14 +1133,6 @@ void script_print_all(parsing_handle h)
 	if (pProgram == NULL) { return; }
 
 	return print_all(pProgram, TARGET_CONTENT_ONLY);
-}
-
-int32_t script_summarize(parsing_handle h)
-{
-	Program* pProgram = (Program*)h;
-	if (pProgram == NULL) { return 1; }
-
-	return summarize(pProgram, TARGET_CONTENT_ONLY);
 }
 
 summary_record script_get_summary_next(parsing_handle h,
