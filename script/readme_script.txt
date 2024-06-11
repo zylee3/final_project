@@ -3,7 +3,7 @@ At the end of the story, there are three things found in the room. Player will c
 
 Script file format: TOML
 Script file name: script.toml
-storage folder: script
+storage folder: final_project/script
 
 How to convert a script into a toml file:
 1. Write a script, the script below is an example.
