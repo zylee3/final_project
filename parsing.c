@@ -841,7 +841,7 @@ int32_t summarize(Program* pProgram, enum Target target)
 		script_get_full_name(pIdParentChild, fullName);
 		if (fullName[sizeof(fullName) / sizeof(fullName[0]) - 1] != '\0')
 		{
-			printf("fullName is not big enough in script_summarize\n");
+			printf("fullName is not big enough in summarize\n");
 			return 102;
 		}
 
