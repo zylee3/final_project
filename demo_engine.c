@@ -1,9 +1,6 @@
 #include "engine.h"
 
-int total_cc_on_screen = 0;//number of character on screen
-int textboxexist = 0;//check if textbox exist
-SDL_Window* window = NULL;
-SDL_Surface* gScreenSurface = NULL;
+
 
 int main(int argc, char* args[]){
     if(!init()){
@@ -28,11 +25,11 @@ int main(int argc, char* args[]){
         SDL_Event e;
         while(SDL_PollEvent(&e) != 0){
             if(e.type == SDL_QUIT){
-                return 0;
+                close();
             }
             else if(e.type == SDL_KEYDOWN){
                 if(e.key.keysym.sym == SDLK_ESCAPE){//exit
-                    return 0;
+                    close();
                 }
                 else if(e.key.keysym.sym == SDLK_c){//sample character
                     loadCharacter("blackcat");
@@ -61,11 +58,6 @@ int main(int argc, char* args[]){
             }
         }
     }
-    SDL_FreeSurface(bgSurface);
-    SDL_DestroyWindow(window);
-    IMG_Quit();
-    TTF_Quit();
-    SDL_Quit();
-    return 0;
+    close();
 
 }

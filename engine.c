@@ -1,5 +1,10 @@
 #include "engine.h"
 
+int total_cc_on_screen = 0;//number of character on screen
+int textboxexist = 0;//check if textbox exist
+SDL_Window* window = NULL;
+SDL_Surface* gScreenSurface = NULL;
+
 bool init(){
     // Initialize SDL
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
@@ -70,11 +75,11 @@ int chooseFromTwo(char *name1, char *name2){
         SDL_Event e;
         while(SDL_PollEvent(&e) != 0){
             if(e.type == SDL_QUIT){
-                return 0;
+                close();
             }
             else if(e.type == SDL_KEYDOWN){
                 if(e.key.keysym.sym == SDLK_ESCAPE){//exit
-                    return 0;
+                    close();
                 }
             }
             else if(e.type == SDL_MOUSEBUTTONDOWN){
@@ -395,11 +400,6 @@ SDL_Surface* _LOADSURFACE(char* path){
             }
         }
     }
-    SDL_FreeSurface(bgSurface);
-    SDL_DestroyWindow(window);
-    IMG_Quit();
-    TTF_Quit();
-    SDL_Quit();
-    return 0;
+    close();
 
 }*/
