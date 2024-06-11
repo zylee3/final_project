@@ -75,11 +75,11 @@ int chooseFromTwo(char *name1, char *name2){
         SDL_Event e;
         while(SDL_PollEvent(&e) != 0){
             if(e.type == SDL_QUIT){
-                return 0;
+                close();
             }
             else if(e.type == SDL_KEYDOWN){
                 if(e.key.keysym.sym == SDLK_ESCAPE){//exit
-                    return 0;
+                    close();
                 }
             }
             else if(e.type == SDL_MOUSEBUTTONDOWN){
@@ -400,11 +400,6 @@ SDL_Surface* _LOADSURFACE(char* path){
             }
         }
     }
-    SDL_FreeSurface(bgSurface);
-    SDL_DestroyWindow(window);
-    IMG_Quit();
-    TTF_Quit();
-    SDL_Quit();
-    return 0;
+    close();
 
 }*/
