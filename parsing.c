@@ -6,8 +6,8 @@
 #include <toml.h>
 #include "parsing.h"
 
-const uint32_t MAX_PARSING_MEM    = 0x10000000;
-const uint32_t MAX_SUMMARY_MEM    = 0x08000000;
+const uint32_t MAX_PARSING_MEM    = 0x08000000;
+const uint32_t MAX_SUMMARY_MEM    = 0x04000000;
 const uint32_t INIT_FIND_CAPACITY = 16;
 
 enum Target
@@ -833,6 +833,150 @@ void print_find(Find* pFind)
 	}
 }
 
+parsing_record get_next(Program* pProgram, parsing_record pvCurrRec, enum Target target)
+{
+	for (; pvCurrRec < pProgram->parsing.pvCurrMem;)
+	{
+		IdParentChild* pIdParentChild;
+
+		if (pvCurrRec != NULL)
+		{
+			pIdParentChild = (IdParentChild*)pvCurrRec;
+			StructInfo si = get_struct_info_by_id(pIdParentChild->_id);
+			pvCurrRec = (uint8_t*)pvCurrRec + si.size;
+		}
+		else
+		{
+			pvCurrRec = pProgram->parsing.memory.pvMem;
+		}
+
+		pIdParentChild = (IdParentChild*)pvCurrRec;
+		bool wanted = true;
+		if (target == TARGET_CONTENT_ONLY)
+		{
+			wanted = !(pIdParentChild->_id <= CONTAINER_END);
+		}
+		if (wanted) { return pvCurrRec; }
+	}
+
+	return NULL;
+}
+
+FullNameRecord* get_fullname_record_memory(ManageMemory* pManageMemory,
+	const char* fullName, int32_t order, parsing_record record)
+{
+	size_t len = (fullName != NULL) ? strlen(fullName) + 1 : 1;
+	//printf("get_fullname_record_memory fullName:%s len:%ld\n", fullName, len);
+
+	parsing_record pvCurrMem = (uint8_t*)pManageMemory->pvCurrMem + sizeof(FullNameRecord);
+	void* pvCurrLast = (uint8_t*)pManageMemory->pvCurrLast - len;
+
+	if (pvCurrMem > pvCurrLast)
+	{
+		printf("out of memory for get_fullname_record_memory\n");
+		return NULL;
+	}
+
+	FullNameRecord* pFullNameRecord = (FullNameRecord*)pManageMemory->pvCurrMem;
+	if (fullName != NULL)
+	{
+		strcpy(pvCurrLast, fullName);
+	}
+	else
+	{
+		*(char*)pvCurrLast = '\0';
+	}
+
+	pManageMemory->pvCurrMem = pvCurrMem;
+	pManageMemory->pvCurrLast = pvCurrLast;
+
+	pFullNameRecord->fullName = pvCurrLast;
+	pFullNameRecord->order = order;
+	pFullNameRecord->record = record;
+
+	return pFullNameRecord;
+}
+
+int cmp(const void* pvLhs, const void* pvRhs)
+{
+	const FullNameRecord* pLhs = (FullNameRecord*)pvLhs;
+	const FullNameRecord* pRhs = (FullNameRecord*)pvRhs;
+
+	int c = strcmp(pLhs->fullName, pRhs->fullName);
+	if (c == 0)
+	{
+		return pLhs->order < pRhs->order;
+	}
+
+	return c;
+}
+
+int32_t summarize(Program* pProgram, enum Target target)
+{
+	if (pProgram->summary.memory.pvMem != NULL) { return 0; }
+
+	alloc_memory(&pProgram->summary, MAX_SUMMARY_MEM);
+	if (pProgram->summary.memory.pvMem == NULL)
+	{
+		printf("out of memory for alloc_memory for pProgram->summary");
+		return 11;
+	}
+
+	parsing_record pvStartRec = get_next(pProgram, NULL, target);
+	int32_t count = 0;
+
+	for (parsing_record pvCurrRec = pvStartRec; pvCurrRec != NULL;
+		pvCurrRec = get_next(pProgram, pvCurrRec, target), ++count)
+	{
+		// all structures should be start from IdParentChild
+		IdParentChild* pIdParentChild = (IdParentChild*)pvCurrRec;
+
+		char fullName[GET_FULL_NAME_LEN] = { '\0' };
+
+		script_get_full_name(pIdParentChild, fullName);
+		if (fullName[sizeof(fullName) / sizeof(fullName[0]) - 1] != '\0')
+		{
+			printf("fullName is not big enough in script_summarize\n");
+			return 12;
+		}
+
+		get_fullname_record_memory(&pProgram->summary, fullName, count, pvCurrRec);
+	}
+
+	qsort(pProgram->summary.memory.pvMem, count, sizeof(FullNameRecord), cmp);
+
+	return 0;
+}
+
+FullNameRecord* get_summary_next(Program* pProgram,
+	FullNameRecord* pvCurrRec, const char* fullName)
+{
+	//printf("get_summary_next 1 fullName:%s\n", fullName);
+
+	for (; pvCurrRec < (FullNameRecord*)pProgram->summary.pvCurrMem;)
+	{
+		if (pvCurrRec != NULL)
+		{
+			++pvCurrRec;
+		}
+		else
+		{
+			pvCurrRec = pProgram->summary.memory.pvMem;
+		}
+
+		if (fullName == NULL) { return pvCurrRec; }
+
+		int c = strcmp(pvCurrRec->fullName, fullName);
+		//printf("get_summary_next 2 pvCurrRec->fullName:%s c:%d\n", pvCurrRec->fullName, c);
+		if (c == 0) { return pvCurrRec; }
+		if (c > 0) { break; }
+	}
+
+	//printf("get_summary_next 3\n");
+
+	return NULL;
+}
+
 Program program_init()
 {
     Program program =
@@ -844,8 +988,9 @@ Program program_init()
 
 void program_uninit(Program* pProgram)
 {
-    if (pProgram->parsing.memory.pvMem != NULL) { free(pProgram->parsing.memory.pvMem); }
-    if (pProgram->tomlFile.pFile != NULL) { fclose(pProgram->tomlFile.pFile); }
+	if (pProgram->summary.memory.pvMem != NULL) { free(pProgram->summary.memory.pvMem); }
+	if (pProgram->parsing.memory.pvMem != NULL) { free(pProgram->parsing.memory.pvMem); }
+	if (pProgram->tomlFile.pFile != NULL) { fclose(pProgram->tomlFile.pFile); }
 }
 
 parsing_handle script_init()
@@ -899,6 +1044,11 @@ Find script_find_record(parsing_handle h, const char* tomlKey)
 	return find_record(pProgram, tomlKey, TARGET_CONTENT_ONLY);
 }
 
+void script_print_record(parsing_record pvCurrRec)
+{
+	print_record(pvCurrRec);
+}
+
 void script_print_find(Find* pFind)
 {
 	return print_find(pFind);
@@ -923,27 +1073,7 @@ parsing_record script_get_next(parsing_handle h, parsing_record pvCurrRec)
 	Program* pProgram = (Program*)h;
 	if (pProgram == NULL) { return NULL; }
 
-	for (; pvCurrRec < pProgram->parsing.pvCurrMem;)
-	{
-		IdParentChild* pIdParentChild;
-
-		if (pvCurrRec != NULL)
-		{
-			pIdParentChild = (IdParentChild*)pvCurrRec;
-			StructInfo si = get_struct_info_by_id(pIdParentChild->_id);
-			pvCurrRec = (uint8_t*)pvCurrRec + si.size;
-		}
-		else
-		{
-			pvCurrRec = pProgram->parsing.memory.pvMem;
-		}
-
-		pIdParentChild = (IdParentChild*)pvCurrRec;
-		bool wanted = !(pIdParentChild->_id <= CONTAINER_END);
-		if (wanted) { return pvCurrRec; }
-	}
-
-	return NULL;
+	return get_next(pProgram, pvCurrRec, TARGET_CONTENT_ONLY);
 }
 
 void script_print_all(parsing_handle h)
@@ -952,4 +1082,21 @@ void script_print_all(parsing_handle h)
 	if (pProgram == NULL) { return; }
 
 	return print_all(pProgram, TARGET_CONTENT_ONLY);
+}
+
+int32_t script_summarize(parsing_handle h)
+{
+	Program* pProgram = (Program*)h;
+	if (pProgram == NULL) { return 1; }
+
+	return summarize(pProgram, TARGET_CONTENT_ONLY);
+}
+
+summary_record script_get_summary_next(parsing_handle h,
+	summary_record pvCurrRec, const char* fullName)
+{
+	Program* pProgram = (Program*)h;
+	if (pProgram == NULL) { return NULL; }
+
+	return get_summary_next(pProgram, pvCurrRec, fullName);
 }

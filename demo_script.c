@@ -2,12 +2,21 @@
 #include <stdbool.h>
 #include "parsing.h"
 
-int32_t main()
+int32_t main(int argc, char* args[])
 {
-	parsing_handle h = script_init();
-	if (h == NULL) { return 1; }
+	if (argc < 2)
+	{
+		printf("This program need a toml file argument!\n"
+			"for ex.:\n"
+			"    ./demo_script script/script.toml\n");
+		return 1;
+	}
 
-	int32_t ret = script_parsing(h, "script/script.toml");
+	parsing_handle h = script_init();
+	if (h == NULL) { return 2; }
+
+	int32_t ret = script_parsing(h, args[1]);
+	ret = script_summarize(h);
 	if (ret == 0)
 	{
 
@@ -90,6 +99,13 @@ int32_t main()
 				break;
 			}
 		}
+
+        for (FullNameRecord* pFullNameRecord = script_get_summary_next(h, NULL, "character.squirrel_one");
+			pFullNameRecord != NULL; pFullNameRecord = script_get_summary_next(h, pFullNameRecord, "character.squirrel_one"))
+		{
+			script_print_record(pFullNameRecord->record);
+        }
+
 	}
 
 	script_uninit(h);
