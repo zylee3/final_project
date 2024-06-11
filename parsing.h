@@ -117,6 +117,15 @@ typedef struct _sFind
 	parsing_record* ppvMatches;
 } Find;
 
+typedef struct _sFullNameRecord
+{
+	const char*    fullName;
+	int32_t        order; // if fullName equal, order decide the sorting
+	parsing_record record;
+} FullNameRecord;
+
+typedef FullNameRecord* summary_record;
+
 parsing_handle script_init();
 
 int32_t script_uninit(parsing_handle);
@@ -128,6 +137,8 @@ int32_t script_parsing(parsing_handle, const char* tomlFile);
 // below functions should be used after script_parsing
 Find script_find_record(parsing_handle, const char* tomlKey);
 
+void script_print_record(parsing_record);
+
 void script_print_find(Find*);
 
 int32_t script_release_find(Find*);
@@ -137,5 +148,10 @@ int32_t script_release_find(Find*);
 parsing_record script_get_next(parsing_handle, parsing_record);
 
 void script_print_all(parsing_handle);
+
+// start form script_get_summary_next(, NULL) to get the starting result of summary.
+// return NULL for end or error
+// fullName == NULL for nay fullName
+summary_record script_get_summary_next(parsing_handle, summary_record, const char* fullName);
 
 #endif
