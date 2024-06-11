@@ -1,5 +1,10 @@
 #include "engine.h"
 
+int total_cc_on_screen = 0;//number of character on screen
+int textboxexist = 0;//check if textbox exist
+SDL_Window* window = NULL;
+SDL_Surface* gScreenSurface = NULL;
+
 bool init(){
     // Initialize SDL
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
