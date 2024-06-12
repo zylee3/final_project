@@ -81,6 +81,12 @@ int chooseFromTwo(char *name1, char *name2){
                 if(e.key.keysym.sym == SDLK_ESCAPE){//exit
                     close();
                 }
+                else if(e.key.keysym.sym == SDLK_1){
+                    return 1;
+                }
+                else if(e.key.keysym.sym == SDLK_2){
+                    return 2;
+                }
             }
             else if(e.type == SDL_MOUSEBUTTONDOWN){
                 if(e.button.button == SDL_BUTTON_LEFT){
@@ -137,6 +143,15 @@ int chooseFromThree(char *name1, char *name2, char *name3){
             else if(e.type == SDL_KEYDOWN){
                 if(e.key.keysym.sym == SDLK_ESCAPE){//exit
                     return 0;
+                }
+                else if(e.key.keysym.sym == SDLK_1){
+                    return 1;
+                }
+                else if(e.key.keysym.sym == SDLK_2){
+                    return 2;
+                }
+                else if(e.key.keysym.sym == SDLK_3){
+                    return 3;
                 }
             }
             else if(e.type == SDL_MOUSEBUTTONDOWN){
