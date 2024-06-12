@@ -58,18 +58,18 @@ int chooseFromThree(char *name1, char *name2, char *name3);//load 3 items to scr
 
 SDL_Surface* _FLIPSURFACE(SDL_Surface* surface);//flip the image(NOT TO USE
 
-int loadCharacter(char *name);//load character to screen. name: name of the image. Character must in folder "cc"
+int loadCharacter(const char *name);//load character to screen. name: name of the image. Character must in folder "cc"
 
 int _LOADOBJECT(char *name, SDL_Rect rect);//load item to screen. name: name of the image, rect: position of the image. Item must in folder "item"
 
-int loadBackground(char *name);//load background to screen. name: name of the image. Background must in folder "bg"
+int loadBackground(const char *name);//load background to screen. name: name of the image. Background must in folder "bg"
 
 int _LOADMEDIA(char *path, SDL_Rect rect, int type);//BlitSurface to screen (NOT TO USE
 //type 1: character
 //type 2: item(object excpet character and background)
 //type 3: background
 
-int _LOADTEXT(char *text, int type);//load text to screen (NOT TO USE
+int _LOADTEXT(const char *text, int type);//load text to screen (NOT TO USE
 //type 1: name
 //type 2: dialog
 

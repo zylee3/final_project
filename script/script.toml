@@ -3,19 +3,19 @@ author = "zylee"
 
 [scene.guild]
 name = "Guild Castle"
-background = ""
+background = "basement"
 
 [scene.first]
 name = "First Encounter in the savanna"
-background = ""
+background = "savanna"
 
 [scene.second]
 name = "Second Encounter in the forest"
-background = ""
+background = "forest"
 
 [scene.boss]
 name = "Boss in the gorgous room"
-background = ""
+background = "gorgeousroom"
 
 [character.Player]
 name = "Player"
@@ -27,77 +27,77 @@ favor_dogs = 0
 [character.samoyed]
 name = "Salome"
 avatar = ""
-tachie = ""
+tachie = "samoyed"
 favor_cats = 0
 favor_dogs = 0
 
 [character.black_cat]
 name = "Blanche"
 avatar = ""
-tachie = ""
+tachie = "blackcat"
 favor_cats = 0
 favor_dogs = 0
 
 [character.tabby_cat]
 name = "Tommy"
 avatar = ""
-tachie = ""
+tachie = "tabbycat"
 favor_cats = 0
 favor_dogs = 0
 
 [character.golden_retriever]
 name = "Gorden"
 avatar = ""
-tachie = ""
+tachie = "goldenretriever"
 favor_cats = 0
 favor_dogs = 0
 
 [character.malayan_night_heron_one]
 name = "Marceline"
 avatar = ""
-tachie = ""
+tachie = "nightheron"
 favor_cats = 0
 favor_dogs = 0
 
 [character.malayan_night_heron_two]
 name = "Max"
 avatar = ""
-tachie = ""
+tachie = "nightheron"
 favor_cats = 0
 favor_dogs = 0
 
 [character.squirrel_one]
 name = "Samuel"
 avatar = ""
-tachie = ""
+tachie = "squirrel"
 favor_cats = 0
 favor_dogs = 0
 
 [character.squirrel_two]
 name = "Sarah"
 avatar = ""
-tachie = ""
+tachie = "squirrel"
 favor_cats = 0
 favor_dogs = 0
 
 [character.squirrel_three]
 name = "Scarla"
 avatar = ""
-tachie = ""
+tachie = "squirrel"
 favor_cats = 0
 favor_dogs = 0
 
 [character.squirrel_four]
 name = "Sandra"
 avatar = ""
-tachie = ""
+tachie = "squirrel"
 favor_cats = 0
 favor_dogs = 0
 
 [character.dyson_vacuum_cleaner]
 name = "Dyson"
 avatar = ""
-tachie = ""
+tachie = "vacuum"
 favor_cats = 0
 favor_dogs = 0
 
@@ -120,16 +120,16 @@ dialogue = "dialogue.story.beginning"
 [dialogue.story.beginning]
 text = "A nation of cats and dogs seek to dominate the world. An adventurer's guild was formed to spread their territory. However, there is a great terror within the southern lands. A machine of war during the ancient era. The guild has sent a party of four to conquer this foul beast, and reclaim the lands that they once inhabited."
 
-event = "event.change_first"
+next = "event.change_first"
 
 [event.change_first]
 scene = "scene.first"
-dialogue = "dialogue.conversation.first_one"
+dialogue = "dialogue.conversation.first_one.one"
 
 [dialogue.conversation.first_one]
 [[dialogue.conversation.first_one.one]]
 character = "character.golden_retriever"
-text = "There’s something big in front, smells bad too."
+text = "There is something big in front, smells bad too."
 
 next = "dialogue.conversation.first_one.two"
 
@@ -141,7 +141,7 @@ next = "dialogue.conversation.first_one.three"
 
 [[dialogue.conversation.first_one.three]]
 character = "character.malayan_night_heron_one"
-text = "Who the hell do you think you’re eating!? I’ll have you served up for breakfast!"
+text = "Who the hell do you think you are eating!? I will have you served up for breakfast!"
 
 next = "dialogue.story.first_one"
 
@@ -153,7 +153,7 @@ next = "dialogue.conversation.first_two"
 [dialogue.conversation.first_two]
 [[dialogue.conversation.first_two.one]]
 character = "character.malayan_night_heron_two"
-text = "Baby! What’s wrong!"
+text = "Baby! What is wrong?"
 
 next = "dialogue.conversation.first_two.two"
 
@@ -165,7 +165,7 @@ next = "dialogue.conversation.first_two.three"
 
 [[dialogue.conversation.first_two.three]]
 character = "character.malayan_night_heron_two"
-text = "What the hell? You think you're gonna pull up at my crib and tryna eat my woman!?"
+text = "What the hell? You think you are gonna pull up at my crib and tryna eat my woman!?"
 
 next = "dialogue.conversation.first_two.four"
 
@@ -231,7 +231,7 @@ next = "dialogue.story.first_three.three"
 [[dialogue.story.first_three.three]]
 text = "The simmering smell of fresh fowl raised their appetite greatly. They devoured the fowls as soon as it was prepared. And at night, Tommy dreamed of finding the eggs, so that he may relive the taste once more."
 
-event = "event.change_second"
+next = "event.change_second"
 
 [event.change_second]
 scene = "scene.second"
@@ -245,7 +245,7 @@ next = "dialogue.conversation.second_one"
 [dialogue.conversation.second_one]
 [[dialogue.conversation.second_one.one]]
 character = "character.squirrel_one"
-text = "Hey! Don’t steal from our trees goddamnit!"
+text = "Hey! Do not steal from our trees goddamnit!"
 
 next = "dialogue.conversation.second_one.two"
 
@@ -310,7 +310,7 @@ next = "dialogue.conversation.second_three.four"
 
 [[dialogue.conversation.second_three.four]]
 character = "character.squirrel_four"
-text = "KIDS? KIDS IT'S OKAY, MAMA’S HERE."
+text = "KIDS? KIDS IT IS OKAY, MAMA IS HERE."
 
 next = "dialogue.story.second_four"
 
@@ -328,7 +328,7 @@ next = "dialogue.story.second_four.three"
 [[dialogue.story.second_four.three]]
 text = "The party savored the fruits they had plundered from the tree, now owned by no one but themselves. By midnight, the preparations had been complete, and Blanche used his nails to sew them up into little fur coats. Protection, for their upcoming journey into the depths of uncharted lands."
 
-event = "event.change_boss"
+next = "event.change_boss"
 
 [event.change_boss]
 scene = "scene.boss"
@@ -353,13 +353,13 @@ next = "dialogue.conversation.boss_one"
 [dialogue.conversation.boss_one]
 [[dialogue.conversation.boss_one.one]]
 character = "character.samoyed"
-text = "It’s the Dyson…"
+text = "It is the Dyson…"
 
 next = "dialogue.conversation.boss_one.two"
 
 [[dialogue.conversation.boss_one.two]]
 character = "character.golden_retriever"
-text = "It’s so scary…"
+text = "It is so scary…"
 
 next = "dialogue.conversation.boss_one.three"
 
@@ -404,23 +404,21 @@ next = "dialogue.story.boss_two.six"
 [[dialogue.story.boss_two.six]]
 text = "They four rejoiced, for they have slain a legendary beast. They quickly rushed to search the room where the beast resides. Within, they found a frisbee, catnip, and a golden ring."
 
+#item = "item.frisbee"
+#item = "item.catnip"
+#item = "item.golden_ring"
+
 [[dialogue.option.boss_two.frisbee]]
 #Upon choosing Frisbee
-
-item = "item.frisbee"
 
 text = "The party returned to the kingdom with a frisbee in hand. As it was a legendary item that could not be found within the kingdom, the Salome was awarded the title of duke, and was given the entirety of the Adventurer’s guild as a result."
 
 [[dialogue.option.boss_two.catnip]]
 #Upon choosing Catnip
 
-item = "item.catnip"
-
 text = "The party returned to the kingdom with a catnip in hand. As it was a legendary item that could not be found within the kingdom, the Blanche was awarded the title of duke, and was given the entirety of the Adventurer’s guild as a result."
 
 [[dialogue.option.boss_two.golden_ring]]
 #Upon choosing Golden ring
-
-item = "item.golden_ring"
 
 text = "The party returned with a golden ring in hand. A legendary item that could only be owned by the state. The Golden ring was given to the Empire, while the members were promoted in rank."

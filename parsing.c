@@ -12,9 +12,10 @@ const uint32_t INIT_FIND_CAPACITY = 16;
 
 enum Target
 {
-	TARGET_NONE    = 0,
-	TARGET_ALL     = 1,
-	TARGET_CONTENT_ONLY = 2,
+	TARGET_NONE          = 0,
+	TARGET_ALL           = 1,
+	TARGET_ARRAY_CONTENT = 2,
+	TARGET_CONTENT_ONLY  = 3,
 };
 
 typedef struct _sStructInfo
@@ -387,14 +388,10 @@ int32_t fill_struct_string_field(ManageMemory* pManageMemory, parsing_record pvM
 		{
 			((Dialogue*)pvMem)->next = pcMemStr;
 		}
-		else if (strcmp(key, "event") == 0)
-		{
-			((Dialogue*)pvMem)->event = pcMemStr;
-		}
-		else if (strcmp(key, "item") == 0)
-		{
-			((Dialogue*)pvMem)->item = pcMemStr;
-		}
+		//else if (strcmp(key, "item") == 0)
+		//{
+		//	((Dialogue*)pvMem)->item = pcMemStr;
+		//}
 		else
 		{
 			printf("structure '%s' not yet supported field '%s' in fill_struct_string_field\n", structName, key);
@@ -564,10 +561,14 @@ void print_record_indent(parsing_record pvMem, int32_t indent)
 			{
 				printf("fullName is not big enough\n");
 			}
-			printf("Dialogue character:'%s' text:'%s' next:'%s' event:'%s' item:'%s'"
+			//printf("Dialogue character:'%s' text:'%s' next:'%s' item:'%s'"
+			//	" parent name:'%s' fullName:'%s'\n",
+			//	pDialogue->character, pDialogue->text, pDialogue->next,
+			//		pDialogue->item, pParent->name, fullName);
+			printf("Dialogue character:'%s' text:'%s' next:'%s'"
 				" parent name:'%s' fullName:'%s'\n",
-				pDialogue->character, pDialogue->text, pDialogue->next, pDialogue->event,
-					pDialogue->item, pParent->name, fullName);
+				pDialogue->character, pDialogue->text, pDialogue->next,
+					pParent->name, fullName);
 		}
 		break;
 	default:
@@ -760,6 +761,13 @@ parsing_record get_next(Program* pProgram, parsing_record pvCurrRec, enum Target
 		if (target == TARGET_CONTENT_ONLY)
 		{
 			wanted = !(pIdParentChild->_id <= CONTAINER_END);
+		}
+		else if (target == TARGET_ARRAY_CONTENT)
+		{
+			wanted = (pIdParentChild->_id >= ARRAY);
+		}
+		else
+		{
 		}
 		if (wanted) { return pvCurrRec; }
 	}

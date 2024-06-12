@@ -200,7 +200,7 @@ SDL_Surface* _FLIPSURFACE(SDL_Surface* surface){
     return flipped;
 }
 
-int loadCharacter(char *name){
+int loadCharacter(const char *name){
     char* path = calloc(strlen(name) + 20, sizeof(char));
     strcpy(path, "cc/");
     strcat(path, name);
@@ -272,7 +272,7 @@ int _LOADOBJECT(char *name, SDL_Rect rect){
     free(path);
 }
 
-int loadBackground(char *name){
+int loadBackground(const char *name){
     char *path = calloc(strlen(name) + 20, sizeof(char));
     strcpy(path, "bg/");
     strcat(path, name);
@@ -307,7 +307,7 @@ int _LOADMEDIA(char *path, SDL_Rect rect, int type){
     SDL_FreeSurface(loadedSurface);
 }
 
-int _LOADTEXT(char *text , int type){
+int _LOADTEXT(const char *text , int type){
     TTF_Font *font = TTF_OpenFont("ttf/lazy_dog.ttf", 32);
     if(font == NULL){
         printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());

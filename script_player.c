@@ -4,54 +4,126 @@
 
 #define PARSING_RECORD	1
 
+typedef enum _eTraverseOption
+{
+	TRAVERSE_NONE,
+	TRAVERSE_BREAK,
+	TRAVERSE_NEXT_PARSING_RECORD,
+	TRAVERSE_JUMP,
+} TraverseOption;
+
 parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 {
 	assert(pUserEvent->code == PARSING_RECORD);
 
+	//printf("handle_parsing_record 1\n");
+
 	parsing_handle h = pUserEvent->data1;
 	parsing_record pvCurr = pUserEvent->data2;
+	TraverseOption option = TRAVERSE_NONE;
 
-	// all structures should be start from IdParentChild
-	IdParentChild* pIdParentChild = (IdParentChild*)pvCurr;
-
-	switch (pIdParentChild->_id)
+	for (; pvCurr != NULL;
+		pvCurr = (option == TRAVERSE_NEXT_PARSING_RECORD) ? script_get_next(h, pvCurr) :
+		((option == TRAVERSE_JUMP) ? pvCurr : NULL))
 	{
-	case FINAL_PROJECT:
+		// all structures should be start from IdParentChild
+		IdParentChild* pIdParentChild = (IdParentChild*)pvCurr;
+
+		switch (pIdParentChild->_id)
 		{
-			FinalProject* pFinalProject = (FinalProject*)pvCurr;
+		case FINAL_PROJECT:
+			{
+				// nothing happen, try next record
+				// FinalProject* pFinalProject = (FinalProject*)pvCurr;
+				// next parsing record
+				option = TRAVERSE_NEXT_PARSING_RECORD;
+			}
+			break;
+		case SCENE:
+			{
+				// nothing happen, try next record
+				// Scene* pScene = (Scene*)pvCurr;
+				option = TRAVERSE_NEXT_PARSING_RECORD;
+			}
+			break;
+		case CHARACTER:
+			{
+				// nothing happen, try next record
+				// Character* pCharacter = (Character*)pvCurr;
+				// next parsing record
+				option = TRAVERSE_NEXT_PARSING_RECORD;
+			}
+			break;
+		case ITEM:
+			{
+				// nothing happen, try next record
+				// Item* pItem = (Item*)pvCurr;
+				// next parsing record
+				option = TRAVERSE_NEXT_PARSING_RECORD;
+			}
+			break;
+		case EVENT:
+			{
+				Event* pEvent = (Event*)pvCurr;
+				if ((pEvent->scene != NULL) && (pEvent->scene[0] != '\0'))
+				{
+					//printf("Event scene:%s\n", pEvent->scene);
+					FullNameRecord* pFullNameRec = script_get_summary_next(h, NULL, pEvent->scene);
+					const char* background = ((Scene*)pFullNameRec->record)->background;
+					//printf("Event scene background:%s\n", background);
+					loadBackground(background);
+				}
+				if ((pEvent->dialogue != NULL) && (pEvent->dialogue[0] != '\0'))
+				{
+					//printf("Event dialog:%s\n", pEvent->dialogue);
+					FullNameRecord* pFullNameRec = script_get_summary_next(h, NULL, pEvent->dialogue);
+					// next parsing record
+					option = TRAVERSE_JUMP;
+					pvCurr = pFullNameRec->record;
+					//printf("Event dialog ended\n");
+				}
+			}
+			break;
+		case DIALOGUE:
+			{
+				Dialogue* pDialogue = (Dialogue*)pvCurr;
+				if ((pDialogue->character != NULL) && (pDialogue->character[0] != '\0'))
+				{
+					//printf("Dialog character:%s\n", pDialogue->character);
+					FullNameRecord* pFullNameRec = script_get_summary_next(h, NULL, pDialogue->character);
+					const char* name = ((Character*)pFullNameRec->record)->name;
+					loadName(name);
+					const char* character = ((Character*)pFullNameRec->record)->tachie;
+					loadCharacter(character);
+				}
+				if ((pDialogue->text != NULL) && (pDialogue->text[0] != '\0'))
+				{
+					//printf("Dialog text:%s\n", pDialogue->text);
+					loadDialog(pDialogue->text);
+				}
+				if ((pDialogue->next != NULL) && (pDialogue->next[0] != '\0'))
+				{
+					//printf("Dialog next:%s\n", pDialogue->text);
+					FullNameRecord* pFullNameRec = script_get_summary_next(h, NULL, pDialogue->next);
+					return pFullNameRec->record; // direct jump after mouse click 
+				}
+				option = TRAVERSE_BREAK;
+			}
+			break;
+		default:
+			printf("unsupported id %d\n", pIdParentChild->_id);
+			option = TRAVERSE_BREAK;
+			break;
 		}
-		break;
-	case SCENE:
-		{
-			Scene* pScene = (Scene*)pvCurr;
-		}
-		break;
-	case CHARACTER:
-		{
-			Character* pCharacter = (Character*)pvCurr;
-		}
-		break;
-	case ITEM:
-		{
-			Item* pItem = (Item*)pvCurr;
-		}
-		break;
-	case EVENT:
-		{
-			Event* pEvent = (Event*)pvCurr;
-		}
-		break;
-	case DIALOGUE:
-		{
-			Dialogue* pDialogue = (Dialogue*)pvCurr;
-		}
-		break;
-	default:
-		printf("unsupported id %d\n", pIdParentChild->_id);
-		break;
+
+		//printf("handle_parsing_record 2\n");
+
+		if (option == TRAVERSE_BREAK) { break; }
 	}
 
-	return pvCurr;
+	if (pvCurr == NULL) { return pvCurr; }
+
+	return script_get_next(h, pvCurr);
 }
 
 int main(int argc, char* args[])
@@ -112,7 +184,6 @@ int main(int argc, char* args[])
 	if (scriptEvent == (uint32_t)-1) { goto engine_uninit_label; }
 
 	SDL_UserEvent userEvent = { .type = scriptEvent, .code = PARSING_RECORD, .data1 = h, .data2 = pvCurr };
-	SDL_PushEvent((SDL_Event*)&userEvent);
 
     while (1)
     {
@@ -141,13 +212,13 @@ int main(int argc, char* args[])
 						start = true;
 						loadBackground("basement");
 						loadTextbox();
+						SDL_PushEvent((SDL_Event*)&userEvent);
 	                    break;
    					}	
    				}
    				else
    				{
    					// mouse click for next record in toml script
-   					pvCurr = script_get_next(h, pvCurr);
    					if (pvCurr != NULL)
    					{
 						userEvent = (SDL_UserEvent){ .type = scriptEvent, .code = PARSING_RECORD, .data1 = h, .data2 = pvCurr };
@@ -167,11 +238,7 @@ int main(int argc, char* args[])
     }
 
 engine_uninit_label:    
-    SDL_FreeSurface(bgSurface);
-    SDL_DestroyWindow(window);
-    IMG_Quit();
-    TTF_Quit();
-    SDL_Quit();
+    close();
 
 script_uninit_label:
 	script_uninit(h);
