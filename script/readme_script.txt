@@ -379,33 +379,61 @@ character = "Bob"
 text = "OK."
 
 Explaination of the structures in parsing.h:
+
+enum StructId:
+ To identify the struct.
+
+Container:
+ For table and array.
+
+IdParentChild:
+ To identify the first child and the others are linked by the _next field.
+ (It is just a header of the linked list for children.)
+
+FinalProject:
+ To store the title and author of this final project.
+
 Scene:
+ _id: to identify the struct as scene.
+ _parent: the parent of this structure.
+ _child: of no use, to make all structure consistent under cast.
+ _next: the "siblings" of this structure. (sub-linked list)
  name: the name of the scene
  backgound: the storage location of the background image
 
 Character:
+ _id: to identify the struct as scene.
+ _parent: the parent of this structure.
+ _child: of no use, to make all structure consistent under cast.
+ _next: the "siblings" of this structure. (sub-linked list)
  name: the name of the character
  avatar: the storage location of the avatar image
  tachie: the storage location of the tachie image
+ favor_cat: the favorability of the cats.
+ favor_dog: the favorability of the dogs. 
 
 Item:
+ _id: to identify the struct as scene.
+ _parent: the parent of this structure.
+ _child: of no use, to make all structure consistent under cast.
+ _next: the "siblings" of this structure. (sub-linked list)
  name: the name of the item
  image: the storage location of the image
 
-Favor:
- name: the character name of the favorability owner
- favor_cats: the favorability toward cats
- favor_dogs: the favorability toward dogs
+Event:
+ _id: to identify the struct as scene.
+ _parent: the parent of this structure.
+ _child: of no use, to make all structure consistent under cast.
+ _next: the "siblings" of this structure. (sub-linked list)
+ scene: to show the scene that should be displayed.
+ dialogue: go to the specified dialogue
 
-DialogueStory:
- name: the name of the story
- text: the story context
- next: next dialogue
- event: change background
-
-DialogueConversation:
- name: the name of the story
- character: the speaking character
- text: the story context
- next: next dialogue
- event: change background
+Dialogue:
+ _id: to identify the struct as scene.
+ _parent: the parent of this structure.
+ _child: of no use, to make all structure consistent under cast.
+ _next: the "siblings" of this structure. (sub-linked list)
+ character: the speaking character.
+ text: the story context.
+ next: go to the specified dialogue.
+ event: go to the specified event.
