@@ -3,6 +3,7 @@
 #include "engine.h"
 
 #define PARSING_RECORD	1
+#define MAX_CHARACTERS	8
 
 typedef enum _eTraverseOption
 {
@@ -11,6 +12,24 @@ typedef enum _eTraverseOption
 	TRAVERSE_NEXT_PARSING_RECORD,
 	TRAVERSE_JUMP,
 } TraverseOption;
+
+int32_t g_characters = 0;
+char g_loadedCharacters[MAX_CHARACTERS][128];
+
+const char* find_loaded_character(const char* character)
+{
+	for (int32_t i = 0; i < g_characters; ++i)
+	{
+		if (strcmp(character, g_loadedCharacters[i]) == 0) { return g_loadedCharacters[i]; }
+	}
+
+	return NULL;
+}
+
+void insert_loaded_character(const char* character)
+{
+	strcpy(g_loadedCharacters[g_characters++], character);
+}
 
 parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 {
@@ -72,6 +91,8 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 					const char* background = ((Scene*)pFullNameRec->record)->background;
 					//printf("Event scene background:%s\n", background);
 					loadBackground(background);
+					// clear all characters by loadBackground
+					g_characters = 0;
 				}
 				if ((pEvent->dialogue != NULL) && (pEvent->dialogue[0] != '\0'))
 				{
@@ -91,10 +112,21 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 				{
 					//printf("Dialog character:%s\n", pDialogue->character);
 					FullNameRecord* pFullNameRec = script_get_summary_next(h, NULL, pDialogue->character);
+					//printf("pFullNameRec:%p for character\n", pFullNameRec);
+					const char* character = ((Character*)pFullNameRec->record)->tachie;
+					if (find_loaded_character(character) == NULL)
+					{
+						loadCharacter(character);
+						insert_loaded_character(character);
+
+					}
+					loadTextbox();
 					const char* name = ((Character*)pFullNameRec->record)->name;
 					loadName(name);
-					const char* character = ((Character*)pFullNameRec->record)->tachie;
-					loadCharacter(character);
+				}
+				else
+				{
+					loadTextbox();
 				}
 				if ((pDialogue->text != NULL) && (pDialogue->text[0] != '\0'))
 				{
@@ -103,8 +135,9 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 				}
 				if ((pDialogue->next != NULL) && (pDialogue->next[0] != '\0'))
 				{
-					//printf("Dialog next:%s\n", pDialogue->text);
+					//printf("Dialog next:%s\n", pDialogue->next);
 					FullNameRecord* pFullNameRec = script_get_summary_next(h, NULL, pDialogue->next);
+					//printf("pFullNameRec:%p for next\n", pFullNameRec);
 					return pFullNameRec->record; // direct jump after mouse click 
 				}
 				option = TRAVERSE_BREAK;

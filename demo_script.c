@@ -18,7 +18,6 @@ int32_t main(int argc, char* args[])
 	int32_t ret = script_parsing(h, args[1]);
 	if (ret == 0)
 	{
-
 		printf("***print all\n");
 		script_print_all(h);
 		printf("***all printed\n\n");
@@ -99,11 +98,11 @@ int32_t main(int argc, char* args[])
 			}
 		}
 
-        for (FullNameRecord* pFullNameRecord = script_get_summary_next(h, NULL, "character.squirrel_one");
+		for (FullNameRecord* pFullNameRecord = script_get_summary_next(h, NULL, "character.squirrel_one");
 			pFullNameRecord != NULL; pFullNameRecord = script_get_summary_next(h, pFullNameRecord, "character.squirrel_one"))
 		{
 			script_print_record(pFullNameRecord->record);
-        }
+		}
 	}
 
 	script_uninit(h);

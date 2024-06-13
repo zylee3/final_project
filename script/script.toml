@@ -124,7 +124,7 @@ next = "event.change_first"
 
 [event.change_first]
 scene = "scene.first"
-dialogue = "dialogue.conversation.first_one.one"
+dialogue = "dialogue.conversation.first_one"
 
 [dialogue.conversation.first_one]
 [[dialogue.conversation.first_one.one]]
@@ -189,13 +189,13 @@ next = "dialogue.conversation.first_two.seven"
 
 [[dialogue.conversation.first_two.seven]]
 character = "character.samoyed"
-text = "I want to eat the wings…"
+text = "I want to eat the wings..."
 
 next = "dialogue.story.first_two.one"
 
 [dialogue.story.first_two]
 [[dialogue.story.first_two.one]]
-text = "As the herons become enraged at the party’s words, they dove down in a synchronized strike at the Salome. One attack landed, but the other was thwarted by the wok of Gorden. As Marceline tries to recuperate from a direct attack, Tommy throws an entire vial of powdered spice, getting the fine particulates in the eyes and throat of Marceline."
+text = "As the herons become enraged at the party's words, they dove down in a synchronized strike at the Salome. One attack landed, but the other was thwarted by the wok of Gorden. As Marceline tries to recuperate from a direct attack, Tommy throws an entire vial of powdered spice, getting the fine particulates in the eyes and throat of Marceline."
 
 next = "dialogue.story.first_two.two"
 
