@@ -235,7 +235,7 @@ next = "event.change_second"
 
 [event.change_second]
 scene = "scene.second"
-dialogue = "story.second_one"
+dialogue = "dialogue.story.second_one"
 
 [dialogue.story.second_one]
 text = "The next day, they encountered a forest full of lush trees ripe with fruit. As the cats climbed up the tree to pluck some for their lunch of the day, they were struck down violently. A loud thud was heard as they hit the floor, and their gaze was met by the inhabitants of the tree as they looked up."
@@ -332,7 +332,7 @@ next = "event.change_boss"
 
 [event.change_boss]
 scene = "scene.boss"
-dialogue = "boss_story_one"
+dialogue = "dialogue.story.boss_one"
 
 [dialogue.story.boss_one]
 [[dialogue.story.boss_one.one]]
@@ -353,13 +353,13 @@ next = "dialogue.conversation.boss_one"
 [dialogue.conversation.boss_one]
 [[dialogue.conversation.boss_one.one]]
 character = "character.samoyed"
-text = "It is the Dyson…"
+text = "It is the Dyson..."
 
 next = "dialogue.conversation.boss_one.two"
 
 [[dialogue.conversation.boss_one.two]]
 character = "character.golden_retriever"
-text = "It is so scary…"
+text = "It is so scary..."
 
 next = "dialogue.conversation.boss_one.three"
 
@@ -371,7 +371,7 @@ next = "dialogue.conversation.boss_one.four"
 
 [[dialogue.conversation.boss_one.four]]
 character = "character.tabby_cat"
-text = "Inedible, even dead…"
+text = "Inedible, even dead..."
 
 next = "dialogue.story.boss_two"
 
@@ -382,7 +382,7 @@ text = "The party was too afraid to move, and instead the Dyson charged towards 
 next = "dialogue.story.boss_two.two"
 
 [[dialogue.story.boss_two.two]]
-text = " He took out his wok, and readied himself for imminent impact. As a loud clash rang throughout the entire house, the rest sprung into action. With Blanche attacking its “head” (handle), and Salome chewing on its “Base” (Vacuum place)."
+text = " He took out his wok, and readied himself for imminent impact. As a loud clash rang throughout the entire house, the rest sprung into action. With Blanche attacking its 'head' (handle), and Salome chewing on its 'Base' (Vacuum place)."
 
 next = "dialogue.story.boss_two.three"
 

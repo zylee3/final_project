@@ -50,6 +50,14 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 
 		switch (pIdParentChild->_id)
 		{
+		case TABLE:
+			{
+				// nothing happen, try next record
+				// Table* pTable = (Table*)pvCurr;
+				// next parsing record
+				option = TRAVERSE_NEXT_PARSING_RECORD;
+			}
+			break;
 		case FINAL_PROJECT:
 			{
 				// nothing happen, try next record
@@ -88,6 +96,10 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 				{
 					//printf("Event scene:%s\n", pEvent->scene);
 					FullNameRecord* pFullNameRec = script_get_summary_next(h, NULL, pEvent->scene);
+					if (pFullNameRec == NULL)
+					{
+						printf("Invalid Event.scene %s in handle_parsing_record\n", pEvent->scene);
+					}
 					const char* background = ((Scene*)pFullNameRec->record)->background;
 					//printf("Event scene background:%s\n", background);
 					loadBackground(background);
@@ -98,6 +110,10 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 				{
 					//printf("Event dialog:%s\n", pEvent->dialogue);
 					FullNameRecord* pFullNameRec = script_get_summary_next(h, NULL, pEvent->dialogue);
+					if (pFullNameRec == NULL)
+					{
+						printf("Invalid Event.dialogue %s in handle_parsing_record\n", pEvent->dialogue);
+					}
 					// next parsing record
 					option = TRAVERSE_JUMP;
 					pvCurr = pFullNameRec->record;
@@ -112,7 +128,10 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 				{
 					//printf("Dialog character:%s\n", pDialogue->character);
 					FullNameRecord* pFullNameRec = script_get_summary_next(h, NULL, pDialogue->character);
-					//printf("pFullNameRec:%p for character\n", pFullNameRec);
+					if (pFullNameRec == NULL)
+					{
+						printf("Invalid Dialog.character %s in handle_parsing_record\n", pDialogue->character);
+					}
 					const char* character = ((Character*)pFullNameRec->record)->tachie;
 					if (find_loaded_character(character) == NULL)
 					{
@@ -137,6 +156,10 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 				{
 					//printf("Dialog next:%s\n", pDialogue->next);
 					FullNameRecord* pFullNameRec = script_get_summary_next(h, NULL, pDialogue->next);
+					if (pFullNameRec == NULL)
+					{
+						printf("Invalid Dialogue.next %s in handle_parsing_record\n", pDialogue->next);
+					}
 					//printf("pFullNameRec:%p for next\n", pFullNameRec);
 					return pFullNameRec->record; // direct jump after mouse click 
 				}
@@ -144,7 +167,7 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 			}
 			break;
 		default:
-			printf("unsupported id %d\n", pIdParentChild->_id);
+			printf("unsupported id %d in handle_parsing_record\n", pIdParentChild->_id);
 			option = TRAVERSE_BREAK;
 			break;
 		}
