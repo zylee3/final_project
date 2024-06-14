@@ -8,9 +8,13 @@
       `make`
 * You need to deploy the header and lib file with "sudo make install".
       `sudo make install`
+
 ## Run
 * You need to build the demo_script with "make" under final_project directory.
       `cd ..`
       `make`
 * To run demo_script, you need to specify script.tmol.
       `./demo_script script/script.toml`
+
+## Script
+* For script-related questions, please see script/readme_script.txt
