@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include "parsing.h"
+#include "../parsing.h"
 
 int32_t main(int argc, char* args[])
 {
