@@ -5,6 +5,7 @@ int textboxexist = 0;//check if textbox exist
 SDL_Window* window = NULL;
 SDL_Surface* gScreenSurface = NULL;
 */
+
 bool init(){
     // Initialize SDL
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
@@ -297,12 +298,21 @@ int loadBackground(const char *name){
     total_cc_on_screen = 0;
     textboxexist = 0;
     SDL_Rect bgrect = {0, 0, 1920, 1080};
+    _TRANSITION();
     if(_LOADMEDIA(path, bgrect, 3) == 1){
         printf("Failed to load image from %s!\n", path);
         free(path);
         return 1;
     }
     free(path);
+}
+void _TRANSITION(){
+    SDL_Rect transitionRect = {0, 0, 200, 1080};
+    for(int i = 0 ; i < 1920 ; i += 7){
+        transitionRect.x = i;
+        _LOADOBJECT("Transitions", transitionRect);
+        SDL_UpdateWindowSurface(window);
+    }
 }
 
 int _LOADMEDIA(char *path, SDL_Rect rect, int type){
