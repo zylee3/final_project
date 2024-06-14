@@ -398,17 +398,17 @@ Scene:
  _parent: the parent of this structure.
  _child: of no use, to make all structure consistent under cast.
  _next: the "siblings" of this structure. (sub-linked list)
- name: the name of the scene
- backgound: the storage location of the background image
+ name: the name of the scene.
+ backgound: the storage location of the background image.
 
 Character:
  _id: to identify the struct as scene.
  _parent: the parent of this structure.
  _child: of no use, to make all structure consistent under cast.
  _next: the "siblings" of this structure. (sub-linked list)
- name: the name of the character
- avatar: the storage location of the avatar image
- tachie: the storage location of the tachie image
+ name: the name of the character.
+ avatar: the storage location of the avatar image.
+ tachie: the storage location of the tachie image.
  favor_cat: the favorability of the cats.
  favor_dog: the favorability of the dogs. 
 
@@ -417,7 +417,7 @@ Item:
  _parent: the parent of this structure.
  _child: of no use, to make all structure consistent under cast.
  _next: the "siblings" of this structure. (sub-linked list)
- name: the name of the item
+ name: the name of the item.
  image: the storage location of the image
 
 Event:
@@ -426,7 +426,7 @@ Event:
  _child: of no use, to make all structure consistent under cast.
  _next: the "siblings" of this structure. (sub-linked list)
  scene: to show the scene that should be displayed.
- dialogue: go to the specified dialogue
+ dialogue: go to the specified dialogue.
 
 Dialogue:
  _id: to identify the struct as scene.
@@ -435,5 +435,14 @@ Dialogue:
  _next: the "siblings" of this structure. (sub-linked list)
  character: the speaking character.
  text: the story context.
- next: go to the specified dialogue.
- event: go to the specified event.
+ next: go to the specified dialogue or event.
+
+Find: To find how many structures of the specified name in the toml.
+ capacity: the maximum of the structures that can be placed.
+ count: the counts of structures found, negative for error.
+ ppvMatches: the pointer of the found structures.
+
+FullNameRecord: To find the structure of the specified name in a quicker way. (The structure is unique.)
+ fullName: the specified name.
+ order: the order in the toml.
+ record: the pointer of the found structure.
