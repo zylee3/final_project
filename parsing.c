@@ -765,7 +765,7 @@ parsing_record get_next(Program* pProgram, parsing_record pvCurrRec, enum Target
 			pvCurrRec = pProgram->parsing.memory.pvMem;
 		}
 
-		if (pvCurrRec == pProgram->parsing.pvCurrMem) { break; }
+		if (pvCurrRec >= pProgram->parsing.pvCurrMem) { break; }
 
 		pIdParentChild = (IdParentChild*)pvCurrRec;
 		bool wanted = true;
@@ -780,6 +780,7 @@ parsing_record get_next(Program* pProgram, parsing_record pvCurrRec, enum Target
 		else
 		{
 		}
+
 		if (wanted) { return pvCurrRec; }
 	}
 
@@ -849,7 +850,7 @@ int32_t summarize(Program* pProgram, enum Target target)
 	parsing_record pvStartRec = get_next(pProgram, NULL, target);
 	int32_t count = 0;
 
-    char prevFullName[GET_FULL_NAME_LEN] = "_invalid._prev._fullname";
+    char prevFullName[GET_FULL_NAME_LEN] = "_an._invalid._prev._fullname";
 
 	for (parsing_record pvCurrRec = pvStartRec; pvCurrRec != NULL;
 		pvCurrRec = get_next(pProgram, pvCurrRec, target))

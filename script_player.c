@@ -3,6 +3,7 @@
 #include "engine.h"
 
 #define PARSING_RECORD	1
+#define PARSING_ENDED	2
 #define MAX_CHARACTERS	8
 
 typedef enum _eTraverseOption
@@ -45,6 +46,7 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 		pvCurr = (option == TRAVERSE_NEXT_PARSING_RECORD) ? script_get_next(h, pvCurr) :
 		((option == TRAVERSE_JUMP) ? pvCurr : NULL))
 	{
+		//printf("pvCurr:%p option:%d\n", pvCurr, option);
 		// all structures should be start from IdParentChild
 		IdParentChild* pIdParentChild = (IdParentChild*)pvCurr;
 
@@ -54,6 +56,14 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 			{
 				// nothing happen, try next record
 				// Table* pTable = (Table*)pvCurr;
+				// next parsing record
+				option = TRAVERSE_NEXT_PARSING_RECORD;
+			}
+			break;
+		case ARRAY:
+			{
+				// nothing happen, try next record
+				// Array* pArray = (Array*)pvCurr;
 				// next parsing record
 				option = TRAVERSE_NEXT_PARSING_RECORD;
 			}
@@ -108,7 +118,7 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 				}
 				if ((pEvent->dialogue != NULL) && (pEvent->dialogue[0] != '\0'))
 				{
-					//printf("Event dialog:%s\n", pEvent->dialogue);
+					//printf("Event dialogue:%s\n", pEvent->dialogue);
 					FullNameRecord* pFullNameRec = script_get_summary_next(h, NULL, pEvent->dialogue);
 					if (pFullNameRec == NULL)
 					{
@@ -117,7 +127,7 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 					// next parsing record
 					option = TRAVERSE_JUMP;
 					pvCurr = pFullNameRec->record;
-					//printf("Event dialog ended\n");
+					//printf("Event dialog ended jump %p\n", pvCurr);
 				}
 			}
 			break;
@@ -126,21 +136,21 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 				Dialogue* pDialogue = (Dialogue*)pvCurr;
 				if ((pDialogue->character != NULL) && (pDialogue->character[0] != '\0'))
 				{
-					//printf("Dialog character:%s\n", pDialogue->character);
+					//printf("Dialogue character:%s\n", pDialogue->character);
 					FullNameRecord* pFullNameRec = script_get_summary_next(h, NULL, pDialogue->character);
 					if (pFullNameRec == NULL)
 					{
 						printf("Invalid Dialog.character %s in handle_parsing_record\n", pDialogue->character);
 					}
+					const char* name      = ((Character*)pFullNameRec->record)->name;
 					const char* character = ((Character*)pFullNameRec->record)->tachie;
-					if (find_loaded_character(character) == NULL)
+					if (find_loaded_character(name) == NULL)
 					{
 						loadCharacter(character);
-						insert_loaded_character(character);
+						insert_loaded_character(name);
 
 					}
 					loadTextbox();
-					const char* name = ((Character*)pFullNameRec->record)->name;
 					loadName(name);
 				}
 				else
@@ -149,12 +159,12 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 				}
 				if ((pDialogue->text != NULL) && (pDialogue->text[0] != '\0'))
 				{
-					//printf("Dialog text:%s\n", pDialogue->text);
+					//printf("Dialogue text:%s\n", pDialogue->text);
 					loadDialog(pDialogue->text);
 				}
 				if ((pDialogue->next != NULL) && (pDialogue->next[0] != '\0'))
 				{
-					//printf("Dialog next:%s\n", pDialogue->next);
+					//printf("Dialogue next:%s\n", pDialogue->next);
 					FullNameRecord* pFullNameRec = script_get_summary_next(h, NULL, pDialogue->next);
 					if (pFullNameRec == NULL)
 					{
@@ -179,6 +189,7 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 
 	if (pvCurr == NULL) { return pvCurr; }
 
+	//printf("pvCurr:%p option:%d 2\n", pvCurr, option);
 	return script_get_next(h, pvCurr);
 }
 
@@ -203,7 +214,7 @@ int main(int argc, char* args[])
 	if (ret != 0)
 	{
 		ret = 3;
-        printf("script_parsing failed\n");
+		printf("script_parsing failed\n");
 		goto script_uninit_label;
 	}
 
@@ -211,90 +222,103 @@ int main(int argc, char* args[])
 	if (pvCurr == NULL)
 	{
 		ret = 4;
-        printf("empty script!\n");
-        goto script_uninit_label;
+		printf("empty script!\n");
+		goto script_uninit_label;
 	}
 
 	if (!init())
 	{
 		ret = 5;
-        printf("Failed to initialize the engine!\n");
-        goto script_uninit_label;
+		printf("Failed to initialize the engine!\n");
+		goto script_uninit_label;
 	}
 
-    SDL_Surface* bgSurface = NULL;
-    //object to hold the image
+	SDL_Surface* bgSurface = NULL;
+	//object to hold the image
 
-    bool start = false;
+	bool start = false;
 
-    //start screen
-    loadBackground("bgstart");
-    SDL_Rect buttonRect = {0, 650, 350, 150};
-    buttonRect.x = buttonRect.x = (SCREEN_WIDTH - buttonRect.w) / 2;
-    _LOADOBJECT("startbutton", buttonRect); 
-    SDL_Rect titleRect = {0, 75, 650, 450};
-    titleRect.x = (SCREEN_WIDTH - titleRect.w) / 2;
-    _LOADOBJECT("title", titleRect);
+	//start screen
+	loadBackground("bgstart");
+	SDL_Rect buttonRect = {0, 650, 350, 150};
+	buttonRect.x = buttonRect.x = (SCREEN_WIDTH - buttonRect.w) / 2;
+	_LOADOBJECT("startbutton", buttonRect);
+	SDL_Rect titleRect = {0, 75, 650, 450};
+	titleRect.x = (SCREEN_WIDTH - titleRect.w) / 2;
+	_LOADOBJECT("title", titleRect);
 
 	uint32_t scriptEvent = SDL_RegisterEvents(1);
 	if (scriptEvent == (uint32_t)-1) { goto engine_uninit_label; }
 
 	SDL_UserEvent userEvent = { .type = scriptEvent, .code = PARSING_RECORD, .data1 = h, .data2 = pvCurr };
 
-    while (1)
-    {
-        SDL_Event e;
-    
-        while (SDL_PollEvent(&e) != 0)
-        {
-            if (e.type == SDL_QUIT) { goto engine_uninit_label; }
-            
-            if (e.type == SDL_KEYDOWN)
-            {
-                if (e.key.keysym.sym == SDLK_ESCAPE) { goto engine_uninit_label; }
-            }
-            else if (e.type == SDL_MOUSEBUTTONDOWN)
-            {
-                int x, y;
-                //printf("Click on %d %d\n", x, y);
-                SDL_GetMouseState(&x, &y);
-                //clean the event queue, prevent the event from being triggered multiple times
-                while (SDL_PollEvent(&e)) {}
-   
-   				if (!start)
-   				{
-   					if ((x >= 790 && x <= 1140) && (y >= 640 && y <= 790))
-   					{
+	while (1)
+	{
+		SDL_Event e;
+
+		while (SDL_PollEvent(&e) != 0)
+		{
+			if (e.type == SDL_QUIT) { goto engine_uninit_label; }
+
+			if (e.type == SDL_KEYDOWN)
+			{
+				if (e.key.keysym.sym == SDLK_ESCAPE) { goto engine_uninit_label; }
+			}
+			else if (e.type == SDL_MOUSEBUTTONDOWN)
+			{
+				int x, y;
+				//printf("Click on %d %d\n", x, y);
+				SDL_GetMouseState(&x, &y);
+				//clean the event queue, prevent the event from being triggered multiple times
+				while (SDL_PollEvent(&e)) {}
+
+				if (!start)
+				{
+					if ((x >= 790 && x <= 1140) && (y >= 640 && y <= 790))
+					{
 						start = true;
 						loadBackground("basement");
 						loadTextbox();
 						SDL_PushEvent((SDL_Event*)&userEvent);
-	                    break;
-   					}	
-   				}
-   				else
-   				{
-   					// mouse click for next record in toml script
-   					if (pvCurr != NULL)
-   					{
+						break;
+					}
+				}
+				else
+				{
+					// mouse click for next record in toml script
+					if (pvCurr != NULL)
+					{
 						userEvent = (SDL_UserEvent){ .type = scriptEvent, .code = PARSING_RECORD, .data1 = h, .data2 = pvCurr };
 						SDL_PushEvent((SDL_Event*)&userEvent);
 					}
 					else
 					{
 						// end of toml script
+						userEvent = (SDL_UserEvent){ .type = scriptEvent, .code = PARSING_ENDED, .data1 = h, .data2 = pvCurr };
+						SDL_PushEvent((SDL_Event*)&userEvent);
 					}
-   				}
-            }
-            else if (e.type == scriptEvent)
-            {
-        		pvCurr = handle_parsing_record((SDL_UserEvent*)&e);
-            }
-        }
-    }
+				}
+			}
+			else if (e.type == scriptEvent)
+			{
+				if (((SDL_UserEvent*)&e)->code == PARSING_RECORD)
+				{
+					pvCurr = handle_parsing_record((SDL_UserEvent*)&e);
+				}
+				else
+				{
+					goto engine_uninit_label;
+				}
+			}
+		}
+	}
 
-engine_uninit_label:    
-    close();
+engine_uninit_label:
+	SDL_FreeSurface(gScreenSurface);
+	SDL_DestroyWindow(window);
+	IMG_Quit();
+	TTF_Quit();
+	SDL_Quit();
 
 script_uninit_label:
 	script_uninit(h);
