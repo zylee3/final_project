@@ -1,5 +1,6 @@
 #include "engine.h"
 
+// develop use
 int main(int argc, char* args[]){
     if(!init()){
         printf("Failed to initialize!\n");
@@ -23,11 +24,21 @@ int main(int argc, char* args[]){
         SDL_Event e;
         while(SDL_PollEvent(&e) != 0){
             if(e.type == SDL_QUIT){
-                close();
+                SDL_FreeSurface(bgSurface);
+                SDL_DestroyWindow(window);
+                IMG_Quit();
+                TTF_Quit();
+                SDL_Quit();
+                return 0;
             }
             else if(e.type == SDL_KEYDOWN){
                 if(e.key.keysym.sym == SDLK_ESCAPE){//exit
-                    close();
+                    SDL_FreeSurface(bgSurface);
+                    SDL_DestroyWindow(window);
+                    IMG_Quit();
+                    TTF_Quit();
+                    SDL_Quit();
+                    return 0;
                 }
                 else if(e.key.keysym.sym == SDLK_c){//sample character
                     loadCharacter("blackcat");
@@ -35,14 +46,20 @@ int main(int argc, char* args[]){
                 else if(e.key.keysym.sym == SDLK_t){//sample textbox showing
                     loadName("Black Cat");
                     loadDialog("Hi, I'm Black Cat, is this guild's knight captain. Nice to meet you! freshman! I'm here to help you with your first mission. Let's go to the basement to get your first mission!");
-                    
-                    
+                }
+                else if(e.key.keysym.sym == SDLK_i){
+                    chooseFromTwo("catnip", "frisbee");
+                }
+                else if(e.key.keysym.sym == SDLK_b){
+                    loadBackground("basement");
+                }
+                else if(e.key.keysym.sym == SDLK_x){
+                    chooseFromThree("catnip", "frisbee", "goldring");
                 }
                 
             }
             else if(e.type == SDL_MOUSEBUTTONDOWN){//sample button click
                 int x, y;
-                //printf("Click on %d %d\n", x, y);
                 SDL_GetMouseState(&x, &y);
                 while(SDL_PollEvent(&e)){
                     //clean the event queue, prevent the event from being triggered multiple times
@@ -56,6 +73,10 @@ int main(int argc, char* args[]){
             }
         }
     }
-    close();
-
+    SDL_FreeSurface(bgSurface);
+    SDL_DestroyWindow(window);
+    IMG_Quit();
+    TTF_Quit();
+    SDL_Quit();
+    return 0;
 }
