@@ -129,7 +129,7 @@ dialogue = "dialogue.conversation.first_one"
 [dialogue.conversation.first_one]
 [[dialogue.conversation.first_one.one]]
 character = "character.golden_retriever"
-text = "There is something big in front, smells bad too."
+text = "There's something big in front, smells bad too."
 
 next = "dialogue.conversation.first_one.two"
 
@@ -141,9 +141,13 @@ next = "dialogue.conversation.first_one.three"
 
 [[dialogue.conversation.first_one.three]]
 character = "character.malayan_night_heron_one"
-text = "Who the hell do you think you are eating!? I will have you served up for breakfast!"
+text = "Who the hell do you think you're eating!? I'll have you served up for breakfast!"
 
-next = "dialogue.story.first_one"
+next = "event.change_first_story_one"
+
+[event.change_first_story_one]
+scene = "scene.first"
+dialogue = "dialogue.story.first_one"
 
 [dialogue.story.first_one]
 text = "Blanche leaps forwards and slashes it with his nails. As the nails were about to hit the Marceline, it parried it with its beak. Salome rushes forwards to deliver a strong bite, but the Marceline spreads its enormous wings and bolts into the sky. As it encircles the party, it lets out a shriek, loud enough for the party to cover their ears. The party hoddles together, and from the horizon, a faint shadow could be seen looming closer towards the fight."
@@ -153,7 +157,7 @@ next = "dialogue.conversation.first_two"
 [dialogue.conversation.first_two]
 [[dialogue.conversation.first_two.one]]
 character = "character.malayan_night_heron_two"
-text = "Baby! What is wrong?"
+text = "Baby! What's wrong?"
 
 next = "dialogue.conversation.first_two.two"
 
@@ -165,7 +169,7 @@ next = "dialogue.conversation.first_two.three"
 
 [[dialogue.conversation.first_two.three]]
 character = "character.malayan_night_heron_two"
-text = "What the hell? You think you are gonna pull up at my crib and tryna eat my woman!?"
+text = "What the hell? You think you're gonna pull up at my crib and tryna eat my woman!?"
 
 next = "dialogue.conversation.first_two.four"
 
@@ -191,7 +195,11 @@ next = "dialogue.conversation.first_two.seven"
 character = "character.samoyed"
 text = "I want to eat the wings..."
 
-next = "dialogue.story.first_two.one"
+next = "event.change_first_story_two"
+
+[event.change_first_story_two]
+scene = "scene.first"
+dialogue = "dialogue.story.first_two.one"
 
 [dialogue.story.first_two]
 [[dialogue.story.first_two.one]]
@@ -215,7 +223,11 @@ next = "dialogue.conversation.first_three.two"
 character = "character.malayan_night_heron_two"
 text = "Fly! As fast as you can!"
 
-next = "dialogue.story.first_three"
+next = "event.change_first_story_three"
+
+[event.change_first_story_three]
+scene = "scene.first"
+dialogue = "dialogue.story.first_three"
 
 [dialogue.story.first_three]
 [[dialogue.story.first_three.one]]
@@ -265,7 +277,11 @@ next = "dialogue.conversation.second_one.four"
 character = "character.black_cat"
 text = "And get your skins ready for repossession you bastards!"
 
-next = "dialogue.story.second_two"
+next = "event.change_second_story_two"
+
+[event.change_second_story_two]
+scene = "scene.second"
+dialogue = "dialogue.story.second_two"
 
 [dialogue.story.second_two]
 [[dialogue.story.second_two.one]]
@@ -282,7 +298,11 @@ next = "dialogue.conversation.second_two"
 character = "character.tabby_cat"
 text = "Cover your nose, mouth and eyes!"
 
-next = "dialogue.story.second_three"
+next = "event.change_second_story_three"
+
+[event.change_second_story_three]
+scene = "scene.second"
+dialogue = "dialogue.story.second_three"
 
 [dialogue.story.second_three]
 text = "He says to the other members, and throws the flask at the squirrels. They let out a violent hiss, as their bodies convulse due to intense pain. They feel their tracts burn as their orifices were violated in ways that were previously unimaginable to them."
@@ -310,9 +330,13 @@ next = "dialogue.conversation.second_three.four"
 
 [[dialogue.conversation.second_three.four]]
 character = "character.squirrel_four"
-text = "KIDS? KIDS IT IS OKAY, MAMA IS HERE."
+text = "KIDS? KIDS IT IS OKAY, MAMA'S HERE."
 
-next = "dialogue.story.second_four"
+next = "event.change_second_story_four"
+
+[event.change_second_story_four]
+scene = "scene.second"
+dialogue = "dialogue.story.second_four"
 
 [dialogue.story.second_four]
 [[dialogue.story.second_four.one]]
@@ -373,7 +397,11 @@ next = "dialogue.conversation.boss_one.four"
 character = "character.tabby_cat"
 text = "Inedible, even dead..."
 
-next = "dialogue.story.boss_two"
+next = "event.change_boss_story_two"
+
+[event.change_boss_story_two]
+scene = "scene.boss"
+dialogue = "dialogue.story.boss_two"
 
 [dialogue.story.boss_two]
 [[dialogue.story.boss_two.one]]
