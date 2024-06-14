@@ -1,10 +1,10 @@
 #include "engine.h"
-
+/*
 int total_cc_on_screen = 0;//number of character on screen
 int textboxexist = 0;//check if textbox exist
 SDL_Window* window = NULL;
 SDL_Surface* gScreenSurface = NULL;
-
+*/
 bool init(){
     // Initialize SDL
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
@@ -75,11 +75,11 @@ int chooseFromTwo(char *name1, char *name2){
         SDL_Event e;
         while(SDL_PollEvent(&e) != 0){
             if(e.type == SDL_QUIT){
-                close();
+                return 0;
             }
             else if(e.type == SDL_KEYDOWN){
                 if(e.key.keysym.sym == SDLK_ESCAPE){//exit
-                    close();
+                    return 0;
                 }
                 else if(e.key.keysym.sym == SDLK_1){
                     return 1;
@@ -217,25 +217,37 @@ int loadCharacter(const char *name){
         case 1:
             ccrect.x = 0;
             ccrect.y = 400;
-            ccrect.w = 400;
+            ccrect.w = 200;
             ccrect.h = 400;
             break;
         case 2:
-            ccrect.x = 400;
+            ccrect.x = 300;
             ccrect.y = 400;
-            ccrect.w = 400;
+            ccrect.w = 200;
             ccrect.h = 400;
             break;
         case 3:
-            ccrect.x = 1120;
+            ccrect.x = 600;
             ccrect.y = 400;
-            ccrect.w = 400;
+            ccrect.w = 200;
             ccrect.h = 400;
             break;
         case 4:
-            ccrect.x = 1520;
+            ccrect.x = 1120;
             ccrect.y = 400;
-            ccrect.w = 400;
+            ccrect.w = 200;
+            ccrect.h = 400;
+            break;
+        case 5:
+            ccrect.x = 1420;
+            ccrect.y = 400;
+            ccrect.w = 200;
+            ccrect.h = 400;
+            break;
+        case 6:
+            ccrect.x = 1720;
+            ccrect.y = 400;
+            ccrect.w = 200;
             ccrect.h = 400;
             break;
         default:
@@ -299,7 +311,7 @@ int _LOADMEDIA(char *path, SDL_Rect rect, int type){
         printf("Failed to load image from %s!\n", path);
         return 1;
     }
-    if(type == 1 && total_cc_on_screen > 2){
+    if(type == 1 && total_cc_on_screen > 3){
             loadedSurface = _FLIPSURFACE(loadedSurface);
     }
     SDL_BlitScaled(loadedSurface, NULL, gScreenSurface, &rect);
@@ -342,8 +354,8 @@ SDL_Surface* _LOADSURFACE(char* path){
     }
     return loadedSurface;
 }
-
-/*int main(int argc, char* args[]){
+/* develop use
+int main(int argc, char* args[]){
     if(!init()){
         printf("Failed to initialize!\n");
         return 1;
@@ -415,6 +427,12 @@ SDL_Surface* _LOADSURFACE(char* path){
             }
         }
     }
-    close();
+    SDL_FreeSurface(bgSurface);
+    SDL_DestroyWindow(window);
+    IMG_Quit();
+    TTF_Quit();
+    SDL_Quit();
+    return 0;
 
-}*/
+}
+*/
