@@ -64,6 +64,8 @@ int _LOADOBJECT(char *name, SDL_Rect rect);//load item to screen. name: name of 
 
 int loadBackground(char *name);//load background to screen. name: name of the image. Background must in folder "bg"
 
+void _TRANSITION();//transition effect(NOT TO USE
+
 int _LOADMEDIA(char *path, SDL_Rect rect, int type);//BlitSurface to screen (NOT TO USE
 //type 1: character
 //type 2: item(object excpet character and background)
