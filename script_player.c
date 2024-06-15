@@ -109,6 +109,7 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 					if (pFullNameRec == NULL)
 					{
 						printf("Invalid Event.scene %s in handle_parsing_record\n", pEvent->scene);
+						return NULL;
 					}
 					const char* background = ((Scene*)pFullNameRec->record)->background;
 					//printf("Event scene background:%s\n", background);
@@ -123,6 +124,7 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 					if (pFullNameRec == NULL)
 					{
 						printf("Invalid Event.dialogue %s in handle_parsing_record\n", pEvent->dialogue);
+						return NULL;
 					}
 					// next parsing record
 					option = TRAVERSE_JUMP;
@@ -141,12 +143,15 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 					if (pFullNameRec == NULL)
 					{
 						printf("Invalid Dialog.character %s in handle_parsing_record\n", pDialogue->character);
+						return NULL;
 					}
 					const char* name      = ((Character*)pFullNameRec->record)->name;
+					const char* avatar    = ((Character*)pFullNameRec->record)->avatar;
 					const char* character = ((Character*)pFullNameRec->record)->tachie;
 					if (find_loaded_character(name) == NULL)
 					{
 						loadCharacter(character);
+						loadAvatar(avatar);
 						insert_loaded_character(name);
 
 					}
@@ -169,6 +174,7 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 					if (pFullNameRec == NULL)
 					{
 						printf("Invalid Dialogue.next %s in handle_parsing_record\n", pDialogue->next);
+						return NULL;
 					}
 					//printf("pFullNameRec:%p for next\n", pFullNameRec);
 					return pFullNameRec->record; // direct jump after mouse click
