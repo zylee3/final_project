@@ -5,11 +5,28 @@ int textboxexist = 0;//check if textbox exist
 SDL_Window* window = NULL;
 SDL_Surface* gScreenSurface = NULL;
 
+char relativeccPath[] = "cc/";
+char relativebgPath[] = "bg/";
+char relativeitemPath[] = "item/";
+char relativettfPath[] = "ttf/";
+
+char ccPath[PATH_MAX];
+char bgPath[PATH_MAX];
+char itemPath[PATH_MAX];
+char ttfPath[PATH_MAX];
 
 bool init(){
     // Initialize SDL
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
         printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+        return false;
+    }
+
+    if(realpath(relativeccPath, ccPath) == NULL ||
+       realpath(relativebgPath, bgPath) == NULL ||
+       realpath(relativeitemPath, itemPath) == NULL ||
+       realpath(relativettfPath, ttfPath) == NULL){
+        perror("Error resolving absolute path");
         return false;
     }
 
@@ -58,11 +75,11 @@ int chooseFromTwo(char *name1, char *name2){
     _LOADITEMBOX(1);
     SDL_Rect itemrect = {420, 410, 280, 280};
     if(_LOADOBJECT(name1, itemrect) == 1){
-        printf("Failed to load image from %s!\n", name1);
+        printf("Failed to load image from %s! ,%d\n", name1, __LINE__);
     }
     itemrect.x = 1220;
     if(_LOADOBJECT(name2, itemrect) == 1){
-        printf("Failed to load image from %s!\n", name2);
+        printf("Failed to load image from %s! ,%d\n", name2, __LINE__);
     }
     //load choosing dialog
     char* text = calloc(strlen(name1) + strlen(name2) + 100, sizeof(char));
@@ -115,15 +132,15 @@ int chooseFromThree(char *name1, char *name2, char *name3){
     _LOADITEMBOX(2);
     SDL_Rect itemrect = {420, 410, 280, 280};
     if(_LOADOBJECT(name1, itemrect) == 1){
-        printf("Failed to load image from %s!\n", name1);
+        printf("Failed to load image from %s! ,%d\n", name1, __LINE__);
     }
     itemrect.x = 820;
     if(_LOADOBJECT(name2, itemrect) == 1){
-        printf("Failed to load image from %s!\n", name2);
+        printf("Failed to load image from %s! ,%d\n", name2, __LINE__);
     }
     itemrect.x = 1220;
     if(_LOADOBJECT(name3, itemrect) == 1){
-        printf("Failed to load image from %s!\n", name3);
+        printf("Failed to load image from %s! ,%d\n", name3, __LINE__);
     }
     //load choosing dialog
     char* text = calloc(strlen(name1) + strlen(name2) + strlen(name3) + 100, sizeof(char));
@@ -202,8 +219,8 @@ SDL_Surface* _FLIPSURFACE(SDL_Surface* surface){
 }
 
 int loadCharacter(const char *name){
-    char* path = calloc(strlen(name) + 20, sizeof(char));
-    strcpy(path, "cc/");
+    char* path = calloc(strlen(name) + 5010, sizeof(char));
+    strcpy(path, ccPath);
     strcat(path, name);
     for(int i = 0; i < strlen(path); i++){
         if(path[i] == ' '){
@@ -252,12 +269,12 @@ int loadCharacter(const char *name){
             ccrect.h = 400;
             break;
         default:
-            printf("Cannot load more character!\n");
+            printf("Cannot load more character! %d\n", __LINE__);
             free(path);
             return 1;
     }
     if(_LOADMEDIA(path, ccrect, 1) == 1){
-        printf("Failed to load image from %s!\n", path);
+        printf("Failed to load image from %s! ,%d\n", path, __LINE__);
         free(path);
         return 1;
     }
@@ -268,8 +285,8 @@ int loadCharacter(const char *name){
 }
 
 int _LOADOBJECT(char *name, SDL_Rect rect){
-    char *path = calloc(strlen(name) + 20, sizeof(char));
-    strcpy(path, "item/");
+    char *path = calloc(strlen(name) + 5010, sizeof(char));
+    strcpy(path, itemPath);
     strcat(path, name);
     for(int i = 0; i < strlen(path); i++){
         if(path[i] == ' '){
@@ -278,7 +295,7 @@ int _LOADOBJECT(char *name, SDL_Rect rect){
     }
     strcat(path, ".png");
     if(_LOADMEDIA(path, rect, 2) == 1){
-        printf("Failed to load image from %s!\n", path);
+        printf("Failed to load image from %s! ,%d\n", path, __LINE__);
         free(path);
         return 1;
     }
@@ -286,8 +303,8 @@ int _LOADOBJECT(char *name, SDL_Rect rect){
 }
 
 int loadBackground(const char *name){
-    char *path = calloc(strlen(name) + 20, sizeof(char));
-    strcpy(path, "bg/");
+    char *path = calloc(strlen(name) + 5010, sizeof(char));
+    strcpy(path, bgPath);
     strcat(path, name);
     for(int i = 0; i < strlen(path); i++){
         if(path[i] == ' '){
@@ -300,29 +317,31 @@ int loadBackground(const char *name){
     SDL_Rect bgrect = {0, 0, 1920, 1080};
     _TRANSITION();
     if(_LOADMEDIA(path, bgrect, 3) == 1){
-        printf("Failed to load image from %s!\n", path);
+        printf("Failed to load image from %s! ,%d\n", path, __LINE__);
         free(path);
         return 1;
     }
     free(path);
 }
+
 void _TRANSITION(){
     SDL_Rect transitionRect = {0, 0, 200, 1080};
     for(int i = 0 ; i < 1920 ; i += 7){
         transitionRect.x = i;
         _LOADOBJECT("Transitions", transitionRect);
-        SDL_UpdateWindowSurface(window);
     }
 }
 
 int _LOADMEDIA(char *path, SDL_Rect rect, int type){
     SDL_Surface* loadedSurface = _LOADSURFACE(path);
     if(loadedSurface == NULL){
-        printf("Failed to load image from %s!\n", path);
+        printf("Failed to load image from %s! ,%d\n", path, __LINE__);
         return 1;
     }
     if(type == 1 && total_cc_on_screen > 3){
-            loadedSurface = _FLIPSURFACE(loadedSurface);
+        SDL_Surface* originalSurface = loadedSurface;
+        loadedSurface = _FLIPSURFACE(loadedSurface);
+        SDL_FreeSurface(originalSurface);
     }
     SDL_BlitScaled(loadedSurface, NULL, gScreenSurface, &rect);
     SDL_UpdateWindowSurface(window);
@@ -330,9 +349,13 @@ int _LOADMEDIA(char *path, SDL_Rect rect, int type){
 }
 
 int _LOADTEXT(const char *text , int type){
-    TTF_Font *font = TTF_OpenFont("ttf/lazy_dog.ttf", 32);
+    char* path = calloc(5010, sizeof(char));
+    strcpy(path, ttfPath);
+    strcat(path, "lazy_dog.ttf");
+    TTF_Font *font = TTF_OpenFont(path, 32);
+    free(path);
     if(font == NULL){
-        printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
+        printf("Failed to load font! SDL_ttf Error: %s , %d\n", TTF_GetError(), __LINE__);
         return 1;
     }
     SDL_Color textColor = {0, 0, 0};
@@ -360,7 +383,7 @@ SDL_Surface* _LOADSURFACE(char* path){
     // Create texture from surface
     SDL_Surface* loadedSurface = IMG_Load(path);
     if(loadedSurface == NULL){
-        printf("Unable to create Surface from %s! SDL Error: %s\n", path, SDL_GetError());
+        printf("Unable to create Surface from %s! SDL Error: %s , %d\n", path, SDL_GetError(), __LINE__);
     }
     return loadedSurface;
 }

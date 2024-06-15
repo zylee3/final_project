@@ -1,6 +1,5 @@
 #include "../engine.h"
 
-// develop use
 int main(int argc, char* args[]){
     if(!init()){
         printf("Failed to initialize!\n");
@@ -8,7 +7,6 @@ int main(int argc, char* args[]){
     }
     SDL_Surface* bgSurface = NULL;
     //object to hold the image
-
     int start = 0;
     //start screen
     loadBackground("bgstart");
