@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <limits.h>
 
 #define PATH_MAX 4096
 
@@ -23,15 +22,6 @@ extern int textboxexist;//check if textbox exist
 extern SDL_Window* window;
 extern SDL_Surface* gScreenSurface;
 
-extern char relativeccPath[];
-extern char relativebgPath[];
-extern char relativeitemPath[];
-extern char relativettfPath[];
-
-extern char ccPath[PATH_MAX];
-extern char bgPath[PATH_MAX];
-extern char itemPath[PATH_MAX];
-extern char ttfPath[PATH_MAX];
 
 
 #define loadTextbox() \

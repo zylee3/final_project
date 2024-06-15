@@ -5,15 +5,7 @@ int textboxexist = 0;//check if textbox exist
 SDL_Window* window = NULL;
 SDL_Surface* gScreenSurface = NULL;
 
-char relativeccPath[] = "cc/";
-char relativebgPath[] = "bg/";
-char relativeitemPath[] = "item/";
-char relativettfPath[] = "ttf/";
 
-char ccPath[PATH_MAX];
-char bgPath[PATH_MAX];
-char itemPath[PATH_MAX];
-char ttfPath[PATH_MAX];
 
 bool init(){
     // Initialize SDL
@@ -22,16 +14,8 @@ bool init(){
         return false;
     }
 
-    if(realpath(relativeccPath, ccPath) == NULL ||
-       realpath(relativebgPath, bgPath) == NULL ||
-       realpath(relativeitemPath, itemPath) == NULL ||
-       realpath(relativettfPath, ttfPath) == NULL){
-        perror("Error resolving absolute path");
-        return false;
-    }
-
     // Create window
-    window = SDL_CreateWindow("Furry adventure!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Final project!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if(window == NULL){
         printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
         return false;
@@ -219,8 +203,8 @@ SDL_Surface* _FLIPSURFACE(SDL_Surface* surface){
 }
 
 int loadCharacter(const char *name){
-    char* path = calloc(strlen(name) + 5010, sizeof(char));
-    strcpy(path, ccPath);
+    char* path = calloc(strlen(name) + 20, sizeof(char));
+    strcpy(path, "cc/");
     strcat(path, name);
     for(int i = 0; i < strlen(path); i++){
         if(path[i] == ' '){
@@ -285,8 +269,8 @@ int loadCharacter(const char *name){
 }
 
 int _LOADOBJECT(char *name, SDL_Rect rect){
-    char *path = calloc(strlen(name) + 5010, sizeof(char));
-    strcpy(path, itemPath);
+    char *path = calloc(strlen(name) + 20, sizeof(char));
+    strcpy(path, "item/");
     strcat(path, name);
     for(int i = 0; i < strlen(path); i++){
         if(path[i] == ' '){
@@ -303,8 +287,8 @@ int _LOADOBJECT(char *name, SDL_Rect rect){
 }
 
 int loadBackground(const char *name){
-    char *path = calloc(strlen(name) + 5010, sizeof(char));
-    strcpy(path, bgPath);
+    char *path = calloc(strlen(name) + 20, sizeof(char));
+    strcpy(path, "bg/");
     strcat(path, name);
     for(int i = 0; i < strlen(path); i++){
         if(path[i] == ' '){
@@ -349,11 +333,7 @@ int _LOADMEDIA(char *path, SDL_Rect rect, int type){
 }
 
 int _LOADTEXT(const char *text , int type){
-    char* path = calloc(5010, sizeof(char));
-    strcpy(path, ttfPath);
-    strcat(path, "lazy_dog.ttf");
-    TTF_Font *font = TTF_OpenFont(path, 32);
-    free(path);
+    TTF_Font *font = TTF_OpenFont("ttf/lazy_dog.ttf", 32);
     if(font == NULL){
         printf("Failed to load font! SDL_ttf Error: %s , %d\n", TTF_GetError(), __LINE__);
         return 1;
