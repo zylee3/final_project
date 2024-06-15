@@ -171,9 +171,12 @@ parsing_record handle_parsing_record(SDL_UserEvent* pUserEvent)
 						printf("Invalid Dialogue.next %s in handle_parsing_record\n", pDialogue->next);
 					}
 					//printf("pFullNameRec:%p for next\n", pFullNameRec);
-					return pFullNameRec->record; // direct jump after mouse click 
+					return pFullNameRec->record; // direct jump after mouse click
 				}
-				option = TRAVERSE_BREAK;
+				else
+				{
+					return NULL;
+				}
 			}
 			break;
 		default:
