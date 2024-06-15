@@ -103,15 +103,15 @@ favor_dogs = 0
 
 [item.frisbee]
 name = "Frisbee"
-image = ""
+image = "frisbee"
 
 [item.catnip]
 name = "Catnip"
-image = ""
+image = "catnip"
 
 [item.golden_ring]
 name = "Golden ring"
-image = ""
+image = "goldring"
 
 [event.change_guild]
 scene = "scene.guild"
@@ -430,22 +430,37 @@ next = "dialogue.story_boss_two.six"
 
 [dialogue.story_boss_two.six]
 text = "They four rejoiced, for they have slain a legendary beast. They quickly rushed to search the room where the beast resides. Within, they found a frisbee, catnip, and a golden ring."
+next = "event.change_boss_option_frisbee"
+
+[event.change_boss_option_frisbee]
+scene = "scene.boss"
+dialogue = "dialogue.option_boss_frisbee"
 
 #item = "item.frisbee"
 #item = "item.catnip"
 #item = "item.golden_ring"
 
-[dialogue.option_boss_two_frisbee]
+[dialogue.option_boss_frisbee]
 #Upon choosing Frisbee
 
 text = "The party returned to the kingdom with a frisbee in hand. As it was a legendary item that could not be found within the kingdom, the Salome was awarded the title of duke, and was given the entirety of the Adventurer's guild as a result."
+next = "event.change_boss_option_catnip"
 
-[dialogue.option_boss_two_catnip]
+[event.change_boss_option_catnip]
+scene = "scene.boss"
+dialogue = "dialogue.option_boss_catnip"
+
+[dialogue.option_boss_catnip]
 #Upon choosing Catnip
 
 text = "The party returned to the kingdom with a catnip in hand. As it was a legendary item that could not be found within the kingdom, the Blanche was awarded the title of duke, and was given the entirety of the Adventurer's guild as a result."
+next = "event.change_boss_option_golden_ring"
 
-[dialogue.option_boss_two_golden_ring]
+[event.change_boss_option_golden_ring]
+scene = "scene.boss"
+dialogue = "dialogue.option_boss_golden_ring"
+
+[dialogue.option_boss_golden_ring]
 #Upon choosing Golden ring
 
 text = "The party returned with a golden ring in hand. A legendary item that could only be owned by the state. The Golden ring was given to the Empire, while the members were promoted in rank."
