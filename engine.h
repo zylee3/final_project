@@ -22,7 +22,10 @@ extern int textboxexist;//check if textbox exist
 extern SDL_Window* window;
 extern SDL_Surface* gScreenSurface;
 
-
+#define _LOADAVATARBOX() \
+    SDL_Rect avatarboxRect = {60, 0, 300, 300};\
+    avatarboxRect.y = (SCREEN_HEIGHT - avatarboxRect.h - 30);\
+    _LOADOBJECT("avatarbox",avatarboxRect)
 
 #define loadTextbox() \
     SDL_Rect textboxRect = {0, 0, 1200, 400};\
@@ -35,7 +38,9 @@ extern SDL_Surface* gScreenSurface;
     _LOADTEXT(text, 2)
 
 #define loadName(name) \
-    _LOADTEXT(name, 1)
+    _LOADTEXT(name, 1); \
+    _LOADAVATARBOX(); \
+    _LOADAVATAR(name)
 
 #define close() \
     SDL_FreeSurface(gScreenSurface);\
@@ -54,6 +59,8 @@ bool init();
 //Every image must use .png format
 
 int _LOADITEMBOX(int type);//type 1: 2 box, type 2: 3 box(NOT TO USE
+
+int _LOADAVATAR(const char *name);
 
 int chooseFromTwo(char *name1, char *name2);//load 2 items to screen, return the number of the item that player choose
 

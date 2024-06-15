@@ -54,6 +54,20 @@ int _LOADITEMBOX(int type){
     }
 }
 
+int _LOADAVATAR(const char *name){
+    SDL_Rect avatarRect = {110, 800, 200, 200};
+    char *avatar = calloc(strlen(name) + 20, sizeof(char));
+    strcpy(avatar, name);
+    for(int i = 0; i < strlen(avatar); i++){
+        if(avatar[i] == ' '){
+            avatar[i] = '_';
+        }
+    }
+    strcat(avatar, "_avatar");
+    _LOADOBJECT(avatar , avatarRect);
+    free(avatar);
+}
+
 int chooseFromTwo(char *name1, char *name2){
     loadTextbox();//load textbox
     _LOADITEMBOX(1);
