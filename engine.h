@@ -39,8 +39,6 @@ extern SDL_Surface* gScreenSurface;
 
 #define loadName(name) \
     _LOADTEXT(name, 1); \
-    _LOADAVATARBOX(); \
-    _LOADAVATAR(name)
 
 #define close() \
     SDL_FreeSurface(gScreenSurface);\
@@ -60,7 +58,7 @@ bool init();
 
 int _LOADITEMBOX(int type);//type 1: 2 box, type 2: 3 box(NOT TO USE
 
-int _LOADAVATAR(const char *name);
+int loadAvatar(const char *name);
 
 int chooseFromTwo(char *name1, char *name2);//load 2 items to screen, return the number of the item that player choose
 

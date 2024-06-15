@@ -54,7 +54,8 @@ int _LOADITEMBOX(int type){
     }
 }
 
-int _LOADAVATAR(const char *name){
+int loadAvatar(const char *name){
+    _LOADAVATARBOX();
     SDL_Rect avatarRect = {110, 800, 200, 200};
     char *avatar = calloc(strlen(name) + 20, sizeof(char));
     strcpy(avatar, name);
@@ -64,7 +65,9 @@ int _LOADAVATAR(const char *name){
         }
     }
     strcat(avatar, "_avatar");
-    _LOADOBJECT(avatar , avatarRect);
+    if(_LOADOBJECT(avatar , avatarRect) == 1){
+        printf("Failed to load image from %s! ,%d\n", avatar, __LINE__);
+    }
     free(avatar);
 }
 
