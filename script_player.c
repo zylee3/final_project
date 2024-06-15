@@ -277,8 +277,6 @@ int main(int argc, char* args[])
 					if ((x >= 790 && x <= 1140) && (y >= 640 && y <= 790))
 					{
 						start = true;
-						loadBackground("basement");
-						loadTextbox();
 						SDL_PushEvent((SDL_Event*)&userEvent);
 						break;
 					}
