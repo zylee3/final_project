@@ -119,56 +119,56 @@ tachie = ""
 [dialogue.story.home]
 text = "There were two close friends, Alice and Bob. One day, they decide to bake a cake."
 
-[dialogue.conversation.home]
-[[dialogue.conversation.home.one]]
+[[dialogue.conversation.home]]
+[dialogue.conversation.home.one]
 character = "Alice"
 text = "I want to eat strawberry cake, but it is too expensive."
 
-[[dialogue.conversation.home.two]]
+[dialogue.conversation.home.two]
 character = "Bob"
 text = "How about baking the cake on our own?"
 
-[[dialogue.conversation.home.three]]
+[dialogue.conversation.home.three]
 character = "Alice"
 text = "That's a great idea."
 
 [dialogue.story.supermarket_one]
 text = "They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberrys for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything."
 
-[dialogue.conversation.supermarket_one]
-[[dialogue.conversation.supermarket_one.one]]
+[[dialogue.conversation.supermarket_one]]
+[dialogue.conversation.supermarket_one.one]
 character = "Alice"
 text = "OMG! The strawberrys are so expensive."
 
-[[dialogue.conversation.supermarket_one.two]]
+[dialogue.conversation.supermarket_one.two]
 character = "Bob"
 text = "Can we afford them?"
 
 [dialogue.story.supermarket_two]
 text = "After they find out that they don't have the budget for the cake, they decide to make apple pie instead of strawberry cake."
 
-[dialogue.conversation.supermarket_two]
-[[dialogue.conversation.supermarket_two.one]]
+[[dialogue.conversation.supermarket_two]]
+[dialogue.conversation.supermarket_two.one]
 character = "Bob"
 text = "Here are apples! Why is much cheaper then before?"
 
-[[dialogue.conversation.supermarket_two.two]]
+[dialogue.conversation.supermarket_two.two]
 character = "Alice"
 text = "These are from Chile. We used to buy apples from Japan."
 
-[[dialogue.conversation.supermarket_two.three]]
+[dialogue.conversation.supermarket_two.three]
 character = "Bob"
 text = "I see. Should we buy them?"
 
-[[dialogue.conversation.supermarket_two.four]]
+[dialogue.conversation.supermarket_two.four]
 character = "Alice"
 text = "I'd like Japanese apples."
 
-[[dialogue.conversation.supermarket_two.five]]
+[dialogue.conversation.supermarket_two.five]
 character = "Bob"
 text = "OK."
 
-7. When changing to different scene, add "event.change_xxx" and set the scene and dialogue. For instance, if changing to supermarket, "event_change_supermarket".
+7. When changing scene, adding event.
 
 Baking.toml:
 name = "A Piece Of Cake"
@@ -200,69 +200,67 @@ tachie = ""
 name = "apples"
 tachie = ""
 
-[event.change_home]
-scene = "scene.home"
-dialogue = "dialogue.story.home"
-
 [dialogue.story.home]
 text = "There were two close friends, Alice and Bob. One day, they decide to bake a cake."
 
-[dialogue.conversation.home]
-[[dialogue.conversation.home.one]]
+[[dialogue.conversation.home]]
+[dialogue.conversation.home.one]
 character = "Alice"
 text = "I want to eat strawberry cake, but it is too expensive."
 
-[[dialogue.conversation.home.two]]
+[dialogue.conversation.home.two]
 character = "Bob"
 text = "How about baking the cake on our own?"
 
-[[dialogue.conversation.home.three]]
+[dialogue.conversation.home.three]
 character = "Alice"
 text = "That's a great idea."
 
-event = "event.change_supermarket"
-
-[event.change_supermarket]
-scene = "scene.home"
+[event.change_supermarket_story_one]
+scene = "scene.supermarket"
 dialogue = "dialogue.story.supermarket_one"
 
 [dialogue.story.supermarket_one]
 text = "They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberrys for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything."
 
-[dialogue.conversation.supermarket_one]
-[[dialogue.conversation.supermarket_one.one]]
+[[dialogue.conversation.supermarket_one]]
+[dialogue.conversation.supermarket_one.one]
 character = "Alice"
 text = "OMG! The strawberrys are so expensive."
 
-[[dialogue.conversation.supermarket_one.two]]
+[dialogue.conversation.supermarket_one.two]
 character = "Bob"
 text = "Can we afford them?"
+
+[event.change_supermarket_story_two]
+scene = "scene.supermarket"
+dialogue = "dialogue.story.supermarket_two"
 
 [dialogue.story.supermarket_two]
 text = "After they find out that they don't have the budget for the cake, they decide to make apple pie instead of strawberry cake."
 
-[dialogue.conversation.supermarket_two]
-[[dialogue.conversation.supermarket_two.one]]
+[[dialogue.conversation.supermarket_two]]
+[dialogue.conversation.supermarket_two.one]
 character = "Bob"
 text = "Here are apples! Why is much cheaper then before?"
 
-[[dialogue.conversation.supermarket_two.two]]
+[dialogue.conversation.supermarket_two.two]
 character = "Alice"
 text = "These are from Chile. We used to buy apples from Japan."
 
-[[dialogue.conversation.supermarket_two.three]]
+[dialogue.conversation.supermarket_two.three]
 character = "Bob"
 text = "I see. Should we buy them?"
 
-[[dialogue.conversation.supermarket_two.four]]
+[dialogue.conversation.supermarket_two.four]
 character = "Alice"
 text = "I'd like Japanese apples."
 
-[[dialogue.conversation.supermarket_two.five]]
+[dialogue.conversation.supermarket_two.five]
 character = "Bob"
 text = "OK."
 
-9. When moving on to the next dialogue or dialogue sub-array, add "next".
+8. When changing to next dialogue or event, adding next.
 
 Baking.toml:
 name = "A Piece Of Cake"
@@ -294,87 +292,75 @@ tachie = ""
 name = "apples"
 tachie = ""
 
-[event.change_home]
-scene = "scene.home"
-dialogue = "dialogue.story.home"
-
 [dialogue.story.home]
 text = "There were two close friends, Alice and Bob. One day, they decide to bake a cake."
-
 next = "dialogue.conversation.home"
 
-[dialogue.conversation.home]
-[[dialogue.conversation.home.one]]
+[[dialogue.conversation.home]]
+[dialogue.conversation.home.one]
 character = "Alice"
 text = "I want to eat strawberry cake, but it is too expensive."
-
 next = "dialogue.conversation.home.two"
 
-[[dialogue.conversation.home.two]]
+[dialogue.conversation.home.two]
 character = "Bob"
 text = "How about baking the cake on our own?"
-
 next = "dialogue.conversation.home.three"
 
-[[dialogue.conversation.home.three]]
+[dialogue.conversation.home.three]
 character = "Alice"
 text = "That's a great idea."
+next = "event.change_supermarket_story_one"
 
-event = "event.change_supermarket"
-
-[event.change_supermarket]
-scene = "scene.home"
+[event.change_supermarket_story_one]
+scene = "scene.supermarket"
 dialogue = "dialogue.story.supermarket_one"
 
 [dialogue.story.supermarket_one]
 text = "They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberrys for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything."
-
 next = "dialogue.conversation.supermarket_one"
 
-[dialogue.conversation.supermarket_one]
-[[dialogue.conversation.supermarket_one.one]]
+[[dialogue.conversation.supermarket_one]]
+[dialogue.conversation.supermarket_one.one]
 character = "Alice"
 text = "OMG! The strawberrys are so expensive."
-
 next = "dialogue.conversation.supermarket_one.two"
 
-[[dialogue.conversation.supermarket_one.two]]
+[dialogue.conversation.supermarket_one.two]
 character = "Bob"
 text = "Can we afford them?"
+next = "event.change_supermarket_story_two"
 
-next = "dialogue.story.supermarket_two"
+[event.change_supermarket_story_two]
+scene = "scene.supermarket"
+dialogue = "dialogue.story.supermarket_two"
 
 [dialogue.story.supermarket_two]
 text = "After they find out that they don't have the budget for the cake, they decide to make apple pie instead of strawberry cake."
-
 next = "dialogue.conversation.supermarket_two"
 
-[dialogue.conversation.supermarket_two]
-[[dialogue.conversation.supermarket_two.one]]
+[[dialogue.conversation.supermarket_two]]
+[dialogue.conversation.supermarket_two.one]
 character = "Bob"
 text = "Here are apples! Why is much cheaper then before?"
-
 next = "dialogue.conversation.supermarket_two.two"
 
-[[dialogue.conversation.supermarket_two.two]]
+[dialogue.conversation.supermarket_two.two]
 character = "Alice"
 text = "These are from Chile. We used to buy apples from Japan."
+nect = "dialogue.conversation.supermarket_two.three"
 
-next = "dialogue.conversation.supermarket_two.three"
-
-[[dialogue.conversation.supermarket_two.three]]
+[dialogue.conversation.supermarket_two.three]
 character = "Bob"
 text = "I see. Should we buy them?"
-
 next = "dialogue.conversation.supermarket_two.four"
 
-[[dialogue.conversation.supermarket_two.four]]
+[dialogue.conversation.supermarket_two.four]
 character = "Alice"
 text = "I'd like Japanese apples."
-
 next = "dialogue.conversation.supermarket_two.five"
 
-[[dialogue.conversation.supermarket_two.five]]
+[dialogue.conversation.supermarket_two.five]
 character = "Bob"
 text = "OK."
 
