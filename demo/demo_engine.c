@@ -39,7 +39,7 @@ int main(int argc, char* args[]){
                     return 0;
                 }
                 else if(e.key.keysym.sym == SDLK_c){//sample character
-                    loadCharacter("blackcat");
+                    loadCharacter("Black Cat");
                 }
                 else if(e.key.keysym.sym == SDLK_t){//sample textbox showing
                     loadName("Black Cat");
@@ -54,6 +54,9 @@ int main(int argc, char* args[]){
                 else if(e.key.keysym.sym == SDLK_x){
                     chooseFromThree("catnip", "frisbee", "goldring");
                 }
+                else if(e.key.keysym.sym == SDLK_a){
+                    _LOADAVATARBOX();
+                }
                 
             }
             else if(e.type == SDL_MOUSEBUTTONDOWN){//sample button click
@@ -62,6 +65,7 @@ int main(int argc, char* args[]){
                 while(SDL_PollEvent(&e)){
                     //clean the event queue, prevent the event from being triggered multiple times
                 }
+                printf("%d %d\n", x, y);
                 if(x >= 790 && x <= 1140 && y >= 640 && y <= 790 && start == 0){
                     start = 1;
                     loadBackground("basement");
