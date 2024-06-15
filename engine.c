@@ -64,7 +64,6 @@ int loadAvatar(const char *name){
             avatar[i] = '_';
         }
     }
-    strcat(avatar, "_avatar");
     if(_LOADOBJECT(avatar , avatarRect) == 1){
         printf("Failed to load image from %s! ,%d\n", avatar, __LINE__);
     }
