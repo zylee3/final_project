@@ -52,7 +52,7 @@ Baking.toml:
 name = "A Piece Of Cake"
 author = "zylee"
 
-5. Add all the scenes, characters, and items in the toml. 
+5. Add all the scenes, characters, and items in the toml. Use the format [scene.place], the [character.name], or [item.thing] to name them.
 
 Baking.toml:
 name = "A Piece Of Cake"
@@ -84,7 +84,7 @@ tachie = ""
 name = "apples"
 tachie = ""
 
-6. Add dialogue.
+6. Add dialogue. There are two types of them, story and conversation. Use the format [dialogue.type.place_chapter.section] to name them.
 
 Baking.toml:
 name = "A Piece Of Cake"
@@ -168,7 +168,7 @@ text = "I'd like Japanese apples."
 character = "Bob"
 text = "OK."
 
-7. When changing scene, adding event.
+7. When changing scene, adding event. The event stores the next scene and the next dialogue. Use the format [event.change_place_type_chapter] to name them.
 
 Baking.toml:
 name = "A Piece Of Cake"
