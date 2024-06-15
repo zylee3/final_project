@@ -26,70 +26,70 @@ favor_dogs = 0
 
 [character.samoyed]
 name = "Salome"
-avatar = ""
+avatar = "samoyed_avatar"
 tachie = "samoyed"
 favor_cats = 0
 favor_dogs = 0
 
 [character.black_cat]
 name = "Blanche"
-avatar = ""
+avatar = "Black_Cat_avatar"
 tachie = "blackcat"
 favor_cats = 0
 favor_dogs = 0
 
 [character.tabby_cat]
 name = "Tommy"
-avatar = ""
+avatar = "tabbycat_avatar"
 tachie = "tabbycat"
 favor_cats = 0
 favor_dogs = 0
 
 [character.golden_retriever]
 name = "Gorden"
-avatar = ""
+avatar = "goldenretriever_avatar"
 tachie = "goldenretriever"
 favor_cats = 0
 favor_dogs = 0
 
 [character.malayan_night_heron_one]
 name = "Marceline"
-avatar = ""
+avatar = "nightheron_avatar"
 tachie = "nightheron"
 favor_cats = 0
 favor_dogs = 0
 
 [character.malayan_night_heron_two]
 name = "Max"
-avatar = ""
+avatar = "nightheron_avatar"
 tachie = "nightheron"
 favor_cats = 0
 favor_dogs = 0
 
 [character.squirrel_one]
 name = "Samuel"
-avatar = ""
+avatar = "squirrel_avatar"
 tachie = "squirrel"
 favor_cats = 0
 favor_dogs = 0
 
 [character.squirrel_two]
 name = "Sarah"
-avatar = ""
+avatar = "squirrel_avatar"
 tachie = "squirrel"
 favor_cats = 0
 favor_dogs = 0
 
 [character.squirrel_three]
 name = "Scarla"
-avatar = ""
+avatar = "squirrel_avatar"
 tachie = "squirrel"
 favor_cats = 0
 favor_dogs = 0
 
 [character.squirrel_four]
 name = "Sandra"
-avatar = ""
+avatar = "squirrel_avatar"
 tachie = "squirrel"
 favor_cats = 0
 favor_dogs = 0
@@ -103,15 +103,15 @@ favor_dogs = 0
 
 [item.frisbee]
 name = "Frisbee"
-image = ""
+image = "frisbee"
 
 [item.catnip]
 name = "Catnip"
-image = ""
+image = "catnip"
 
 [item.golden_ring]
 name = "Golden ring"
-image = ""
+image = "goldring"
 
 [event.change_guild]
 scene = "scene.guild"
@@ -124,21 +124,22 @@ next = "event.change_first"
 
 [event.change_first]
 scene = "scene.first"
-dialogue = "dialogue.conversation_first_one_one"
+dialogue = "dialogue.conversation_first_one"
 
-[dialogue.conversation_first_one_one]
+[[dialogue.conversation_first_one]]
+[dialogue.conversation_first_one.one]
 character = "character.golden_retriever"
 text = "There's something big in front, smells bad too."
 
-next = "dialogue.conversation_first_one_two"
+next = "dialogue.conversation_first_one.two"
 
-[dialogue.conversation_first_one_two]
+[dialogue.conversation_first_one.two]
 character = "character.tabby_cat"
 text = "Smells like something to eat."
 
-next = "dialogue.conversation_first_one_three"
+next = "dialogue.conversation_first_one.three"
 
-[dialogue.conversation_first_one_three]
+[dialogue.conversation_first_one.three]
 character = "character.malayan_night_heron_one"
 text = "Who the hell do you think you're eating!? I'll have you served up for breakfast!"
 
@@ -151,45 +152,46 @@ dialogue = "dialogue.story_first_one"
 [dialogue.story_first_one]
 text = "Blanche leaps forwards and slashes it with his nails. As the nails were about to hit the Marceline, it parried it with its beak. Salome rushes forwards to deliver a strong bite, but the Marceline spreads its enormous wings and bolts into the sky. As it encircles the party, it lets out a shriek, loud enough for the party to cover their ears. The party hoddles together, and from the horizon, a faint shadow could be seen looming closer towards the fight."
 
-next = "dialogue.conversation_first_two_one"
+next = "dialogue.conversation_first_two"
 
-[dialogue.conversation_first_two_one]
+[[dialogue.conversation_first_two]]
+[dialogue.conversation_first_two.one]
 character = "character.malayan_night_heron_two"
 text = "Baby! What's wrong?"
 
-next = "dialogue.conversation_first_two_two"
+next = "dialogue.conversation_first_two.two"
 
-[dialogue.conversation_first_two_two]
+[dialogue.conversation_first_two.two]
 character = "character.malayan_night_heron_one"
 text = "These insolent twats want to try eating me!"
 
-next = "dialogue.conversation_first_two_three"
+next = "dialogue.conversation_first_two.three"
 
-[dialogue.conversation_first_two_three]
+[dialogue.conversation_first_two.three]
 character = "character.malayan_night_heron_two"
 text = "What the hell? You think you're gonna pull up at my crib and tryna eat my woman!?"
 
-next = "dialogue.conversation_first_two_four"
+next = "dialogue.conversation_first_two.four"
 
-[dialogue.conversation_first_two_four]
+[dialogue.conversation_first_two.four]
 character = "character.black_cat"
 text = "Great, now we have to commit double homicide on a family of two."
 
-next = "dialogue.conversation_first_two_five"
+next = "dialogue.conversation_first_two.five"
 
-[dialogue.conversation_first_two_five]
+[dialogue.conversation_first_two.five]
 character = "character.malayan_night_heron_two"
 text = "We have kids to feed as well, alright?"
 
-next = "dialogue.conversation_first_two_six"
+next = "dialogue.conversation_first_two.six"
 
-[dialogue.conversation_first_two_six]
+[dialogue.conversation_first_two.six]
 character = "character.tabby_cat"
 text = "Where are they? Are they interested in New Orleans Style Seasoning Mixes?"
 
-next = "dialogue.conversation_first_two_seven"
+next = "dialogue.conversation_first_two.seven"
 
-[dialogue.conversation_first_two_seven]
+[dialogue.conversation_first_two.seven]
 character = "character.samoyed"
 text = "I want to eat the wings..."
 
@@ -197,25 +199,27 @@ next = "event.change_first_story_two"
 
 [event.change_first_story_two]
 scene = "scene.first"
-dialogue = "dialogue.story_first_two_one"
+dialogue = "dialogue.story_first_two"
 
-[dialogue.story_first_two_one]
+[[dialogue.story_first_two]]
+[dialogue.story_first_two.one]
 text = "As the herons become enraged at the party's words, they dove down in a synchronized strike at the Salome. One attack landed, but the other was thwarted by the wok of Gorden. As Marceline tries to recuperate from a direct attack, Tommy throws an entire vial of powdered spice, getting the fine particulates in the eyes and throat of Marceline."
 
-next = "dialogue.story_first_two_two"
+next = "dialogue.story_first_two.two"
 
-[dialogue.story_first_two_two]
+[dialogue.story_first_two.two]
 text = "She coughs vigorously, and lets out screams of agony, crying and calling for her husband. In response, Max dives in and scratches Tommy's head. But before Max could pick up Marceline, Blanche jumps at Max from behind, and stabs him in the back. He cries, but shakes Blanche off by reflex."
 
-next = "dialogue.conversation_first_three_one"
+next = "dialogue.conversation_first_three"
 
-[dialogue.conversation_first_three_one]
+[[dialogue.conversation_first_three]]
+[dialogue.conversation_first_three.one]
 character = "character.malayan_night_heron_one"
 text = "Honey!"
 
-next = "dialogue.conversation_first_three_two"
+next = "dialogue.conversation_first_three.two"
 
-[dialogue.conversation_first_three_two]
+[dialogue.conversation_first_three.two]
 character = "character.malayan_night_heron_two"
 text = "Fly! As fast as you can!"
 
@@ -223,19 +227,20 @@ next = "event.change_first_story_three"
 
 [event.change_first_story_three]
 scene = "scene.first"
-dialogue = "dialogue.story_first_three_one"
+dialogue = "dialogue.story_first_three"
 
-[dialogue.story_first_three_one]
+[[dialogue.story_first_three]]
+[dialogue.story_first_three.one]
 text = "Marceline attempts to spread her wings and fly, but the spices in her eyes would not allow her to see clearly. The last thing she saw was her bloodied husband. Finished off by a slit through the throat by Blanche, before her vision succumbed to darkness, under the jaws of Salome."
 
-next = "dialogue.story_first_three_two"
+next = "dialogue.story_first_three.two"
 
-[dialogue.story_first_three_two]
+[dialogue.story_first_three.two]
 text = "After the fight had ended, Gorden summoned a fire before them, and placed its wok to cook. Tommy placed in his spices, while Gorden swirled the numerous spices around. A delectable, mouth watering aroma filled the campsite. As the simple stock had been prepared, they threw in their latest bounty into the wok."
 
-next = "dialogue.story_first_three_three"
+next = "dialogue.story_first_three.three"
 
-[dialogue.story_first_three_three]
+[dialogue.story_first_three.three]
 text = "The simmering smell of fresh fowl raised their appetite greatly. They devoured the fowls as soon as it was prepared. And at night, Tommy dreamed of finding the eggs, so that he may relive the taste once more."
 
 next = "event.change_second"
@@ -247,27 +252,28 @@ dialogue = "dialogue.story_second_one"
 [dialogue.story_second_one]
 text = "The next day, they encountered a forest full of lush trees ripe with fruit. As the cats climbed up the tree to pluck some for their lunch of the day, they were struck down violently. A loud thud was heard as they hit the floor, and their gaze was met by the inhabitants of the tree as they looked up."
 
-next = "dialogue.conversation_second_one_one"
+next = "dialogue.conversation_second_one"
 
-[dialogue.conversation_second_one_one]
+[[dialogue.conversation_second_one]]
+[dialogue.conversation_second_one.one]
 character = "character.squirrel_one"
 text = "Hey! Do not steal from our trees goddamnit!"
 
-next = "dialogue.conversation_second_one_two"
+next = "dialogue.conversation_second_one.two"
 
-[dialogue.conversation_second_one_two]
+[dialogue.conversation_second_one.two]
 character = "character.squirrel_two"
 text = "Yeah, this tree has been in our possession for the past 8 generations!"
 
-next = "dialogue.conversation_second_one_three"
+next = "dialogue.conversation_second_one.three"
 
-[dialogue.conversation_second_one_three]
+[dialogue.conversation_second_one.three]
 character = "character.squirrel_three"
 text = "Tell em mom!"
 
-next = "dialogue.conversation_second_one_four"
+next = "dialogue.conversation_second_one.four"
 
-[dialogue.conversation_second_one_four]
+[dialogue.conversation_second_one.four]
 character = "character.black_cat"
 text = "And get your skins ready for repossession you bastards!"
 
@@ -275,14 +281,15 @@ next = "event.change_second_story_two"
 
 [event.change_second_story_two]
 scene = "scene.second"
-dialogue = "dialogue.story_second_two_one"
+dialogue = "dialogue.story_second_two"
 
-[dialogue.story_second_two_one]
+[[dialogue.story_second_two]]
+[dialogue.story_second_two.one]
 text = "As Blanche finished uttering those words, a family of onetwo squirrels descended from the tree. The party readies its defenses, as the first squirrel charges them head on. As Gorden parried the attack, the rest noticed that the squirrel was flanking them. One by one their claws and jaws land hits on Salome and Blanche, shielding Tommy from harm."
 
-next = "dialogue.story_second_two_two"
+next = "dialogue.story_second_two.two"
 
-[dialogue.story_second_two_two]
+[dialogue.story_second_two.two]
 text = "Tommy pulls out two vials and pours it onto the duo, instantly healing their wounds. As the three continue to parry the squirrels that are slowly closing upon them, Tommy cooks up a concoction in a large flask."
 
 next = "dialogue.conversation_second_two"
@@ -300,27 +307,28 @@ dialogue = "dialogue.story_second_three"
 [dialogue.story_second_three]
 text = "He says to the other members, and throws the flask at the squirrels. They let out a violent hiss, as their bodies convulse due to intense pain. They feel their tracts burn as their orifices were violated in ways that were previously unimaginable to them."
 
-next = "dialogue.conversation_second_three_one"
+next = "dialogue.conversation_second_three"
 
-[dialogue.conversation_second_three_one]
+[[dialogue.conversation_second_three]]
+[dialogue.conversation_second_three.one]
 character = "character.squirrel_one"
 text = "AAAAAAAAARGH! IT HURTS!!!!!!!!!!!!!!"
 
-next = "dialogue.conversation_second_three_two"
+next = "dialogue.conversation_second_three.two"
 
-[dialogue.conversation_second_three_two]
+[dialogue.conversation_second_three.two]
 character = "character.squirrel_two"
 text = "MOM, PLEASE! HELP ME!"
 
-next = "dialogue.conversation_second_three_three"
+next = "dialogue.conversation_second_three.three"
 
-[dialogue.conversation_second_three_three]
+[dialogue.conversation_second_three.three]
 character = "character.squirrel_three"
 text = "HELP, PLEASE! I'M SCARED! PLEASE DON'T KILL ME!!!!!"
 
-next = "dialogue.conversation_second_three_four"
+next = "dialogue.conversation_second_three.four"
 
-[dialogue.conversation_second_three_four]
+[dialogue.conversation_second_three.four]
 character = "character.squirrel_four"
 text = "KIDS? KIDS IT IS OKAY, MAMA'S HERE."
 
@@ -347,42 +355,44 @@ next = "event.change_boss"
 
 [event.change_boss]
 scene = "scene.boss"
-dialogue = "dialogue.story_boss_one_one"
+dialogue = "dialogue.story_boss_one"
 
-[dialogue.story_boss_one_one]
+[[dialogue.story_boss_one]]
+[dialogue.story_boss_one.one]
 text = "Before the great structures that once housed a noble race, the party steeled themselves. For it was inside, lies a great darkness that no animal dared venture into. But not these ones."
 
-next = "dialogue.story_boss_one_two"
+next = "dialogue.story_boss_one.two"
 
-[dialogue.story_boss_one_two]
+[dialogue.story_boss_one.two]
 text = "Their torch flickered within the echoing halls, and warily they searched through every monstrous room. Until finally, they lay their eyes upon it. And it, upon them."
 
-next = "dialogue.story_boss_one_three"
+next = "dialogue.story_boss_one.three"
 
-[dialogue.story_boss_one_three]
+[dialogue.story_boss_one.three]
 text = "It let out a huge roar, shaking the whole house. The party was afraid of it even more, now that it is right in front of them, in the flesh."
 
-next = "dialogue.conversation_boss_one_one"
+next = "dialogue.conversation_boss_one"
 
-[dialogue.conversation_boss_one_one]
+[[dialogue.conversation_boss_one]]
+[dialogue.conversation_boss_one.one]
 character = "character.samoyed"
 text = "It is the Dyson..."
 
-next = "dialogue.conversation_boss_one_two"
+next = "dialogue.conversation_boss_one.two"
 
-[dialogue.conversation_boss_one_two]
+[dialogue.conversation_boss_one.two]
 character = "character.golden_retriever"
 text = "It is so scary..."
 
-next = "dialogue.conversation_boss_one_three"
+next = "dialogue.conversation_boss_one.three"
 
-[dialogue.conversation_boss_one_three]
+[dialogue.conversation_boss_one.three]
 character = "character.black_cat"
 text = "Find your resolve, we shall defeat it here and now!"
 
-next = "dialogue.conversation_boss_one_four"
+next = "dialogue.conversation_boss_one.four"
 
-[dialogue.conversation_boss_one_four]
+[dialogue.conversation_boss_one.four]
 character = "character.tabby_cat"
 text = "Inedible, even dead..."
 
@@ -390,51 +400,67 @@ next = "event.change_boss_story_two"
 
 [event.change_boss_story_two]
 scene = "scene.boss"
-dialogue = "dialogue.story_boss_two_one"
+dialogue = "dialogue.story_boss_two"
 
-[dialogue.story_boss_two_one]
+[[dialogue.story_boss_two]]
+[dialogue.story_boss_two.one]
 text = "The party was too afraid to move, and instead the Dyson charged towards it with its eerie sounds, heat dissipated in every direction. The party bolted towards different directions, afraid of even making contact with the Dyson. All but Gorden, as he was too heavy to outrun the Dyson."
 
-next = "dialogue.story_boss_two_two"
+next = "dialogue.story_boss_two.two"
 
-[dialogue.story_boss_two_two]
+[dialogue.story_boss_two.two]
 text = " He took out his wok, and readied himself for imminent impact. As a loud clash rang throughout the entire house, the rest sprung into action. With Blanche attacking its 'head' (handle), and Salome chewing on its 'Base' (Vacuum place)."
 
-next = "dialogue.story_boss_two_three"
+next = "dialogue.story_boss_two.three"
 
-[dialogue.story_boss_two_three]
+[dialogue.story_boss_two.three]
 text = "Tommy observed the fight carefully, and it was obvious that the three of them were doing no damage to the monster. Desperate, he sought his weakness in a more intricate fashion. It was in this desperation where he discovered a long, Blanche line connecting the monster to the wall."
 
-next = "dialogue.story_boss_two_four"
+next = "dialogue.story_boss_two.four"
 
-[dialogue.story_boss_two_four]
+[dialogue.story_boss_two.four]
 text = "Tommy rushed up to the wall, and tried his best to know its purpose. He poured spice on it, poured his most powerful concoction, nothing. He tried pulling it out, but his strength was no match. Looking at his teammates being defeated one by one, Tommy chewed on the string mercilessly."
 
-next = "dialogue.story_boss_two_five"
+next = "dialogue.story_boss_two.five"
 
-[dialogue.story_boss_two_five]
+[dialogue.story_boss_two.five]
 text = "And sure enough, after the string was completely separated, the monster stopped, and fell onto the ground with a tremendous force."
 
-next = "dialogue.story_boss_two_six"
+next = "dialogue.story_boss_two.six"
 
-[dialogue.story_boss_two_six]
+[dialogue.story_boss_two.six]
 text = "They four rejoiced, for they have slain a legendary beast. They quickly rushed to search the room where the beast resides. Within, they found a frisbee, catnip, and a golden ring."
+next = "event.change_boss_option_frisbee"
+
+[event.change_boss_option_frisbee]
+scene = "scene.boss"
+dialogue = "dialogue.option_boss_frisbee"
 
 #item = "item.frisbee"
 #item = "item.catnip"
 #item = "item.golden_ring"
 
-[dialogue.option_boss_two_frisbee]
+[dialogue.option_boss_frisbee]
 #Upon choosing Frisbee
 
 text = "The party returned to the kingdom with a frisbee in hand. As it was a legendary item that could not be found within the kingdom, the Salome was awarded the title of duke, and was given the entirety of the Adventurer's guild as a result."
+next = "event.change_boss_option_catnip"
 
-[dialogue.option_boss_two_catnip]
+[event.change_boss_option_catnip]
+scene = "scene.boss"
+dialogue = "dialogue.option_boss_catnip"
+
+[dialogue.option_boss_catnip]
 #Upon choosing Catnip
 
 text = "The party returned to the kingdom with a catnip in hand. As it was a legendary item that could not be found within the kingdom, the Blanche was awarded the title of duke, and was given the entirety of the Adventurer's guild as a result."
+next = "event.change_boss_option_golden_ring"
 
-[dialogue.option_boss_two_golden_ring]
+[event.change_boss_option_golden_ring]
+scene = "scene.boss"
+dialogue = "dialogue.option_boss_golden_ring"
+
+[dialogue.option_boss_golden_ring]
 #Upon choosing Golden ring
 
 text = "The party returned with a golden ring in hand. A legendary item that could only be owned by the state. The Golden ring was given to the Empire, while the members were promoted in rank."
