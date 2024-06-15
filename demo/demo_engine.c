@@ -40,6 +40,7 @@ int main(int argc, char* args[]){
                 }
                 else if(e.key.keysym.sym == SDLK_c){//sample character
                     loadCharacter("Black Cat");
+                    loadAvatar("Black Cat_avatar");
                 }
                 else if(e.key.keysym.sym == SDLK_t){//sample textbox showing
                     loadName("Black Cat");

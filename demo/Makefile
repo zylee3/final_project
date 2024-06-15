@@ -3,4 +3,4 @@ all:
 	-gcc demo_engine.c ../engine.o -g -o demo_engine -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 clean:
-	rm *.o
+	-rm demo_script demo_engine
