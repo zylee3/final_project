@@ -106,7 +106,6 @@ typedef struct _sDialogue
 	char*          character;
 	char*          text;
 	char*          next;
-	//char*          item;
 } Dialogue;
 
 typedef struct _sFind

@@ -570,10 +570,6 @@ void print_record_indent(parsing_record pvMem, int32_t indent)
 			{
 				printf("fullName is not big enough\n");
 			}
-			//printf("Dialogue character:'%s' text:'%s' next:'%s' item:'%s'"
-			//	" parent name:'%s' fullName:'%s'\n",
-			//	pDialogue->character, pDialogue->text, pDialogue->next,
-			//		pDialogue->item, pParent->name, fullName);
 			printf("Dialogue character:'%s' text:'%s' next:'%s'"
 				" parent name:'%s' fullName:'%s'\n",
 				pDialogue->character, pDialogue->text, pDialogue->next,
