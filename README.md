@@ -3,26 +3,25 @@
 ## Download and install
 * You need to git clone this project with --recursive option.
       `git clone https://github.com/zylee3/final_project.git --recursive`
-* You need to build the tomlc99 with "make" under tomlc99 subdirectory of your clone directory.
-      `cd tomlc99`
-      `make`
-* You need to deploy the header and lib file with "sudo make install".
-      `sudo make install`
 
 ## Run
-* You need to build the demo_script with "make" under demo subdirectory of your clone directory.
-      `cd demo`
-      `make`
-* To run demo_script, you need to specify location of script.tmol.
+* You need to build the  with `make` under your clone directory.
+* To run script_player with script, you need to specify location of tmol file, use
+  `./script_player [file]`
+* If you want to try our script, use
       `./script_player script/script.toml`
-
+* You can also use your script, use `./script_player "your_script".toml`
+* Don't forget to add the relative path between script_player and script file.
 ## Script and picture
 * For script and picture-related questions, please see script/readme_script.txt
 
-## How to use your script
-     * ./script_player [your_script_file]
-      `./script_player your_script.toml`
 
 ## Some known issues
-     * Between two events that change the background  e.g. `[event.change_first_story_one] scene = "scene.first" dialogue = "dialogue.story_first_one"`.
-     * If you add more than six character , it won't show on the screen.
+* Between two events that change the background,
+* if you add more than six character , 7th and following character won't show on the screen.
+* Example of an event.
+```
+[event.change_first_story_one]
+scene = "scene.first"
+dialogue = "dialogue.story_first_one"
+```
