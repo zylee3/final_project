@@ -235,7 +235,10 @@ int main(int argc, char* args[])
 		goto script_uninit_label;
 	}
 
-	if (!init())
+	const char* finalProjectName = ((FinalProject*)pvCurr)->name;
+	//printf("finalProjectName:%s\n", finalProjectName);
+
+	if (!init(finalProjectName))
 	{
 		ret = 5;
 		printf("Failed to initialize the engine!\n");
