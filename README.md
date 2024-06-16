@@ -18,3 +18,11 @@
 
 ## Script and picture
 * For script and picture-related questions, please see script/readme_script.txt
+
+## How to use your script
+      ./script_player [your_script_file]
+      `./script_player your_script.toml`
+
+## Some known issues
+      Between two events that change the background  e.g. `[event.change_first_story_one] scene = "scene.first" dialogue = "dialogue.story_first_one"`.
+      If you add more than six character , it won't show on the screen.
