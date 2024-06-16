@@ -49,7 +49,7 @@ extern SDL_Surface* gScreenSurface;
     return 0
 
 
-bool init(const char *);
+bool init(const char *title);
 
 //Every function below is used to load image to screen
 //Name of toml file must be the same as the name of the image, " " need to be replaced by "_"

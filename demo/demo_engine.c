@@ -1,7 +1,7 @@
 #include "../engine.h"
 
 int main(int argc, char* args[]){
-    if(!init()){
+    if(!init("demo")){
         printf("Failed to initialize!\n");
         return 1;
     }
@@ -42,8 +42,11 @@ int main(int argc, char* args[]){
                     loadCharacter("Black Cat");
                     loadAvatar("Black Cat_avatar");
                 }
+                else if(e.key.keysym.sym == SDLK_F1){
+                    loadTextbox();
+                }
                 else if(e.key.keysym.sym == SDLK_t){//sample textbox showing
-                    loadName("Black Cat");
+                    loadName("testing~~~~~~~~");
                     loadDialog("Hi, I'm Black Cat, is this guild's knight captain. Nice to meet you! freshman! I'm here to help you with your first mission. Let's go to the basement to get your first mission!");
                 }
                 else if(e.key.keysym.sym == SDLK_i){
@@ -70,7 +73,6 @@ int main(int argc, char* args[]){
                 if(x >= 790 && x <= 1140 && y >= 640 && y <= 790 && start == 0){
                     start = 1;
                     loadBackground("basement");
-                    loadTextbox();
                     break;
                 }
             }
