@@ -14,7 +14,7 @@
       `cd demo`
       `make`
 * To run demo_script, you need to specify location of script.tmol.
-      `./demo_script ../script/script.toml`
+      `./script_player script/script.toml`
 
-## Script
-* For script-related questions, please see script/readme_script.txt
+## Script and picture
+* For script and picture-related questions, please see script/readme_script.txt
