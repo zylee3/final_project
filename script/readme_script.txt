@@ -78,11 +78,11 @@ avatar = "boy_avatar"
 tachie = "boy"
 
 [item.strawberries]
-name = "strawberries"
+name = "Strawberries"
 image = "strawberries"
 
 [item.apples]
-name = "apples"
+name = "Apples"
 image = "apples"
 
 6. Add dialogue. There are two types of them, story and conversation. Use the format [dialogue.type.place_chapter.section] to name them.
@@ -194,11 +194,11 @@ avatar = "boy_avatar"
 tachie = "boy"
 
 [item.strawberries]
-name = "strawberries"
+name = "Strawberries"
 image = "strawberries"
 
 [item.apples]
-name = "apples"
+name = "Apples"
 image = "apples"
 
 [dialogue.story.home]
@@ -286,11 +286,11 @@ avatar = "boy_avatar"
 tachie = "boy"
 
 [item.strawberries]
-name = "strawberries"
+name = "Strawberries"
 image = "strawberries"
 
 [item.apples]
-name = "apples"
+name = "Apples"
 image = "apples"
 
 [dialogue.story.home_one]
