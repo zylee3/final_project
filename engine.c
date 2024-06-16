@@ -10,29 +10,39 @@ SDL_Surface* gScreenSurface = NULL;
 bool init(char *title){
     // Initialize SDL
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
+        #ifdef DEBUG
         printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+        #endif
         return false;
     }
 
     // Create window
     window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if(window == NULL){
+        #ifdef DEBUG
         printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
+        #endif
         return false;
     }
     gScreenSurface = SDL_GetWindowSurface(window);
     if(gScreenSurface == NULL){
+        #ifdef DEBUG
         printf("Unable to get window surface! SDL Error: %s\n", SDL_GetError());
+        #endif
         return false;
     }
     // Initialize PNG loading
     int imgFlags = IMG_INIT_PNG;
     if(!(IMG_Init(imgFlags) & imgFlags)){
+        #ifdef DEBUG
         printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+        #endif
         return false;
     }
     if(TTF_Init() == -1){
+        #ifdef DEBUG
         printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+        #endif
         return false;
     }
     return true;
@@ -65,7 +75,9 @@ int loadAvatar(const char *name){
         }
     }
     if(_LOADOBJECT(avatar , avatarRect) == 1){
+        #ifdef DEBUG
         printf("Failed to load image from %s! ,%d\n", avatar, __LINE__);
+        #endif
     }
     free(avatar);
 }
@@ -75,11 +87,15 @@ int chooseFromTwo(char *name1, char *name2){
     _LOADITEMBOX(1);
     SDL_Rect itemrect = {420, 410, 280, 280};
     if(_LOADOBJECT(name1, itemrect) == 1){
+        #ifdef DEBUG
         printf("Failed to load image from %s! ,%d\n", name1, __LINE__);
+        #endif
     }
     itemrect.x = 1220;
     if(_LOADOBJECT(name2, itemrect) == 1){
+        #ifdef DEBUG
         printf("Failed to load image from %s! ,%d\n", name2, __LINE__);
+        #endif
     }
     //load choosing dialog
     char* text = calloc(strlen(name1) + strlen(name2) + 100, sizeof(char));
@@ -132,15 +148,21 @@ int chooseFromThree(char *name1, char *name2, char *name3){
     _LOADITEMBOX(2);
     SDL_Rect itemrect = {420, 410, 280, 280};
     if(_LOADOBJECT(name1, itemrect) == 1){
+        #ifdef DEBUG
         printf("Failed to load image from %s! ,%d\n", name1, __LINE__);
+        #endif
     }
     itemrect.x = 820;
     if(_LOADOBJECT(name2, itemrect) == 1){
+        #ifdef DEBUG
         printf("Failed to load image from %s! ,%d\n", name2, __LINE__);
+        #endif
     }
     itemrect.x = 1220;
     if(_LOADOBJECT(name3, itemrect) == 1){
+        #ifdef DEBUG
         printf("Failed to load image from %s! ,%d\n", name3, __LINE__);
+        #endif
     }
     //load choosing dialog
     char* text = calloc(strlen(name1) + strlen(name2) + strlen(name3) + 100, sizeof(char));
@@ -269,12 +291,16 @@ int loadCharacter(const char *name){
             ccrect.h = 400;
             break;
         default:
+            #ifdef DEBUG
             printf("Cannot load more character! %d\n", __LINE__);
+            #endif
             free(path);
             return 1;
     }
     if(_LOADMEDIA(path, ccrect, 1) == 1){
+        #ifdef DEBUG
         printf("Failed to load image from %s! ,%d\n", path, __LINE__);
+        #endif
         free(path);
         return 1;
     }
@@ -295,7 +321,9 @@ int _LOADOBJECT(char *name, SDL_Rect rect){
     }
     strcat(path, ".png");
     if(_LOADMEDIA(path, rect, 2) == 1){
+        #ifdef DEBUG
         printf("Failed to load image from %s! ,%d\n", path, __LINE__);
+        #endif
         free(path);
         return 1;
     }
@@ -317,7 +345,9 @@ int loadBackground(const char *name){
     SDL_Rect bgrect = {0, 0, 1920, 1080};
     _TRANSITION();
     if(_LOADMEDIA(path, bgrect, 3) == 1){
+        #ifdef DEBUG
         printf("Failed to load image from %s! ,%d\n", path, __LINE__);
+        #endif
         free(path);
         return 1;
     }
@@ -326,7 +356,7 @@ int loadBackground(const char *name){
 
 void _TRANSITION(){
     SDL_Rect transitionRect = {0, 0, 200, 1080};
-    for(int i = 0 ; i < 1920 ; i += 7){
+    for(int i = 0 ; i < 1920 ; i += 6){
         transitionRect.x = i;
         _LOADOBJECT("Transitions", transitionRect);
     }
@@ -335,7 +365,9 @@ void _TRANSITION(){
 int _LOADMEDIA(char *path, SDL_Rect rect, int type){
     SDL_Surface* loadedSurface = _LOADSURFACE(path);
     if(loadedSurface == NULL){
+        #ifdef DEBUG
         printf("Failed to load image from %s! ,%d\n", path, __LINE__);
+        #endif
         return 1;
     }
     if(type == 1 && total_cc_on_screen > 3){
@@ -349,14 +381,16 @@ int _LOADMEDIA(char *path, SDL_Rect rect, int type){
 }
 
 int _LOADTEXT(const char *text , int type){
-    TTF_Font *font = TTF_OpenFont("ttf/lazy_dog.ttf", 32);
+    TTF_Font *font = TTF_OpenFont("ttf/Times New Roman.ttf", 32);
     if(font == NULL){
+        #ifdef DEBUG
         printf("Failed to load font! SDL_ttf Error: %s , %d\n", TTF_GetError(), __LINE__);
+        #endif
         return 1;
     }
     SDL_Color textColor = {0, 0, 0};
     if(type == 1){//name
-        SDL_Surface* textSurface = TTF_RenderText_Blended_Wrapped(font, text, textColor, 200);
+        SDL_Surface* textSurface = TTF_RenderText_Blended_Wrapped(font, text, textColor, 300);
         SDL_Rect destRect = {NAME_RECTx, NAME_RECTy, 300, 50};
         SDL_BlitSurface(textSurface, NULL, gScreenSurface, &destRect);
         SDL_UpdateWindowSurface(window);
@@ -379,7 +413,9 @@ SDL_Surface* _LOADSURFACE(char* path){
     // Create texture from surface
     SDL_Surface* loadedSurface = IMG_Load(path);
     if(loadedSurface == NULL){
+        #ifdef DEBUG
         printf("Unable to create Surface from %s! SDL Error: %s , %d\n", path, SDL_GetError(), __LINE__);
+        #endif
     }
     return loadedSurface;
 }
