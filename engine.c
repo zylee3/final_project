@@ -7,7 +7,7 @@ SDL_Surface* gScreenSurface = NULL;
 
 
 
-bool init(char *title){
+bool init(const char *title){
     // Initialize SDL
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
         #ifdef DEBUG
