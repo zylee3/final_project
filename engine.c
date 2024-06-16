@@ -7,7 +7,7 @@ SDL_Surface* gScreenSurface = NULL;
 
 
 
-bool init(){
+bool init(char *title){
     // Initialize SDL
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
         printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
@@ -15,7 +15,7 @@ bool init(){
     }
 
     // Create window
-    window = SDL_CreateWindow("Final project!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if(window == NULL){
         printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
         return false;
