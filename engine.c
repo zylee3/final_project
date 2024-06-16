@@ -326,7 +326,7 @@ int loadBackground(const char *name){
 
 void _TRANSITION(){
     SDL_Rect transitionRect = {0, 0, 200, 1080};
-    for(int i = 0 ; i < 1920 ; i += 7){
+    for(int i = 0 ; i < 1920 ; i += 6){
         transitionRect.x = i;
         _LOADOBJECT("Transitions", transitionRect);
     }
