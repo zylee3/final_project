@@ -12,8 +12,11 @@
       `./script_player script/script.toml`
 * You can also use your script, use `./script_player "your_script".toml`
 * Don't forget to add the relative path between script_player and script file.
+
 ## Script and picture
-* For script and picture-related questions, please see script/readme_script.txt
+* All picture must be .png format.
+* Picture's file name shouldn't have space. `Red ball.png` is "not" OK. `Red_ball.png` is OK.
+* For more script and picture-related questions, please see script/readme_script.txt
 
 
 ## Some known issues
