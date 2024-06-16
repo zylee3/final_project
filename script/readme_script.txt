@@ -110,11 +110,11 @@ avatar = "boy_avatar"
 tachie = "boy"
 
 [item.strawberries]
-name = "strawberries"
+name = "Strawberries"
 image = "strawberries"
 
 [item.apples]
-name = "apples"
+name = "Apples"
 image = "apples"
 
 [dialogue.story.home]
