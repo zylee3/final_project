@@ -120,16 +120,16 @@ image = "apples"
 [dialogue.story.home]
 text = "There were two close friends, Alice and Bob. One day, they decide to bake a cake."
 
-[[dialogue.conversation.home]]
-[dialogue.conversation.home.one]
+[[dialogue.conversation.home_one]]
+[dialogue.conversation.home_one.one]
 character = "Alice"
 text = "I want to eat strawberry cake, but it is too expensive."
 
-[dialogue.conversation.home.two]
+[dialogue.conversation.home_one.two]
 character = "Bob"
 text = "How about baking the cake on our own?"
 
-[dialogue.conversation.home.three]
+[dialogue.conversation.home_one.three]
 character = "Alice"
 text = "That's a great idea."
 
@@ -204,16 +204,16 @@ image = "apples"
 [dialogue.story.home]
 text = "There were two close friends, Alice and Bob. One day, they decide to bake a cake."
 
-[[dialogue.conversation.home]]
-[dialogue.conversation.home.one]
+[[dialogue.conversation.home_one]]
+[dialogue.conversation.home_one.one]
 character = "Alice"
 text = "I want to eat strawberry cake, but it is too expensive."
 
-[dialogue.conversation.home.two]
+[dialogue.conversation.home_one.two]
 character = "Bob"
 text = "How about baking the cake on our own?"
 
-[dialogue.conversation.home.three]
+[dialogue.conversation.home_one.three]
 character = "Alice"
 text = "That's a great idea."
 
@@ -293,22 +293,22 @@ image = "strawberries"
 name = "apples"
 image = "apples"
 
-[dialogue.story.home]
+[dialogue.story.home_one]
 text = "There were two close friends, Alice and Bob. One day, they decide to bake a cake."
 next = "dialogue.conversation.home"
 
-[[dialogue.conversation.home]]
-[dialogue.conversation.home.one]
+[[dialogue.conversation.home_one]]
+[dialogue.conversation.home_one.one]
 character = "Alice"
 text = "I want to eat strawberry cake, but it is too expensive."
 next = "dialogue.conversation.home.two"
 
-[dialogue.conversation.home.two]
+[dialogue.conversation.home_one.two]
 character = "Bob"
 text = "How about baking the cake on our own?"
 next = "dialogue.conversation.home.three"
 
-[dialogue.conversation.home.three]
+[dialogue.conversation.home_one.three]
 character = "Alice"
 text = "That's a great idea."
 next = "event.change_supermarket_story_one"
