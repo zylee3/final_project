@@ -15,9 +15,9 @@ Alice: I want to eat strawberry cake, but it is too expensive.
 Bob: How about baking the cake on our own?
 Alice: That's a great idea.
 
-They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberrys for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything.
+They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberries for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything.
 
-Alice: OMG! The strawberrys are so expensive.
+Alice: OMG! The strawberries are so expensive.
 Bob: Can we afford them?
 
 After they find out that they don't have the budget for the cake, they decide to make apple pie instead of strawberry cake.
@@ -39,7 +39,7 @@ characters:
 2) Bob
 
 items:
-1) strawberrys
+1) strawberries
 2) apples
 
 3. New toml file.
@@ -52,7 +52,7 @@ Baking.toml:
 name = "A Piece Of Cake"
 author = "zylee"
 
-5. Add all the scenes, characters, and items in the toml. Use the format [scene.place], the [character.name], or [item.thing] to name them.
+5. Add all the scenes, characters, and items in the toml. Use the format [scene.place], the [character.name], or [item.thing] to name them. The background of the place stores in the folder "bg". The tachie of the character stores in the folder "cc". The avatar of the character and image of the item store in the folder "item". Those parameters should store the string before ".png".
 
 Baking.toml:
 name = "A Piece Of Cake"
@@ -60,29 +60,29 @@ author = "zylee"
 
 [scene.home]
 name = "Home"
-background = ""
+background = "home"
 
 [scene.supermarket]
 name = "Supermarket"
-background = ""
+background = "supermarket"
 
 [character.alice]
 name = "Alice"
-avatar = ""
-tachie = ""
+avatar = "girl"
+tachie = "girl"
 
 [character.bob]
 name = "Bob"
-avatar = ""
-tachie = ""
+avatar = "boy_avatar"
+tachie = "boy_avatar"
 
-[item.strawberrys]
-name = "strawberrys"
-tachie = ""
+[item.strawberries]
+name = "strawberries"
+image = "strawberries"
 
 [item.apples]
 name = "apples"
-tachie = ""
+image = "apples"
 
 6. Add dialogue. There are two types of them, story and conversation. Use the format [dialogue.type.place_chapter.section] to name them.
 
@@ -92,29 +92,29 @@ author = "zylee"
 
 [scene.home]
 name = "Home"
-background = ""
+background = "home"
 
 [scene.supermarket]
 name = "Supermarket"
-background = ""
+background = "supermarket"
 
 [character.alice]
 name = "Alice"
-avatar = ""
-tachie = ""
+avatar = "girl"
+tachie = "girl"
 
 [character.bob]
 name = "Bob"
-avatar = ""
-tachie = ""
+avatar = "boy_avatar"
+tachie = "boy_avatar"
 
-[item.strawberrys]
-name = "strawberrys"
-tachie = ""
+[item.strawberries]
+name = "strawberries"
+image = "strawberries"
 
 [item.apples]
 name = "apples"
-tachie = ""
+image = "apples"
 
 [dialogue.story.home]
 text = "There were two close friends, Alice and Bob. One day, they decide to bake a cake."
@@ -133,12 +133,12 @@ character = "Alice"
 text = "That's a great idea."
 
 [dialogue.story.supermarket_one]
-text = "They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberrys for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything."
+text = "They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberries for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything."
 
 [[dialogue.conversation.supermarket_one]]
 [dialogue.conversation.supermarket_one.one]
 character = "Alice"
-text = "OMG! The strawberrys are so expensive."
+text = "OMG! The strawberries are so expensive."
 
 [dialogue.conversation.supermarket_one.two]
 character = "Bob"
@@ -176,29 +176,29 @@ author = "zylee"
 
 [scene.home]
 name = "Home"
-background = ""
+background = "home"
 
 [scene.supermarket]
 name = "Supermarket"
-background = ""
+background = "supermarket"
 
 [character.alice]
 name = "Alice"
-avatar = ""
-tachie = ""
+avatar = "girl"
+tachie = "girl"
 
 [character.bob]
 name = "Bob"
-avatar = ""
-tachie = ""
+avatar = "boy_avatar"
+tachie = "boy_avatar"
 
-[item.strawberrys]
-name = "strawberrys"
-tachie = ""
+[item.strawberries]
+name = "strawberries"
+image = "strawberries"
 
 [item.apples]
 name = "apples"
-tachie = ""
+image = "apples"
 
 [dialogue.story.home]
 text = "There were two close friends, Alice and Bob. One day, they decide to bake a cake."
@@ -221,12 +221,12 @@ scene = "scene.supermarket"
 dialogue = "dialogue.story.supermarket_one"
 
 [dialogue.story.supermarket_one]
-text = "They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberrys for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything."
+text = "They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberries for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything."
 
 [[dialogue.conversation.supermarket_one]]
 [dialogue.conversation.supermarket_one.one]
 character = "Alice"
-text = "OMG! The strawberrys are so expensive."
+text = "OMG! The strawberries are so expensive."
 
 [dialogue.conversation.supermarket_one.two]
 character = "Bob"
@@ -268,29 +268,29 @@ author = "zylee"
 
 [scene.home]
 name = "Home"
-background = ""
+background = "home"
 
 [scene.supermarket]
 name = "Supermarket"
-background = ""
+background = "supermarket"
 
 [character.alice]
 name = "Alice"
-avatar = ""
-tachie = ""
+avatar = "girl"
+tachie = "girl"
 
 [character.bob]
 name = "Bob"
-avatar = ""
-tachie = ""
+avatar = "boy_avatar"
+tachie = "boy_avatar"
 
-[item.strawberrys]
-name = "strawberrys"
-tachie = ""
+[item.strawberries]
+name = "strawberries"
+image = "strawberries"
 
 [item.apples]
 name = "apples"
-tachie = ""
+image = "apples"
 
 [dialogue.story.home]
 text = "There were two close friends, Alice and Bob. One day, they decide to bake a cake."
@@ -317,13 +317,13 @@ scene = "scene.supermarket"
 dialogue = "dialogue.story.supermarket_one"
 
 [dialogue.story.supermarket_one]
-text = "They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberrys for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything."
+text = "They find a recipe. The next step is to buy all the ingredients needed. They have to buy a bottle of strawberry yogurt, 150 grams of cream, 10 grams of gelatine powder, and a box of strawberries for mousse. For the bottom, they need to buy 80 grams of cookies, and unsalted butter. Fortunately, the supermaket a cross the street sells everything."
 next = "dialogue.conversation.supermarket_one"
 
 [[dialogue.conversation.supermarket_one]]
 [dialogue.conversation.supermarket_one.one]
 character = "Alice"
-text = "OMG! The strawberrys are so expensive."
+text = "OMG! The strawberries are so expensive."
 next = "dialogue.conversation.supermarket_one.two"
 
 [dialogue.conversation.supermarket_one.two]
