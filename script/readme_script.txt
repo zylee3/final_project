@@ -68,13 +68,13 @@ background = "supermarket"
 
 [character.alice]
 name = "Alice"
-avatar = "girl"
+avatar = "girl_avatar"
 tachie = "girl"
 
 [character.bob]
 name = "Bob"
 avatar = "boy_avatar"
-tachie = "boy_avatar"
+tachie = "boy"
 
 [item.strawberries]
 name = "strawberries"
@@ -100,13 +100,13 @@ background = "supermarket"
 
 [character.alice]
 name = "Alice"
-avatar = "girl"
+avatar = "girl_avatar"
 tachie = "girl"
 
 [character.bob]
 name = "Bob"
 avatar = "boy_avatar"
-tachie = "boy_avatar"
+tachie = "boy"
 
 [item.strawberries]
 name = "strawberries"
@@ -184,13 +184,13 @@ background = "supermarket"
 
 [character.alice]
 name = "Alice"
-avatar = "girl"
+avatar = "girl_avatar"
 tachie = "girl"
 
 [character.bob]
 name = "Bob"
 avatar = "boy_avatar"
-tachie = "boy_avatar"
+tachie = "boy"
 
 [item.strawberries]
 name = "strawberries"
@@ -276,13 +276,13 @@ background = "supermarket"
 
 [character.alice]
 name = "Alice"
-avatar = "girl"
+avatar = "girl_avatar"
 tachie = "girl"
 
 [character.bob]
 name = "Bob"
 avatar = "boy_avatar"
-tachie = "boy_avatar"
+tachie = "boy"
 
 [item.strawberries]
 name = "strawberries"
