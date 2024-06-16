@@ -1,5 +1,6 @@
 The player is a member of guild. The story is about the adventure story of a party of four. There are three encounters, the first one is a fight with two Malayan night herons, the second one is a fight with four squirrels, the last one is a fight with a Dyson vacuum cleaner.
 At the end of the story, there are three things found in the room. Player will choose different items favor different pets, affecting the ending.
+There will be only up to 6 characters in a scene.
 
 Script file format: TOML
 Script file name: script.toml
