@@ -3,6 +3,11 @@
 ## Download and install
 * You need to git clone this project with --recursive option.
       `git clone https://github.com/zylee3/final_project.git --recursive`
+* You need to build the tomlc99 with "make" under tomlc99 subdirectory of your clone directory.
+      `cd tomlc99`
+      `make`
+* You need to deploy the header and lib file with "sudo make install".
+      `sudo make install`
 
 ## Run
 * You need to build the  with `make` under your clone directory.
